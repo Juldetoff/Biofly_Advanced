@@ -1,0 +1,102 @@
+Objet : Bull vu à : 00:00:00.3583990
+Objet : Bull plus vu à : 00:01:05.5407797
+Objet : Tiger vu à : 00:01:06.3700263
+Objet : Eagle vu à : 00:01:07.0964159
+Objet : Bull plus vu à : 00:01:13.9134656
+Objet : CubeRouge(Clone) vu à : 00:01:15.1000576
+Objet : CubeRouge(Clone) vu à : 00:01:15.1750961
+Objet : CubeRouge(Clone) vu à : 00:01:15.5283426
+Objet : CubeRouge(Clone) plus vu à : 00:01:22.8809526
+Objet : CubeRouge(Clone) plus vu à : 00:01:22.8849511
+Objet : Eagle vu à : 00:00:00.0477181
+Objet : Bull vu à : 00:00:00.0507174
+Objet : Eagle vu à : 00:00:00.0507174
+Objet : Eagle vu à : 00:00:00.0517179
+Objet : Tiger vu à : 00:00:00.1618764
+Objet : Tiger vu à : 00:00:00.1628730
+Objet : Eagle vu à : 00:00:00.1638737
+Objet : Eagle vu à : 00:00:00.1638737
+Objet : Eagle vu à : 00:00:00.1648735
+Objet : Bull vu à : 00:00:00.1648735
+Objet : Tiger vu à : 00:00:00.1658736
+Objet : Eagle vu à : 00:00:00.1658736
+Objet : Bull vu à : 00:00:02.9704553
+Objet : Eagle vu à : 00:00:02.9704553
+Objet : Eagle plus vu à : 00:01:10.0363803
+Objet : Eagle plus vu à : 00:01:10.0363803
+Objet : Bull plus vu à : 00:01:10.0749863
+Objet : Eagle plus vu à : 00:01:10.0749863
+Objet : Eagle plus vu à : 00:01:10.0850137
+Objet : Tiger vu à : 00:00:00.7180171
+Objet : Tiger vu à : 00:00:00.2862732
+Objet : Tiger vu à : 00:00:00.2882734
+Objet : CubeRouge(Clone) vu à : 00:00:34.7846896
+Objet : CubeRouge(Clone) vu à : 00:00:35.2360011
+Objet : Eagle vu à : 00:00:41.7454088
+Objet : CubeRouge(Clone) vu à : 00:00:42.7382424
+Objet : CubeRouge(Clone) plus vu à : 00:01:08.9414044
+Objet : CubeRouge(Clone) plus vu à : 00:01:08.9334023
+Objet : CubeRouge(Clone) plus vu à : 00:01:08.9344112
+Objet : CubeRouge(Clone) vu à : 00:01:09.0341487
+Objet : Tiger vu à : 00:01:09.0351379
+Objet : Eagle vu à : 00:01:09.0516739
+Objet : Bull vu à : 00:01:09.0526707
+Objet : Tiger vu à : 00:01:09.1120994
+Objet : CubeRouge(Clone) vu à : 00:01:09.2529676
+Objet : Eagle vu à : 00:01:09.5161208
+Objet : CubeRouge(Clone) plus vu à : 00:01:10.6554609
+Objet : Eagle plus vu à : 00:01:18.1971663
+Objet : Bull plus vu à : 00:01:20.1840462
+Objet : Eagle vu à : 00:01:21.3349997
+Objet : Tiger vu à : 00:01:21.3905860
+Objet : CubeRouge(Clone) vu à : 00:01:21.5132888
+Objet : CubeRouge(Clone) vu à : 00:01:21.5142871
+Objet : Eagle vu à : 00:01:21.5708282
+Objet : CubeRouge(Clone) vu à : 00:01:21.5718280
+Objet : Eagle plus vu à : 00:01:34.3228318
+Objet : CubeRouge(Clone) plus vu à : 00:01:33.9531254
+Objet : Bull vu à : 00:01:46.4498480
+Objet : Eagle vu à : 00:01:46.6259751
+Objet : Tiger vu à : 00:01:46.6269771
+Objet : Tiger vu à : 00:01:47.0727479
+Objet : Tiger vu à : 00:01:46.6390084
+Objet : CubeRouge(Clone) plus vu à : 00:01:51.6449120
+Objet : Tiger plus vu à : 00:01:52.2569449
+Objet : Bull plus vu à : 00:01:51.8232021
+Objet : Eagle plus vu à : 00:01:51.8152059
+Objet : CubeRouge(Clone) plus vu à : 00:01:51.8152059
+Objet : CubeRouge(Clone) plus vu à : 00:01:51.8162048
+Objet : Eagle plus vu à : 00:01:51.8922506
+Objet : Bull vu à : 00:01:51.9278016
+Objet : CubeRouge(Clone) plus vu à : 00:01:52.1691946
+Objet : Eagle plus vu à : 00:01:54.6922725
+Objet : Eagle vu à : 00:01:56.7726483
+Objet : Bull plus vu à : 00:01:56.8732251
+Objet : Eagle plus vu à : 00:02:01.1546926
+Objet : Bull vu à : 00:02:01.9496709
+Objet : Bull plus vu à : 00:02:06.1403541
+Objet : CubeRouge(Clone) plus vu à : 00:02:10.6594285
+Objet : Bull plus vu à : 00:02:10.8383178
+Objet : Eagle plus vu à : 00:02:12.2674199
+Objet : Eagle plus vu à : 00:02:12.1577323
+Objet : Tiger plus vu à : 00:02:16.5987714
+Objet : Tiger plus vu à : 00:02:17.4528664
+Objet : Tiger plus vu à : 00:02:24.2654259
+Objet : Tiger vu à : 00:02:25.8199228
+Objet : Eagle vu à : 00:02:25.9309481
+Objet : CubeRouge(Clone) vu à : 00:02:25.9309481
+Objet : CubeRouge(Clone) vu à : 00:02:25.9319488
+Objet : Eagle vu à : 00:02:25.9930424
+Objet : Bull vu à : 00:02:27.1990740
+Objet : CubeRouge(Clone) vu à : 00:02:27.2041100
+Objet : Tiger vu à : 00:02:29.8416111
+Objet : Tiger vu à : 00:02:29.8416111
+Objet : Tiger vu à : 00:02:30.0087206
+Objet : Tiger vu à : 00:02:30.0207581
+Objet : Eagle plus vu à : 00:02:35.0026240
+Objet : Tiger plus vu à : 00:02:35.0096220
+Objet : Bull plus vu à : 00:02:35.4553718
+Objet : CubeRouge(Clone) plus vu à : 00:02:35.0126372
+Objet : Bull plus vu à : 00:02:35.0601685
+Objet : CubeRouge(Clone) plus vu à : 00:02:35.0611608
+Objet : Eagle plus vu à : 00:02:35.0611608

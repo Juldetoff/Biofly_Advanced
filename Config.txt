@@ -1,0 +1,5 @@
+4
+scene,NULL
+nBCamera,2
+bruitAmplitude,3
+bruitFrequency,3
