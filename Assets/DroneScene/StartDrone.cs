@@ -97,8 +97,15 @@ public class StartDrone : MonoBehaviour
                 float y= randomPoint.y;
                 int prefabRand = UnityEngine.Random.Range(0, 4);
                 if(prefabRand != 0){
-                    randomPoint.y = y-39f; //on met le point au dessus du sol
+                    randomPoint.y = y-39.3f; //on met le point au dessus du sol
                     generatedObject = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, cubePrefab);
+
+                    float size = UnityEngine.Random.Range(1f, 3f);
+                    generatedObject.transform.localScale = new Vector3(size, size, size);
+                    generatedObject.transform.position = new Vector3(
+                        generatedObject.transform.position.x,
+                         generatedObject.transform.position.y + (size-1f)*0.5f,
+                          generatedObject.transform.position.z);
                     
                     RaycastHit hit;
                     var ray = new Ray (generatedObject.transform.position, Vector3.down); // check for slopes

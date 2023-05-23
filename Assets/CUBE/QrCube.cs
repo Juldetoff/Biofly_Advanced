@@ -10,9 +10,15 @@ public class QrCube : MonoBehaviour
 
     public void SetQrSprite(Sprite sprite) // Set the sprite of the QR code
     {
-        foreach (SpriteRenderer face in FaceList)
+        int num = UnityEngine.Random.Range(0, 6);
+        for (int i = 0; i < FaceList.Count; i++)
         {
-            face.sprite = sprite;
+            if(i==num){
+                FaceList[i].sprite = sprite;
+            }
+            else{
+                FaceList[i].sprite = null;
+            }
         }
     }
 
