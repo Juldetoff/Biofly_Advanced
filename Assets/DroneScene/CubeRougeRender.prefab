@@ -65,27 +65,7 @@ PrefabInstance:
     - target: {fileID: 5036933053729812645, guid: 9e268de98558ca94b87be5846140de2e,
         type: 3}
       propertyPath: m_Name
-      value: CubeRouge
+      value: CubeRougeRender
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: -5587093953193804497, guid: 9e268de98558ca94b87be5846140de2e, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e268de98558ca94b87be5846140de2e, type: 3}
---- !u!1 &7756724713386117074 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5036933053729812645, guid: 9e268de98558ca94b87be5846140de2e,
-    type: 3}
-  m_PrefabInstance: {fileID: 3333697176485410679}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1170657168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7756724713386117074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbc0e0a9c02a5c144b3d7e6b1c8dc408, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 0}

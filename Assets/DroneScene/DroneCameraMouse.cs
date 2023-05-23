@@ -68,7 +68,7 @@ public class DroneCameraMouse : MonoBehaviour
         
         if(terrain.SampleHeight(transform.position)+30 > transform.position.y){
             transform.position = new Vector3(transform.position.x,
-            Mathf.Clamp(terrain.SampleHeight(transform.position)-30, transform.position.y, terrain.SampleHeight(transform.position)+30),
+            Mathf.Clamp(terrain.SampleHeight(transform.position)-37, transform.position.y, terrain.SampleHeight(transform.position)+30),
             transform.position.z);
         }
         if(terrain.SampleHeight(transform.position)+25 < transform.position.y){

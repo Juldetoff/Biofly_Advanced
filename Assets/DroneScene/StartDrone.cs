@@ -42,8 +42,11 @@ public class StartDrone : MonoBehaviour
     
     public Vector3 lastPos = new Vector3(0, 0, 0);
     public float lastTime = 0;
+    public float maxTime = 5;
 
     private GameObject generatedObject = null;
+
+    public CinemachineVirtualCamera noisecam;
 
     // Start is called before the first frame update
     void Start()
@@ -76,7 +79,7 @@ public class StartDrone : MonoBehaviour
 
         //stockage et récupération de certaines infos
         terrainPos = terrain.transform.position; //on récupère la position du terrain
-        lastPos = Cams.cam.gameObject.transform.position;
+        lastPos = Cams.cam.gameObject.transform.position - new Vector3(0, 500, 0);
         lastTime = 0;
     }
 
@@ -84,7 +87,7 @@ public class StartDrone : MonoBehaviour
     void Update()
     {
         lastTime += Time.deltaTime;
-        if(lastTime > 10 && Vector3.Distance(lastPos,Cams.cam.gameObject.transform.position) > 100){
+        if(lastTime > maxTime && Vector3.Distance(lastPos,Cams.cam.gameObject.transform.position) > 100){
             lastPos = Cams.cam.gameObject.transform.position;
             for (int i = 0; i < 4; i++)
             {
@@ -94,8 +97,16 @@ public class StartDrone : MonoBehaviour
                 float y= randomPoint.y;
                 int prefabRand = UnityEngine.Random.Range(0, 4);
                 if(prefabRand != 0){
-                    randomPoint.y = y-39.5f; //on met le point au dessus du sol
+                    randomPoint.y = y-39f; //on met le point au dessus du sol
                     generatedObject = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, cubePrefab);
+                    
+                    RaycastHit hit;
+                    var ray = new Ray (generatedObject.transform.position, Vector3.down); // check for slopes
+                    if (terrain.GetComponent<Collider>().Raycast(ray, out hit, 1000)) {
+                    generatedObject.transform.rotation = Quaternion.FromToRotation(
+                        generatedObject.transform.up, hit.normal)*generatedObject.transform.rotation; // adjust for slopes
+                }
+
                 }
                 // else if(prefabRand == 1){
                 //     randomPoint.y = y-40f; //on met le point au dessus du sol
@@ -118,6 +129,9 @@ public class StartDrone : MonoBehaviour
             }
             lastTime = 0; 
         }
+
+        noisecam.gameObject.transform.position = Cams.cam.gameObject.transform.position;
+        noisecam.gameObject.transform.rotation = Cams.cam.gameObject.transform.rotation;
     }
 
 }

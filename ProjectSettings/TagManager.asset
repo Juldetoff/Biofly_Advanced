@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - real
+  - noise
   layers:
   - Default
   - TransparentFX
@@ -11,13 +13,13 @@ TagManager:
   - 
   - Water
   - UI
+  - real
+  - noise
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - testreal
+  - testnoise
   - 
   - 
   - 

@@ -13,16 +13,17 @@ namespace UnityEngine.Recorder.Examples
         RecorderController m_RecorderController;
         public bool m_RecordAudio = true;
         internal MovieRecorderSettings m_Settings = null;
+        public string title = "TEST";
 
         public FileInfo OutputFile
         {
             get
             {
-                var fileName = "DroneView" + ".mp4";
+                var fileName = "DroneView" + title + ".mp4";
                 return new FileInfo(fileName);
             }
         }
-        void OnEnable()
+        void Awake()
         {
             Initialize();
         }
@@ -34,10 +35,10 @@ namespace UnityEngine.Recorder.Examples
             SerializedProperty tagsProp = tagManager.FindProperty("tags");
             tagsProp.InsertArrayElementAtIndex(0);
             SerializedProperty n = tagsProp.GetArrayElementAtIndex(0);
-            n.stringValue = "cam";
+            n.stringValue = "cam" + title;
             tagManager.ApplyModifiedProperties();
 
-            this.gameObject.tag = "cam";
+            this.gameObject.tag = "cam" + title;
 
 
             var controllerSettings = ScriptableObject.CreateInstance<RecorderControllerSettings>();
@@ -60,7 +61,7 @@ namespace UnityEngine.Recorder.Examples
                 OutputWidth = 1920,
                 OutputHeight = 1080,
                 Source = ImageSource.TaggedCamera,
-                CameraTag = "cam"
+                CameraTag = "cam" + title
             };
             
             // choose the camera to use for the rendering
@@ -69,7 +70,7 @@ namespace UnityEngine.Recorder.Examples
 
             // Simple file name (no wildcards) so that FileInfo constructor works in OutputFile getter.
             // the name of the object is used as the file name
-            //m_Settings.OutputFile = mediaOutputFolder.FullName + "/" + "cam" + count;
+            m_Settings.OutputFile = mediaOutputFolder.FullName + "/" + "cam" + title;
             
             
             // Setup Recording
@@ -87,7 +88,7 @@ namespace UnityEngine.Recorder.Examples
             Debug.Log($"Started recording for file {OutputFile.FullName}");
         }
         private void Start() {
-            this.gameObject.tag = "cam";
+            this.gameObject.tag = "cam" + title;
         }
 
         void OnDisable()

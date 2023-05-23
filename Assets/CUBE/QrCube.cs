@@ -5,11 +5,15 @@ using UnityEngine;
 public class QrCube : MonoBehaviour
 {
     public List<GameObject> dotList = new List<GameObject>();
-    public SpriteRenderer qrSprite = null;
+    public List<SpriteRenderer> FaceList = new List<SpriteRenderer>();
+    //public SpriteRenderer qrSprite = null;
 
     public void SetQrSprite(Sprite sprite) // Set the sprite of the QR code
     {
-        qrSprite.sprite = sprite;
+        foreach (SpriteRenderer face in FaceList)
+        {
+            face.sprite = sprite;
+        }
     }
 
     public int GetDotCount() // Get the number of dots
