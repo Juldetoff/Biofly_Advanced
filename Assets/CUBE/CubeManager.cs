@@ -7,11 +7,12 @@ public class CubeManager : MonoBehaviour
     public List<Sprite> qrList = new List<Sprite>();
     public GameObject qrCubePrefab = null;
 
-    public void CreateCube(float x, float y, float z, GameObject prefab){
+    public GameObject CreateCube(float x, float y, float z, GameObject prefab){
         GameObject qrCube = Instantiate(prefab, new Vector3(x, y, z), Quaternion.identity);
         if(prefab.GetComponent<QrCube>() != null){
             ChangeSprite(qrCube);
         }
+        return qrCube;
     }
 
     public void ChangeSprite(GameObject qrCube){
