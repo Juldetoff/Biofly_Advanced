@@ -79,7 +79,8 @@ public class ConfigManager : MonoBehaviour
     }
 
     public void OnSubmit(){
-        string filePath = Application.dataPath + "/../config.txt";
+        string filePath = Application.dataPath + "./../config.txt";
+        //StreamWriter sr = File.CreateText(filePath);
         using (StreamWriter writer = new StreamWriter(filePath))
         {
             writer.WriteLine("4");
@@ -87,6 +88,7 @@ public class ConfigManager : MonoBehaviour
             writer.WriteLine("nBCamera,"+sliderCam.value);
             writer.WriteLine("bruitAmplitude,"+sliderAmpl.value);
             writer.WriteLine("bruitFrequency,"+sliderFreq.value);
+            writer.Close();
         }
         if(isAuto){
             SceneManager.LoadScene(1);

@@ -18,8 +18,7 @@ public class DroneCameraMouse : MonoBehaviour
     private Vector2 lastInputEvent;
     private float inputLagTimer;
 
-    public float speed = 10.0f;
-    private Rigidbody rb;
+    public float speed = 20.0f;
 
     private float ClampVerticalAngle(float angle){
         return Mathf.Clamp(angle, -maxBottomVerticalAngleFromHorizon, maxTopVerticalAngleFromHorizon);
@@ -39,7 +38,7 @@ public class DroneCameraMouse : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = this.GetComponent<Rigidbody>();
+
     }
 
     // Update is called once per frame
@@ -57,17 +56,25 @@ public class DroneCameraMouse : MonoBehaviour
         Vector3 horizontalMovement = gameObject.transform.right * Input.GetAxis("Horizontal");
         Vector3 movement = Vector3.ClampMagnitude(forwardMovement + horizontalMovement,1);
         movement.y = 0;
-        transform.Translate(movement * speed * Time.deltaTime, Space.World); //TODO: faire fonctionner le clamp en dessous
-        transform.position = new Vector3(transform.position.x,
-         Mathf.Clamp(terrain.SampleHeight(transform.position)+10, transform.position.y, terrain.SampleHeight(transform.position)+30),
-          transform.position.z);
+        transform.Translate(movement * speed * Time.deltaTime, Space.World); 
         
-        // if(Input.GetKeyDown(KeyCode.Space)){
-        //     rb.AddForce(Vector3.up * 25);
-        // }
+        if(Input.GetKey(KeyCode.Space)){
+            transform.Translate(Vector3.up * 10 * Time.deltaTime, Space.World);
+        }
 
-        // if(Input.GetKeyDown(KeyCode.LeftShift)){
-        //     rb.AddForce(Vector3.down * 25);
-        // }
+        if(Input.GetKey(KeyCode.LeftShift)){
+            transform.Translate(Vector3.down * 10 * Time.deltaTime, Space.World);
+        }
+        
+        if(terrain.SampleHeight(transform.position)+30 > transform.position.y){
+            transform.position = new Vector3(transform.position.x,
+            Mathf.Clamp(terrain.SampleHeight(transform.position)-30, transform.position.y, terrain.SampleHeight(transform.position)+30),
+            transform.position.z);
+        }
+        if(terrain.SampleHeight(transform.position)+25 < transform.position.y){
+            transform.position = new Vector3(transform.position.x,
+            terrain.SampleHeight(transform.position)+25,
+            transform.position.z);
+        }
     }
 }

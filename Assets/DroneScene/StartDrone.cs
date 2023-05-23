@@ -50,7 +50,7 @@ public class StartDrone : MonoBehaviour
     {
         ////////////////////////////////////////
         // PARTIE EXTRACTION DU FICHIER CONFIG
-        string path = "config.txt";
+        string path = "./config.txt";
         StreamReader reader = new StreamReader(path);
         // n the number of lines in the file
         int n = int.Parse(reader.ReadLine());
@@ -86,29 +86,29 @@ public class StartDrone : MonoBehaviour
         lastTime += Time.deltaTime;
         if(lastTime > 10 && Vector3.Distance(lastPos,Cams.cam.gameObject.transform.position) > 100){
             lastPos = Cams.cam.gameObject.transform.position;
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 4; i++)
             {
                 Vector3 randomDirection = UnityEngine.Random.insideUnitSphere.normalized;
                 Vector3 randomPoint = lastPos + randomDirection * radius;
                 randomPoint.y = terrain.SampleHeight(randomPoint);
                 float y= randomPoint.y;
                 int prefabRand = UnityEngine.Random.Range(0, 4);
-                if(prefabRand == 0){
+                if(prefabRand != 0){
                     randomPoint.y = y-39.5f; //on met le point au dessus du sol
                     generatedObject = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, cubePrefab);
                 }
-                else if(prefabRand == 1){
-                    randomPoint.y = y-40f; //on met le point au dessus du sol
-                    generatedObject = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, tigrePrefab);
-                }
-                else if(prefabRand == 2){
-                    randomPoint.y = y-39.6f; //on met le point au dessus du sol
-                    generatedObject = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, taureauPrefab);
-                }
-                else if(prefabRand == 3){
-                    randomPoint.y = y-37f; //on met le point au dessus du sol
-                    generatedObject = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, aiglePrefab);
-                }
+                // else if(prefabRand == 1){
+                //     randomPoint.y = y-40f; //on met le point au dessus du sol
+                //     generatedObject = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, tigrePrefab);
+                // }
+                // else if(prefabRand == 2){
+                //     randomPoint.y = y-39.6f; //on met le point au dessus du sol
+                //     generatedObject = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, taureauPrefab);
+                // }
+                // else if(prefabRand == 3){
+                //     randomPoint.y = y-37f; //on met le point au dessus du sol
+                //     generatedObject = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, aiglePrefab);
+                // }
                 else{
                     generatedObject = null;
                 }
