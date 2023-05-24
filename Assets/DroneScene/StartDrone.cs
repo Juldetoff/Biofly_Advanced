@@ -106,6 +106,10 @@ public class StartDrone : MonoBehaviour
                         generatedObject.transform.position.x,
                          generatedObject.transform.position.y + (size-1f)*0.5f,
                           generatedObject.transform.position.z);
+                    generatedObject.GetComponent<Renderer>().material.color = new Color(
+                        0.7264151f,
+                         UnityEngine.Random.Range(0f, 0.25f),
+                          UnityEngine.Random.Range(0f, 0.25f));
                     
                     RaycastHit hit;
                     var ray = new Ray (generatedObject.transform.position, Vector3.down); // check for slopes

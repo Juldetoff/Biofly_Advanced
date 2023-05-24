@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2690.9297, g: 2576.8047, b: 2786.6992, a: 1}
+  m_IndirectSpecularColor: {r: 2686.084, g: 2570.4297, b: 2776.164, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -713,7 +713,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &243932085 stripped
 GameObject:
@@ -6159,7 +6159,7 @@ PrefabInstance:
     - target: {fileID: 8108049567000501999, guid: 17498c4e9f502fa40a29e1ed392b6c72,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8108049567000501999, guid: 17498c4e9f502fa40a29e1ed392b6c72,
         type: 3}
@@ -9348,11 +9348,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8787252018466501726, guid: d52abfc05749c4eeb92e7e9896a576c8,
-        type: 3}
-      propertyPath: m_Intensity
-      value: 130000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d52abfc05749c4eeb92e7e9896a576c8, type: 3}

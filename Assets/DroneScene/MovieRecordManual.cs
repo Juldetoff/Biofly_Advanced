@@ -55,7 +55,6 @@ namespace UnityEngine.Recorder.Examples
             m_Settings.OutputFormat = MovieRecorderSettings.VideoRecorderOutputFormat.MP4;
             m_Settings.VideoBitRateMode = VideoBitrateMode.High;
             
-            
             //m_Settings.ImageInputSettings = new GameViewInputSettings
             m_Settings.ImageInputSettings = new CameraInputSettings
             {

@@ -4,8 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - camreal
-  - camnoise
   - real
   - noise
   layers:
