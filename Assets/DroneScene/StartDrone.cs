@@ -74,7 +74,6 @@ public class StartDrone : MonoBehaviour
             }
         }
         //Cams.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = Shake6D;
-        //TODO: voir si j'ajoute une deuxieme caméra qui est bruitée ou si j'en laisse une au choix bruitée ou non
         ////////////////////////////////////////
 
         //stockage et récupération de certaines infos
