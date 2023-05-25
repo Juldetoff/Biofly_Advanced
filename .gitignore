@@ -10,10 +10,10 @@
 [Ll]ogs/
 [Mm]emoryCaptures/
 [Uu]serSettings/
-[Ss]ampleRecordings/
-[Rr]ecordings/
-[Pp]ositions/
-Config.txt
+#[Ss]ampleRecordings/*
+[Rr]ecordings/*
+#[Pp]ositions/*
+#Config.txt
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
