@@ -66,15 +66,15 @@ public class DroneCameraHouse : MonoBehaviour
             transform.Translate(Vector3.down * 10 * Time.deltaTime, Space.World);
         }
         
-        if(1.196f+30 > transform.position.y){
-            transform.position = new Vector3(transform.position.x,
-            Mathf.Clamp(1.196f-37, transform.position.y, 1.196f+30),
-            transform.position.z);
+        if(-190.5f > transform.localPosition.y){
+            transform.localPosition = new Vector3(transform.localPosition.x,
+            Mathf.Clamp(-190.5f, transform.localPosition.y, -187.5f),
+            transform.localPosition.z);
         }
-        if(1.196f+25 < transform.position.y){
-            transform.position = new Vector3(transform.position.x,
-            1.196f+25,
-            transform.position.z);
+        if(-187.5f < transform.localPosition.y){
+            transform.localPosition = new Vector3(transform.localPosition.x,
+            -187.5f,
+            transform.localPosition.z);
         }
     }
 }

@@ -797,7 +797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dotList: []
   FaceList:
-  - {fileID: 1030155412574414228}
+  - {fileID: 0}
   - {fileID: 666238759510268352}
   - {fileID: 1498731233841312123}
   - {fileID: 2518621865442258224}
@@ -816,6 +816,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
+  distance: 100
 --- !u!1 &5457160699364076838
 GameObject:
   m_ObjectHideFlags: 0

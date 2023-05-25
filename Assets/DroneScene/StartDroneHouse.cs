@@ -116,9 +116,9 @@ public class StartDroneHouse : MonoBehaviour
                     generatedObject = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, cubePrefab);
 
                     generatedObject.GetComponent<Render_dist>().SetCam(Cams.cam.gameObject);
-                    generatedObject.GetComponent<Render_dist>().SetDistance(10);
+                    generatedObject.GetComponent<Render_dist>().SetDistance(distance);
 
-                    float size = UnityEngine.Random.Range(0.33f, 2f);
+                    float size = UnityEngine.Random.Range(0.10f, 0.5f);
                     generatedObject.transform.localScale = new Vector3(size, size, size);
                     generatedObject.transform.position = new Vector3(
                         generatedObject.transform.position.x,

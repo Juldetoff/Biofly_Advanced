@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CubeManager : MonoBehaviour
 {
-    public List<Sprite> qrList = new List<Sprite>();
+    public List<Material> qrList = new List<Material>();
     public GameObject qrCubePrefab = null;
 
     public GameObject CreateCube(float x, float y, float z, GameObject prefab){
@@ -17,7 +17,7 @@ public class CubeManager : MonoBehaviour
 
     public void ChangeSprite(GameObject qrCube){
         List<bool> visibleList = new List<bool>();
-        qrCube.GetComponent<QrCube>().SetQrSprite(qrList[Random.Range(0,qrList.Count)]); // Change the QR code
+        qrCube.GetComponent<QrCube>().SetQrMaterial(qrList[Random.Range(0,qrList.Count)]); // Change the QR code
         for(int i = 0; i < qrCube.GetComponent<QrCube>().GetDotCount(); i++){
            if(Random.Range(0, 1) == 0){
                visibleList.Add(false);
