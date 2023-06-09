@@ -1,5 +1,9 @@
-4
-scene,NULL
+8
+scene,1
 nBCamera,1
-bruitAmplitude,0
-bruitFrequency,0
+bruitType,3
+bruitAmplitude,2
+bruitFrequency,2
+flou,0
+videoType,0
+videoQuality,0
