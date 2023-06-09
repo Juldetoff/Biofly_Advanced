@@ -113,7 +113,7 @@ namespace UnityEngine.Recorder.Examples
             controllerSettings.SetRecordModeToManual();
             // choose the camera to use for the rendering
             
-            controllerSettings.FrameRate = 60.0f;
+            controllerSettings.FrameRate = (float)startScript.videoFps;
             // setup the camera to use for the rendering
     
             RecorderOptions.VerboseMode = false;

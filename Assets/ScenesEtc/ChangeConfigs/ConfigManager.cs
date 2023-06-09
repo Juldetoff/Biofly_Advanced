@@ -18,6 +18,8 @@ public class ConfigManager : MonoBehaviour
     public Button buttonSubmit;
     public TextMeshProUGUI textQuality;
     public Slider sliderQuality;
+    public TextMeshProUGUI textFPS;
+    public Slider sliderFPS;
 
     public GameObject menuScene;
     public GameObject menuBruit; //contient également le nbcamera et probablement flou
@@ -32,6 +34,7 @@ public class ConfigManager : MonoBehaviour
     private int flou;
     private int typeVideo;
     private int qualiteVideo;
+    private int fpsvideo;
 
 
     // Start is called before the first frame update
@@ -46,8 +49,8 @@ public class ConfigManager : MonoBehaviour
         freqBruit = 0;
         flou = 0;
         typeVideo = 0;
-        qualiteVideo = 2
-        ;
+        qualiteVideo = 2;
+        fpsvideo = 60;
         sliderFreq.value = 3;
         textFreq.text = "Fréquence bruit : 3";
         sliderAmpl.value = 3;
@@ -125,12 +128,17 @@ public class ConfigManager : MonoBehaviour
         typeBruit = type; 
     }
 
+    public void ChangeFPSVideo(){
+        fpsvideo = (int)sliderFPS.value;
+        textFPS.text = "FPS : "+fpsvideo;
+    }
+
     public void OnSubmit(){
         string filePath = Application.dataPath + "./../config.txt";
         //StreamWriter sr = File.CreateText(filePath);
         using (StreamWriter writer = new StreamWriter(filePath))
         {
-            writer.WriteLine("8");
+            writer.WriteLine("9");
             writer.WriteLine("scene,"+scene); //1 pour scene auto foret, 2 pour foret manuel,3,4,5... pour les préfaits (voir si on en fait)
             writer.WriteLine("nBCamera,"+nbCam); //nombre de caméra, certaines scènes fixent ça
             writer.WriteLine("bruitType,"+typeBruit); //0 pour aucun, 1 pour bruit blanc, 2 pour bruit rose, 3 pour bruit brownien...
@@ -139,6 +147,7 @@ public class ConfigManager : MonoBehaviour
             writer.WriteLine("flou,"+flou); //flou ou non (0 non, 1 oui)
             writer.WriteLine("videoType,"+typeVideo); //0 pour mp4, 1 pour mov, 2 pour webm
             writer.WriteLine("videoQuality,"+qualiteVideo); //0 pour low, 1 pour medium, 2 pour high
+            writer.WriteLine("fps,"+fpsvideo); //fps de la vidéo
             writer.Close();
         }
         //en dessous on gère le changement de scène, bien que cela rend inutile la ligne "scene,..." dans config.txt

@@ -20,6 +20,7 @@ public class StartDroneHouse : MonoBehaviour
     public int noiseNumber = 0;
     public int videoType = 0;
     public int videoQuality = 0;
+    public int videoFps = 60;
     private Vector3 point = new Vector3(0, 0, 0); //point de départ du chemin modifié à chaque fois
 
     public GameObject sol = null; //le sol dans lequel on va se balader
@@ -83,6 +84,9 @@ public class StartDroneHouse : MonoBehaviour
             }
             else if (line[0]=="videoQuality"){
                 this.videoQuality = Convert.ToInt32(line[1]);
+            }
+            else if (line[0]=="videoFps"){
+                this.videoFps = Convert.ToInt32(line[1]);
             }
         }
         //Cams.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = Shake6D;

@@ -18,6 +18,7 @@ public class StartDrone : MonoBehaviour
     public int noiseNumber = 0;
     public int videoType = 0;
     public int videoQuality = 0;
+    public int videoFps = 60;
     private Vector3 point = new Vector3(0, 0, 0); //point de départ du chemin modifié à chaque fois
 
     ////////////////////////////////////////
@@ -84,6 +85,9 @@ public class StartDrone : MonoBehaviour
             }
             else if (line[0]=="videoQuality"){
                 this.videoQuality = Convert.ToInt32(line[1]);
+            }
+            else if (line[0]=="videoFps"){
+                this.videoFps = Convert.ToInt32(line[1]);
             }
         }
         //Cams.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = Shake6D;
