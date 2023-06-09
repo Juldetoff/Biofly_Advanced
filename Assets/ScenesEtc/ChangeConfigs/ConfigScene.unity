@@ -6702,8 +6702,8 @@ MonoBehaviour:
   buttonSubmit: {fileID: 819906142}
   textQuality: {fileID: 1134695521}
   sliderQuality: {fileID: 1860220653}
-  textFPS: {fileID: 0}
-  sliderFPS: {fileID: 0}
+  textFPS: {fileID: 783897897}
+  sliderFPS: {fileID: 2116382188}
   menuScene: {fileID: 768501918}
   menuBruit: {fileID: 26404348}
   menuVideo: {fileID: 1528019921}

@@ -70,6 +70,13 @@ public class ConfigManager : MonoBehaviour
             menuBruit.SetActive(true);
             menuVideo.SetActive(false);
             config = 1;
+            if(scene==2 || scene==3){
+                sliderCam.value = 1;
+                sliderCam.interactable = false;
+            }
+            else{
+                sliderCam.interactable = true;
+            }
         }
         else if(config == 1){
             menuScene.SetActive(false);
