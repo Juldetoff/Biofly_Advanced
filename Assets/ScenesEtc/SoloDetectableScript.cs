@@ -37,16 +37,26 @@ public class SoloDetectableScript : MonoBehaviour
         if(viewportPos.x > 0 && viewportPos.x <= 1 &&
             viewportPos.y > 0 && viewportPos.y <= 1 && viewportPos.z > 0)
         {
-            if(!almostVisible){
-                string objectName =this.gameObject.name;
-
-                string filePath = Application.dataPath + "/../Positions/"+ camtrouvé.name + ".txt";
-                using (StreamWriter writer = new StreamWriter(filePath, true))
-                {
-                    writer.WriteLine("Objet : " + objectName + " vu après : " + ( currentTime ).ToString() + "s");
+            Ray ray = new Ray(cam.transform.position, this.transform.position - cam.transform.position);
+            RaycastHit hit;
+            Physics.Raycast(ray, out hit);
+            Debug.DrawRay(cam.transform.position, this.transform.position - cam.transform.position, Color.red);
+            Vector3 hitPos = hit.point;
+            Debug.Log(hitPos);
+            Debug.Log(transform.position);
+            if (Vector3.Distance(transform.position, hitPos)<0.1f)
+            {   if(!almostVisible){
+                    Debug.Log("Objet "+ this.gameObject.name +" visible");
+                    string objectName =this.gameObject.name;
+    
+                    string filePath = Application.dataPath + "/../Positions/"+ camtrouvé.name + ".txt";
+                    using (StreamWriter writer = new StreamWriter(filePath, true))
+                    {
+                        writer.WriteLine("Objet : " + objectName + " vu après : " + ( currentTime ).ToString() + "s");
+                    }
                 }
+                almostVisible=true;
             }
-            almostVisible=true;
         }
         else
         {
