@@ -20,6 +20,7 @@ public class StartDrone : MonoBehaviour
     public int videoQuality = 0;
     public int videoFps = 60;
     private Vector3 point = new Vector3(0, 0, 0); //point de départ du chemin modifié à chaque fois
+    private DateTime start//date de début de la vidéo
 
     ////////////////////////////////////////
     //Objets et paramètres de génération
@@ -102,6 +103,8 @@ public class StartDrone : MonoBehaviour
         noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = bruitFrequency;
         noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = noiseSettings[noiseNumber];
 
+        start = DateTime.Now;
+
     }
 
     // Update is called once per frame
@@ -158,7 +161,7 @@ public class StartDrone : MonoBehaviour
                 if(generatedObject){
                     generatedObject.GetComponent<Render_dist>().SetCam(Cams.cam.gameObject);
                     generatedObject.GetComponent<SoloDetectableScript>().setCam(Cams.cam.gameObject.GetComponent<Camera>());
-                    generatedObject.GetComponent<SoloDetectableScript>().setTimeStart(DateTime.Now);
+                    generatedObject.GetComponent<SoloDetectableScript>().setTimeStart(start);
                 }
             }
             lastTime = 0; 
