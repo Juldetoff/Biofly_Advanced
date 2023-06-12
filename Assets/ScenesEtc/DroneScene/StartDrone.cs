@@ -20,7 +20,7 @@ public class StartDrone : MonoBehaviour
     public int videoQuality = 0;
     public int videoFps = 60;
     private Vector3 point = new Vector3(0, 0, 0); //point de départ du chemin modifié à chaque fois
-    private DateTime start//date de début de la vidéo
+    private DateTime start;//date de début de la vidéo
 
     ////////////////////////////////////////
     //Objets et paramètres de génération
