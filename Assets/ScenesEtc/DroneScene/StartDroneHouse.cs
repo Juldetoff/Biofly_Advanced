@@ -43,6 +43,7 @@ public class StartDroneHouse : MonoBehaviour
     public Vector3 lastPos = new Vector3(0, 0, 0);
     public float lastTime = 0;
     public float maxTime = 5;
+    private float start=0;//date de début de la vidéo
     public float distance = 100;
 
     private GameObject generatedObject = null;
@@ -118,6 +119,7 @@ public class StartDroneHouse : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        start = Time.deltaTime;
         lastTime += Time.deltaTime;
         if(lastTime > maxTime && Vector3.Distance(lastPos,Cams.cam.gameObject.transform.position) > distance){
             lastPos = Cams.cam.gameObject.transform.position;
@@ -176,7 +178,7 @@ public class StartDroneHouse : MonoBehaviour
                 if(generatedObject){
                     generatedObject.GetComponent<Render_dist>().SetCam(Cams.cam.gameObject);
                     generatedObject.GetComponent<SoloDetectableScript>().setCam(Cams.cam.gameObject.GetComponent<Camera>());
-                    generatedObject.GetComponent<SoloDetectableScript>().setTimeStart(DateTime.Now);
+                    generatedObject.GetComponent<SoloDetectableScript>().setTimeStart(start);
                 }
             }
             lastTime = 0; 

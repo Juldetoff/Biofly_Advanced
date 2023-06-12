@@ -20,7 +20,7 @@ public class StartDrone : MonoBehaviour
     public int videoQuality = 0;
     public int videoFps = 60;
     private Vector3 point = new Vector3(0, 0, 0); //point de départ du chemin modifié à chaque fois
-    private DateTime start;//date de début de la vidéo
+    private float start=0f;//date de début de la vidéo
 
     ////////////////////////////////////////
     //Objets et paramètres de génération
@@ -35,6 +35,7 @@ public class StartDrone : MonoBehaviour
     public GameObject tigrePrefab = null;
     public GameObject taureauPrefab = null;
     public GameObject aiglePrefab = null;
+    private int objectCount = 0;
 
     public SysCam Cams;
     public GameObject flouPane;
@@ -102,14 +103,12 @@ public class StartDrone : MonoBehaviour
         noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = bruitAmplitude;
         noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = bruitFrequency;
         noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = noiseSettings[noiseNumber];
-
-        start = DateTime.Now;
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        start += Time.deltaTime;
         lastTime += Time.deltaTime;
         if(lastTime > maxTime && Vector3.Distance(lastPos,Cams.cam.gameObject.transform.position) > 100){
             lastPos = Cams.cam.gameObject.transform.position;
@@ -123,6 +122,9 @@ public class StartDrone : MonoBehaviour
                 if(prefabRand != 0){
                     randomPoint.y = y-39.3f; //on met le point au dessus du sol
                     generatedObject = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, cubePrefab);
+                    generatedObject.name = "Objet" + objectCount;
+                    generatedObject.GetComponent<SoloDetectableScript>().setTimeStart(start);
+                    objectCount++;
 
                     float size = UnityEngine.Random.Range(1f, 3f);
                     generatedObject.transform.localScale = new Vector3(size, size, size);
@@ -161,7 +163,6 @@ public class StartDrone : MonoBehaviour
                 if(generatedObject){
                     generatedObject.GetComponent<Render_dist>().SetCam(Cams.cam.gameObject);
                     generatedObject.GetComponent<SoloDetectableScript>().setCam(Cams.cam.gameObject.GetComponent<Camera>());
-                    generatedObject.GetComponent<SoloDetectableScript>().setTimeStart(start);
                 }
             }
             lastTime = 0; 
