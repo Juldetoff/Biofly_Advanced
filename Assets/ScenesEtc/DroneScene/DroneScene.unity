@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 4
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2685.7734, g: 2570.0938, b: 2775.4805, a: 1}
+  m_IndirectSpecularColor: {r: 2689.3613, g: 2574.8262, b: 2783.4688, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3266,7 +3266,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &918628532
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4351,6 +4351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RecordAudio: 1
+  startDronescript: {fileID: 1608388212}
   title: noise
 --- !u!1001 &1072949711
 PrefabInstance:
@@ -5684,6 +5685,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RecordAudio: 1
+  startDronescript: {fileID: 1608388212}
   title: real
 --- !u!4 &1491086972 stripped
 Transform:
@@ -6471,6 +6473,7 @@ MonoBehaviour:
   noiseNumber: 0
   videoType: 0
   videoQuality: 0
+  videoFps: 60
   terrain: {fileID: 1783289004}
   radius: 40
   cubePrefab: {fileID: 7756724713386117074, guid: 334030f1037c97f4baf7c9998fed3190,
@@ -6506,7 +6509,6 @@ MonoBehaviour:
   lastTime: 0
   maxTime: 5
   noisecam: {fileID: 661936805}
-  noiseOfNoiseCam: {fileID: 661936805}
 --- !u!1 &1641189350 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1641189350, guid: 3d2422e4019c11948b6cfd8a1fe9e232,
@@ -6729,11 +6731,11 @@ MonoBehaviour:
   sensibility: {x: 2000, y: 2000}
   acceleration: {x: 2000, y: 2000}
   inputLagPeriod: 0.005
-  maxTopVerticalAngleFromHorizon: 60
-  maxBottomVerticalAngleFromHorizon: 90
+  maxTopVerticalAngleFromHorizon: -60
+  maxBottomVerticalAngleFromHorizon: 40
   maxVelocity: 70
   terrain: {fileID: 1783289004}
-  speed: 50
+  speed: 25
 --- !u!114 &1683088946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9484,6 +9486,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3120238807804252007, guid: 02aa516bcf5d0b14f8ca6ed6993c4c39,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3120238807804252007, guid: 02aa516bcf5d0b14f8ca6ed6993c4c39,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3120238807804252007, guid: 02aa516bcf5d0b14f8ca6ed6993c4c39,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3120238807804252007, guid: 02aa516bcf5d0b14f8ca6ed6993c4c39,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3120238807804252007, guid: 02aa516bcf5d0b14f8ca6ed6993c4c39,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3120238807804252007, guid: 02aa516bcf5d0b14f8ca6ed6993c4c39,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8101571316650766440, guid: 02aa516bcf5d0b14f8ca6ed6993c4c39,
         type: 3}
