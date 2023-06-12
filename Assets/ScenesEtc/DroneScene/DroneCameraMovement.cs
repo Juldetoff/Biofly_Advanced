@@ -47,18 +47,25 @@ public class DroneCameraMovement : MonoBehaviour
     void Update()
     {
         //déplacement
-        if (Input.GetKey(KeyCode.Keypad4))
-             rb.AddForce(transform.rotation* Vector3.left*Time.deltaTime*acceleration.x*speed);
-        if (Input.GetKey(KeyCode.Keypad6))
-             rb.AddForce(transform.rotation* Vector3.right*Time.deltaTime*acceleration.x*speed);
-        if (Input.GetKey(KeyCode.Keypad8))
-             rb.AddForce(transform.rotation* Vector3.forward*Time.deltaTime*acceleration.y*speed);
-        if (Input.GetKey(KeyCode.Keypad2))
-             rb.AddForce(transform.rotation* Vector3.back*Time.deltaTime*acceleration.y*speed);
+        if (Input.GetKey(KeyCode.Keypad4)){
+            Vector3 force = transform.rotation* Vector3.left*Time.deltaTime*acceleration.x*speed;
+            force.y = 0; //afin que le déplacement en "avant" n'impacte pas la hauteur du drone
+            rb.AddForce(force);}
+        if (Input.GetKey(KeyCode.Keypad6)){
+            Vector3 force = transform.rotation* Vector3.right*Time.deltaTime*acceleration.x*speed;
+            force.y = 0;
+            rb.AddForce(force);}
+        if (Input.GetKey(KeyCode.Keypad8)){
+            Vector3 force = transform.rotation* Vector3.forward*Time.deltaTime*acceleration.y*speed;
+            force.y = 0;
+            rb.AddForce(force);}
+        if (Input.GetKey(KeyCode.Keypad2)){
+            Vector3 force = transform.rotation* Vector3.back*Time.deltaTime*acceleration.y*speed;
+            force.y = 0;
+            rb.AddForce(force);}
 
         if(Input.GetKey(KeyCode.UpArrow)) { 
              var currEulerAngles = transform.eulerAngles;
-             print(currEulerAngles);
              currEulerAngles.x -= 5* speed * Time.deltaTime;
              
              //currEulerAngles.x = Mathf.Clamp(currEulerAngles.x, maxBottomVerticalAngleFromHorizon+360, maxTopVerticalAngleFromHorizon+360);

@@ -8,6 +8,8 @@ public class SoloDetectableScript : MonoBehaviour
 {
     Camera camtrouvé;
     DateTime timestart ;
+    float currentTime;
+    DateTime current;
     Camera cam;
     bool almostVisible=false;
     // Start is called before the first frame update
@@ -19,15 +21,17 @@ public class SoloDetectableScript : MonoBehaviour
     public void setTimeStart(DateTime timestart)
     {
         this.timestart = timestart;
+        this.current = timestart;
     }
 
     private void Update() {
         if(almostVisible && camtrouvé==null){
+            currentTime += Time.deltaTime;
             Vector3 screenPos = cam.WorldToViewportPoint(this.transform.position);
 
             // Convert screen space to viewport space
             Vector3 viewportPos = screenPos;
-            print(viewportPos);
+            //print(viewportPos);
 
             // Check if viewport position is within the camera's viewport
             if (viewportPos.x > 0 && viewportPos.x <= 1 &&
@@ -36,12 +40,14 @@ public class SoloDetectableScript : MonoBehaviour
                 // Return the camera that is seeing the object
                 camtrouvé = cam;
                 string objectName =this.gameObject.name;
-                DateTime currentTime = DateTime.Now;
+                print(currentTime);
+                current = current.AddSeconds(currentTime);
+                print(current);
 
                 string filePath = Application.dataPath + "/../Positions/"+ camtrouvé.name + ".txt";
                 using (StreamWriter writer = new StreamWriter(filePath, true))
                 {
-                    writer.WriteLine("Objet : " + objectName + " vu à : " + ( currentTime - timestart).ToString());
+                    writer.WriteLine("Objet : " + objectName + " vu à : " + ( current - timestart).ToString());
                 }
             }
         }
@@ -68,12 +74,12 @@ public class SoloDetectableScript : MonoBehaviour
             // Return the camera that is seeing the object
             camtrouvé = cam;
             string objectName =this.gameObject.name;
-            DateTime currentTime = DateTime.Now;
+            current = current.AddSeconds(currentTime);
 
             string filePath = Application.dataPath + "/../Positions/"+ camtrouvé.name + ".txt";
             using (StreamWriter writer = new StreamWriter(filePath, true))
             {
-                writer.WriteLine("Objet : " + objectName + " vu à : " + ( currentTime - timestart).ToString());
+                writer.WriteLine("Objet : " + objectName + " vu à : " + ( current - timestart).ToString());
             }
         }
     }   
@@ -85,12 +91,12 @@ public class SoloDetectableScript : MonoBehaviour
         if(camtrouvé){
             Debug.Log("Objet invisible");
             string objectName =this.gameObject.name;
-            DateTime currentTime = DateTime.Now;
+            current = current.AddSeconds(currentTime);
 
             string filePath = Application.dataPath + "/../Positions/"+ camtrouvé.name + ".txt";
             using (StreamWriter writer = new StreamWriter(filePath, true))
             {
-                writer.WriteLine("Objet : " + objectName + " plus vu à : " + ( currentTime - timestart).ToString());
+                writer.WriteLine("Objet : " + objectName + " plus vu à : " + ( current - timestart).ToString());
             }
         }
         camtrouvé=null;

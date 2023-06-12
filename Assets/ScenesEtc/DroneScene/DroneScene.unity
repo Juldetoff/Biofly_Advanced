@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 4
+  m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2689.3613, g: 2574.8262, b: 2783.4688, a: 1}
+  m_IndirectSpecularColor: {r: 2690.961, g: 2576.8672, b: 2786.7969, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3261,12 +3261,12 @@ GameObject:
   - component: {fileID: 918628534}
   - component: {fileID: 918628533}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ControlDrone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &918628532
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3282,10 +3282,10 @@ RectTransform:
   m_Father: {fileID: 1938694936}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0.1288889}
+  m_AnchoredPosition: {x: -294, y: -8}
+  m_SizeDelta: {x: -600, y: -8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &918628533
 MonoBehaviour:
@@ -3307,7 +3307,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "fl\xE8ches : orientation\tpav\xE9 num\xE9rique : direction\t5/0 : monter/descendre"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3334,10 +3334,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 22.45
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -3370,7 +3370,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -596.5711, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -6488,15 +6488,15 @@ MonoBehaviour:
   Cams: {fileID: 3120238805851173962}
   flouPane: {fileID: 1483038791}
   noiseSettings:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  - {fileID: 11400000, guid: e9ce97b7a206dc64d90931ea044e0c72, type: 2}
+  - {fileID: 11400000, guid: 20a705aea2d80e0478fb89b6f43d8530, type: 2}
+  - {fileID: 11400000, guid: 46965f9cbaf525742a6da4c2172a99cd, type: 2}
+  - {fileID: 11400000, guid: b241f91b9ccf8ff489abf204b30d3112, type: 2}
+  - {fileID: 11400000, guid: a3dacaec0287d7444b4bd276816e1666, type: 2}
+  - {fileID: 11400000, guid: 554b0ed52734c154eab51f6cedd3a7d7, type: 2}
+  - {fileID: 11400000, guid: 8608ec81ee27a15488d33f9dad239e91, type: 2}
+  - {fileID: 11400000, guid: 20e46be82478fa24b90f748044c06b4b, type: 2}
   qualitySettings:
   - Low
   - Medium
