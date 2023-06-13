@@ -9,7 +9,7 @@ public class SoloDetectableScript : MonoBehaviour
     Camera camtrouvé;
     float currentTime;
     DateTime current;
-    Camera cam;
+    public Camera cam;
     bool almostVisible=false;
 
     // Start is called before the first frame update
@@ -40,12 +40,11 @@ public class SoloDetectableScript : MonoBehaviour
             Ray ray = new Ray(cam.transform.position, this.transform.position - cam.transform.position);
             RaycastHit hit;
             Physics.Raycast(ray, out hit);
-            Debug.DrawRay(cam.transform.position, this.transform.position - cam.transform.position, Color.red);
-            Vector3 hitPos = hit.point;
-            Debug.Log(hitPos);
-            Debug.Log(transform.position);
-            if (Vector3.Distance(transform.position, hitPos)<0.1f)
-            {   if(!almostVisible){
+            Debug.DrawRay(cam.transform.position, this.transform.position - cam.transform.position, Color.red); //trop cool ça trace le rayon
+            //Vector3 hitPos = hit.point;
+            // print(hit.collider.gameObject.name);
+            if (hit.collider.CompareTag("obstacle"))
+            {   if(!almostVisible){ //Cas objet visible non caché
                     Debug.Log("Objet "+ this.gameObject.name +" visible");
                     string objectName =this.gameObject.name;
     
@@ -57,10 +56,23 @@ public class SoloDetectableScript : MonoBehaviour
                 }
                 almostVisible=true;
             }
+            else{
+                if(almostVisible){ //Cas objet visible qui passe caché
+                    Debug.Log(gameObject.name +" invisible");
+                    string objectName =this.gameObject.name;
+    
+                    string filePath = Application.dataPath + "/../Positions/"+ camtrouvé.name + ".txt";
+                    using (StreamWriter writer = new StreamWriter(filePath, true))
+                    {
+                        writer.WriteLine("Objet : " + objectName + " plus vu après : " + ( currentTime ).ToString()+ "s");
+                    }
+                }
+                almostVisible=false;
+            }
         }
         else
         {
-            if(almostVisible){
+            if(almostVisible){ //Cas objet visible qui passe invisible
                 Debug.Log(gameObject.name +" invisible");
                 string objectName =this.gameObject.name;
 

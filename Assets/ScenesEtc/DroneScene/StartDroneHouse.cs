@@ -82,6 +82,7 @@ public class StartDroneHouse : StartDrone
         {
             objectGenerated = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, cubePrefab);
             objectGenerated.name = "Objet" +objectCnt;
+            objectGenerated.tag = "obstacle";
             objectGenerated.GetComponent<SoloDetectableScript>().setTimeStart(startTime);
             objectCnt++;
 

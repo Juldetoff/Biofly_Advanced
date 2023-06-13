@@ -104,7 +104,7 @@ namespace UnityEngine.Recorder.Examples
             m_RecorderController.PrepareRecording();
             m_RecorderController.StartRecording();
 
-            Debug.Log($"Started recording for file {OutputFile.FullName}");
+            //Debug.Log($"Started recording for file {OutputFile.FullName}");
         }
         private void Start() {
             this.gameObject.tag = "cam" + title;
