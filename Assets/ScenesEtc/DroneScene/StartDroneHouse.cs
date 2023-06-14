@@ -49,12 +49,12 @@ public class StartDroneHouse : StartDrone
     // Update is called once per frame
     void Update()
     {
-        startTime = Time.deltaTime;
+        startTime += Time.deltaTime;
         lastTime += Time.deltaTime;
 
         if(lastTime > maxTime && Vector3.Distance(lastPos,Cams.cam.gameObject.transform.position) > distance){
-            lastPos = Cams.cam.gameObject.transform.position;
-            for (int i = 0; i < 4; i++)
+            lastPos = Cams.cam.gameObject.transform.position; 
+            for (int i = 0; i < 2; i++)
             {
                 CreateObject();
             }
@@ -87,7 +87,7 @@ public class StartDroneHouse : StartDrone
             objectCnt++;
 
             objectGenerated.GetComponent<Render_dist>().SetCam(Cams.cam.gameObject);
-            objectGenerated.GetComponent<Render_dist>().SetDistance(distance);
+            objectGenerated.GetComponent<Render_dist>().SetDistance(render_dist);
 
             float size = UnityEngine.Random.Range(0.10f, 0.5f);
             objectGenerated.transform.localScale = new Vector3(size, size, size);
@@ -100,13 +100,13 @@ public class StartDroneHouse : StartDrone
                  UnityEngine.Random.Range(0f, 0.25f),
                   UnityEngine.Random.Range(0f, 0.25f));
 
-            RaycastHit hit;
-            var ray = new Ray(objectGenerated.transform.position, Vector3.down); // check for slopes
-            if (sol.GetComponent<Collider>().Raycast(ray, out hit, 1000))
-            {
-                objectGenerated.transform.rotation = Quaternion.FromToRotation(
-                objectGenerated.transform.up, hit.normal) * objectGenerated.transform.rotation; // adjust for slopes
-            }
+            // RaycastHit hit; //pas nécessaire, le sol étant plat
+            // var ray = new Ray(objectGenerated.transform.position, Vector3.down); // check for slopes
+            // if (sol.GetComponent<Collider>().Raycast(ray, out hit, 1000))
+            // {
+            //     objectGenerated.transform.rotation = Quaternion.FromToRotation(
+            //     objectGenerated.transform.up, hit.normal) * objectGenerated.transform.rotation; // adjust for slopes
+            // }
         }
         // else if(prefabRand == 1){
         //     randomPoint.y = y-40f; //on met le pointdepart au dessus du sol

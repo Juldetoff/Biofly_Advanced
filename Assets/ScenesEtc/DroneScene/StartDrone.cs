@@ -48,6 +48,7 @@ public class StartDrone : MonoBehaviour
     public float lastTime = 0;
     public float maxTime = 5;
     public float distance = 100;
+    public float render_dist = 100;
 
     private GameObject generatedObject = null;
 

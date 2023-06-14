@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/ScenesEtc/DroneScene/DroneScene.unity
     guid: eccd18fa5f0cc934da1c8833b420273b
+  - enabled: 1
+    path: Assets/ScenesEtc/HD_InteriorLightingVol.2/Scene/Test1.unity
+    guid: 5f0b0d726b7b3ce4095348f8ab8cfd4b
   m_configObjects: {}

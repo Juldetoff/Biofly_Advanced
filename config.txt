@@ -1,10 +1,10 @@
 9
-scene,2
+scene,3
 nBCamera,1
 bruitType,8
-bruitAmplitude,3
-bruitFrequency,3
+bruitAmplitude,2
+bruitFrequency,4
 flou,0
-videoType,0
-videoQuality,2
-fps,30
+videoType,2
+videoQuality,0
+fps,25
