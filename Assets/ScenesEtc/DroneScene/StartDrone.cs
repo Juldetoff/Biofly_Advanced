@@ -49,6 +49,7 @@ public class StartDrone : MonoBehaviour
     public float maxTime = 5;
     public float distance = 100;
     public float render_dist = 100;
+    public float offset = 39.3f;
 
     private GameObject generatedObject = null;
 
@@ -142,12 +143,15 @@ public class StartDrone : MonoBehaviour
     {
         Vector3 randomDirection = UnityEngine.Random.insideUnitSphere.normalized;
         Vector3 randomPoint = lastPos + randomDirection * radius;
+        //fonction de détection du terrain
+        CheckTerrain(randomPoint);
+        //on récupère la hauteur du terrain à ce point
         randomPoint.y = terrain.SampleHeight(randomPoint);
         float y = randomPoint.y;
         int prefabRand = UnityEngine.Random.Range(0, 4);
         if (prefabRand != 0)
         {
-            randomPoint.y = y - 39.3f; //on met le point au dessus du sol
+            randomPoint.y = y - offset; //on met le point au dessus du sol
             generatedObject = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, cubePrefab);
             generatedObject.name = "Objet" + objectCount;
             generatedObject.tag = "obstacle";
@@ -194,6 +198,31 @@ public class StartDrone : MonoBehaviour
         {
             generatedObject.GetComponent<Render_dist>().SetCam(Cams.cam.gameObject);
             generatedObject.GetComponent<SoloDetectableScript>().setCam(Cams.cam.gameObject.GetComponent<Camera>());
+        }
+    }
+
+    private void CheckTerrain(Vector3 randomPoint)
+    {
+        //on envoi un raycast vers le bas pour vérifier si c'est toujours le même terrain
+        //si ce n'est pas le cas, on change le terrain
+        RaycastHit hit;
+        var ray = new Ray(randomPoint, Vector3.down); 
+        if (terrain.GetComponent<Collider>().Raycast(ray, out hit, 1000))
+        {
+            if (hit.collider.gameObject != terrain)
+            {
+                terrain = hit.collider.gameObject.GetComponent<Terrain>();
+                terrainPos = terrain.transform.position;
+            }
+        }
+        ray = new Ray(randomPoint, Vector3.up);
+        if (terrain.GetComponent<Collider>().Raycast(ray, out hit, 1000))
+        {
+            if (hit.collider.gameObject != terrain)
+            {
+                terrain = hit.collider.gameObject.GetComponent<Terrain>();
+                terrainPos = terrain.transform.position;
+            }
         }
     }
 }
