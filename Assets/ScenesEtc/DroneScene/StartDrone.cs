@@ -20,7 +20,7 @@ public class StartDrone : MonoBehaviour
     public int videoQuality = 0;
     public int videoFps = 60;
     private Vector3 point = new Vector3(0, 0, 0); //point de départ du chemin modifié à chaque fois
-    private float start=0f;//date de début de la vidéo
+    public float start=0f;//date de début de la vidéo
 
     ////////////////////////////////////////
     //Objets et paramètres de génération
@@ -110,6 +110,10 @@ public class StartDrone : MonoBehaviour
             else if (line[0] == "videoFps")
             {
                 this.videoFps = Convert.ToInt32(line[1]);
+            }
+            else if (line[0] == "jello")
+            {
+                //this.jello = Convert.ToInt32(line[1]);
             }
         }
         lastPos = Cams.cam.gameObject.transform.position - new Vector3(0, 500, 0);

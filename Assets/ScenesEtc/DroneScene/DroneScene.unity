@@ -4352,6 +4352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RecordAudio: 1
   startDronescript: {fileID: 1608388212}
+  recordEffect: 0
   title: noise
   rollingShutterEffect: {fileID: 1414099825}
 --- !u!1001 &1072949711
@@ -5514,7 +5515,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1069787294}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf584e4b81e86374c813c95f156fc1a8, type: 3}
   m_Name: 
@@ -5522,7 +5523,7 @@ MonoBehaviour:
   sceneCamera: {fileID: 1414099820}
   compositorCamera: {fileID: 1383899120}
   maskMaterial: {fileID: 2100000, guid: cae16cf3f030da64e877f55db92365e0, type: 2}
-  temporalResolution: 100
+  temporalResolution: 50
   textureFormat: 4
   renderTextures: []
 --- !u!1001 &1434029545
@@ -5841,6 +5842,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RecordAudio: 0
   startDronescript: {fileID: 1608388212}
+  recordEffect: 0
   title: real
   rollingShutterEffect: {fileID: 1491086983}
 --- !u!4 &1491086972 stripped
@@ -5862,7 +5864,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1491086962}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf584e4b81e86374c813c95f156fc1a8, type: 3}
   m_Name: 

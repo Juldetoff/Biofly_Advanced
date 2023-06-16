@@ -96,6 +96,10 @@ public class StartScript : MonoBehaviour
             else if (line[0]=="videoFps"){
                 this.videoFps = Convert.ToInt32(line[1]);
             }
+            else if (line[0]=="jello"){
+                //this.jello = Convert.ToInt32(line[1]);
+                //commenté car pas intéressant pour le moment
+            }
         }
         // Debug.Log("nBCamera = " + this.nBCamera); //nbr de paire de cam
         // Debug.Log("bruitAmplitude = " + this.bruitAmplitude); //la 2e cam est bruitée

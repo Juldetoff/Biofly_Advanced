@@ -14,10 +14,12 @@ namespace UnityEngine.Recorder.Examples
         RecorderController m_RecorderController;
         public bool m_RecordAudio = true;
         public StartDrone startDronescript;
+        public bool recordEffect = false;
         internal MovieRecorderSettings m_Settings = null;
         public string title = "TEST";
         private string format = "mp4";
         private string quality = "high";
+        private float currentTime=0;
         public HDRP_RollingShutter rollingShutterEffect;
         private RenderTextureInputSettings renderTextureInputSettings;
 
@@ -32,6 +34,13 @@ namespace UnityEngine.Recorder.Examples
         void Awake()
         {
             Initialize();
+            //on crée un txt de détection vide
+            string filePath = Application.dataPath + "/../Positions/"+ gameObject.name + ".txt";
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                writer.WriteLine("Détection des objets de la caméra à " + ( currentTime ).ToString() + "s");
+            }
+            startDronescript.start = currentTime;
         }
 
         internal void Initialize()
@@ -79,7 +88,7 @@ namespace UnityEngine.Recorder.Examples
             m_Settings.FrameRate = (float)startDronescript.videoFps;
             
             // choose the camera to use for the rendering
-            if (rollingShutterEffect != null && rollingShutterEffect.enabled)
+            if (rollingShutterEffect != null && rollingShutterEffect.enabled && recordEffect)
             {
                 StartCoroutine(WaitForTextureGeneration());
             }
@@ -109,7 +118,7 @@ namespace UnityEngine.Recorder.Examples
     
             RecorderOptions.VerboseMode = false;
 
-            if (rollingShutterEffect != null && rollingShutterEffect.isActiveAndEnabled)
+            if (rollingShutterEffect != null && rollingShutterEffect.enabled && recordEffect)
             {
                 RenderTexture inputTexture = rollingShutterEffect.GetRenderTexture();
                 rollingShutterEffect.ApplyRollingShutterEffect(inputTexture, inputTexture);
@@ -132,12 +141,14 @@ namespace UnityEngine.Recorder.Examples
 
         void Update()
         {
-            if (rollingShutterEffect != null && rollingShutterEffect.isActiveAndEnabled)
+            if (rollingShutterEffect != null && rollingShutterEffect.enabled && recordEffect)
             {
                 RenderTexture inputTexture = rollingShutterEffect.GetRenderTexture();
                 rollingShutterEffect.ApplyRollingShutterEffect(inputTexture, inputTexture);
                 renderTextureInputSettings.RenderTexture = inputTexture;
             }
+
+            currentTime += Time.deltaTime;
         }
 
         private IEnumerator WaitForTextureGeneration()
