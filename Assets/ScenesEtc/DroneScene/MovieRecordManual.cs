@@ -5,6 +5,7 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.Recorder;
 using UnityEditor.Recorder.Input;
+using System.Collections;
 
 namespace UnityEngine.Recorder.Examples
 {
@@ -17,6 +18,8 @@ namespace UnityEngine.Recorder.Examples
         public string title = "TEST";
         private string format = "mp4";
         private string quality = "high";
+        public HDRP_RollingShutter rollingShutterEffect;
+        private RenderTextureInputSettings renderTextureInputSettings;
 
         public FileInfo OutputFile
         {
@@ -73,15 +76,22 @@ namespace UnityEngine.Recorder.Examples
             else if(quality=="high"){
                 m_Settings.VideoBitRateMode = VideoBitrateMode.High;
             }
+            m_Settings.FrameRate = (float)startDronescript.videoFps;
             
-            //m_Settings.ImageInputSettings = new GameViewInputSettings
-            m_Settings.ImageInputSettings = new CameraInputSettings
+            // choose the camera to use for the rendering
+            if (rollingShutterEffect != null && rollingShutterEffect.enabled)
             {
-                OutputWidth = 1920,
-                OutputHeight = 1080,
-                Source = ImageSource.TaggedCamera,
-                CameraTag = "cam" + title
-            };
+                StartCoroutine(WaitForTextureGeneration());
+            }
+            else{
+                m_Settings.ImageInputSettings = new CameraInputSettings
+                {
+                    OutputWidth = 1920,
+                    OutputHeight = 1080,
+                    Source = ImageSource.TaggedCamera,
+                    CameraTag = "cam" + title
+                };
+            }
             
             // choose the camera to use for the rendering
 
@@ -91,16 +101,21 @@ namespace UnityEngine.Recorder.Examples
             // the name of the object is used as the file name
             m_Settings.OutputFile = mediaOutputFolder.FullName + "/" + "cam" + title;
             
-            
             // Setup Recording
             controllerSettings.AddRecorderSettings(m_Settings);
             controllerSettings.SetRecordModeToManual();
             // choose the camera to use for the rendering
-            
-            controllerSettings.FrameRate = (float)startDronescript.videoFps;
             // setup the camera to use for the rendering
     
             RecorderOptions.VerboseMode = false;
+
+            if (rollingShutterEffect != null && rollingShutterEffect.isActiveAndEnabled)
+            {
+                RenderTexture inputTexture = rollingShutterEffect.GetRenderTexture();
+                rollingShutterEffect.ApplyRollingShutterEffect(inputTexture, inputTexture);
+                renderTextureInputSettings.RenderTexture = inputTexture;
+            }
+
             m_RecorderController.PrepareRecording();
             m_RecorderController.StartRecording();
 
@@ -113,6 +128,36 @@ namespace UnityEngine.Recorder.Examples
         void OnDisable()
         {
             m_RecorderController.StopRecording();
+        }
+
+        void Update()
+        {
+            if (rollingShutterEffect != null && rollingShutterEffect.isActiveAndEnabled)
+            {
+                RenderTexture inputTexture = rollingShutterEffect.GetRenderTexture();
+                rollingShutterEffect.ApplyRollingShutterEffect(inputTexture, inputTexture);
+                renderTextureInputSettings.RenderTexture = inputTexture;
+            }
+        }
+
+        private IEnumerator WaitForTextureGeneration()
+        {
+            // Attendez que la texture soit générée
+            while (rollingShutterEffect.GetRenderTexture() == null)
+            {
+                yield return null;
+            }
+
+            // Une fois que la texture est générée, configurez renderTextureInputSettings
+            renderTextureInputSettings = new RenderTextureInputSettings
+            {
+                OutputWidth = rollingShutterEffect.sceneCamera.pixelWidth,
+                OutputHeight = rollingShutterEffect.sceneCamera.pixelHeight,
+                RenderTexture = rollingShutterEffect.GetRenderTexture()
+            };
+
+            // Assignez renderTextureInputSettings à m_Settings.ImageInputSettings
+            m_Settings.ImageInputSettings = renderTextureInputSettings;
         }
     }
 }
