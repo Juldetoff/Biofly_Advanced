@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2688.0723, g: 2573.1973, b: 2780.6758, a: 1}
+  m_IndirectSpecularColor: {r: 2691.4238, g: 2577.4844, b: 2787.9688, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4355,6 +4355,7 @@ MonoBehaviour:
   recordEffect: 0
   title: noise
   rollingShutterEffect: {fileID: 1414099825}
+  startvideo: 0
 --- !u!1001 &1072949711
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5845,6 +5846,7 @@ MonoBehaviour:
   recordEffect: 0
   title: real
   rollingShutterEffect: {fileID: 1491086983}
+  startvideo: 0
 --- !u!4 &1491086972 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3120238807773159464, guid: 02aa516bcf5d0b14f8ca6ed6993c4c39,
@@ -6656,6 +6658,7 @@ MonoBehaviour:
   videoType: 0
   videoQuality: 0
   videoFps: 60
+  start: 0
   terrain: {fileID: 1783289004}
   radius: 40
   cubePrefab: {fileID: 7756724713386117074, guid: 334030f1037c97f4baf7c9998fed3190,
@@ -6694,6 +6697,9 @@ MonoBehaviour:
   render_dist: 100
   offset: 39.3
   noisecam: {fileID: 661936805}
+  movieRecordManuals:
+  - {fileID: 1491086968}
+  - {fileID: 1069787296}
 --- !u!1 &1641189350 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1641189350, guid: 3d2422e4019c11948b6cfd8a1fe9e232,

@@ -8,6 +8,7 @@ using Cinemachine;
 using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using UnityEngine.Animations;
+using UnityEngine.Recorder.Examples;
 public class StartDrone : MonoBehaviour
 {
     ////////////////////////////////////////
@@ -54,13 +55,19 @@ public class StartDrone : MonoBehaviour
     private GameObject generatedObject = null;
 
     public CinemachineVirtualCamera noisecam;
+    public MovieRecordManual[] movieRecordManuals;
 
     // Start is called before the first frame update
     void Start()
     {
-        ExtractConfig();
+        //ExtractConfig(); //on déplace dans Awake afin de pouvoir affecter les caméras ?
 
         terrainPos = terrain.transform.position; //on récupère la position du terrain
+        start = 0;
+    }
+
+    private void Awake() {
+        ExtractConfig();
     }
 
     public void ExtractConfig()
@@ -107,7 +114,7 @@ public class StartDrone : MonoBehaviour
             {
                 this.videoQuality = Convert.ToInt32(line[1]);
             }
-            else if (line[0] == "videoFps")
+            else if (line[0] == "fps")
             {
                 this.videoFps = Convert.ToInt32(line[1]);
             }
@@ -122,6 +129,10 @@ public class StartDrone : MonoBehaviour
         noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = bruitAmplitude;
         noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = bruitFrequency;
         noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = noiseSettings[noiseNumber];
+        foreach (MovieRecordManual mov in movieRecordManuals)
+        {
+            mov.startvideo = true;
+        }
     }
 
     // Update is called once per frame

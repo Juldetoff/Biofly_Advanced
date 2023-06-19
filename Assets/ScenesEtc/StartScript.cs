@@ -93,7 +93,7 @@ public class StartScript : MonoBehaviour
             else if (line[0]=="videoQuality"){
                 this.videoQuality = Convert.ToInt32(line[1]);
             }
-            else if (line[0]=="videoFps"){
+            else if (line[0]=="fps"){
                 this.videoFps = Convert.ToInt32(line[1]);
             }
             else if (line[0]=="jello"){

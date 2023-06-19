@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/ScenesEtc/HD_InteriorLightingVol.2/Scene/Test1.unity
     guid: 5f0b0d726b7b3ce4095348f8ab8cfd4b
+  - enabled: 1
+    path: Assets/ScenesEtc/Geopipe/Pack01Demo/Pack01Demo01.unity
+    guid: 3ed2f0201536ec348868b1052de8a5c7
   m_configObjects: {}
