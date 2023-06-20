@@ -7,6 +7,14 @@ public class QrCube : MonoBehaviour
     public List<GameObject> dotList = new List<GameObject>();
     public List<MeshRenderer> FaceList = new List<MeshRenderer>();
     //public SpriteRenderer qrSprite = null;
+    public Transform ltf;
+    public Transform ltb;
+    public Transform ldf;
+    public Transform ldb;
+    public Transform rtf;
+    public Transform rtb;
+    public Transform rdf;
+    public Transform rdb;
 
     public void SetQrMaterial(Material sprite) // Set the sprite of the QR code
     {

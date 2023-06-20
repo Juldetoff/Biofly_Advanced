@@ -21,7 +21,6 @@ public class StartDrone : MonoBehaviour
     public int videoQuality = 0;
     public int videoFps = 60;
     private Vector3 point = new Vector3(0, 0, 0); //point de départ du chemin modifié à chaque fois
-    public float start=0f;//date de début de la vidéo
 
     ////////////////////////////////////////
     //Objets et paramètres de génération
@@ -61,9 +60,9 @@ public class StartDrone : MonoBehaviour
     void Start()
     {
         //ExtractConfig(); //on déplace dans Awake afin de pouvoir affecter les caméras ?
+        lastTime = Time.time;
 
         terrainPos = terrain.transform.position; //on récupère la position du terrain
-        start = 0;
     }
 
     private void Awake() {
@@ -124,7 +123,7 @@ public class StartDrone : MonoBehaviour
             }
         }
         lastPos = Cams.cam.gameObject.transform.position - new Vector3(0, 500, 0);
-        lastTime = 0;
+        lastTime = Time.time;
 
         noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = bruitAmplitude;
         noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = bruitFrequency;
@@ -138,16 +137,14 @@ public class StartDrone : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        start += Time.deltaTime;
-        lastTime += Time.deltaTime;
         
-        if(lastTime > maxTime && Vector3.Distance(lastPos,Cams.cam.gameObject.transform.position) > distance){
+        if(Time.time - lastTime > maxTime && Vector3.Distance(lastPos,Cams.cam.gameObject.transform.position) > distance){
             lastPos = Cams.cam.gameObject.transform.position;
             for (int i = 0; i < 4; i++)
             {
                 CreateObject();
             }
-            lastTime = 0; 
+            lastTime = Time.time; 
         }
 
         noisecam.gameObject.transform.position = Cams.cam.gameObject.transform.position;
@@ -170,7 +167,6 @@ public class StartDrone : MonoBehaviour
             generatedObject = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, cubePrefab);
             generatedObject.name = "Objet" + objectCount;
             generatedObject.tag = "obstacle";
-            generatedObject.GetComponent<SoloDetectableScript>().setTimeStart(start);
             objectCount++;
 
             float size = UnityEngine.Random.Range(1f, 3f);
@@ -191,7 +187,6 @@ public class StartDrone : MonoBehaviour
                 generatedObject.transform.rotation = Quaternion.FromToRotation(
                     generatedObject.transform.up, hit.normal) * generatedObject.transform.rotation; // adjust for slopes
             }
-
         }
         // else if(prefabRand == 1){
         //     randomPoint.y = y-40f; //on met le point au dessus du sol

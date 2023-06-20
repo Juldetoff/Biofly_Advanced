@@ -19,7 +19,6 @@ public class StartDroneHouse : StartDrone
 
     private Vector3 solPos = new Vector3(0, 0, 0);
     // //la position du sol
-    private float startTime=0;//date de début de la vidéo
     private int objectCnt = 0;
 
     private GameObject objectGenerated = null;
@@ -49,16 +48,14 @@ public class StartDroneHouse : StartDrone
     // Update is called once per frame
     void Update()
     {
-        startTime += Time.deltaTime;
-        lastTime += Time.deltaTime;
 
-        if(lastTime > maxTime && Vector3.Distance(lastPos,Cams.cam.gameObject.transform.position) > distance){
+        if(Time.time - lastTime > maxTime && Vector3.Distance(lastPos,Cams.cam.gameObject.transform.position) > distance){
             lastPos = Cams.cam.gameObject.transform.position; 
             for (int i = 0; i < 2; i++)
             {
                 CreateObject();
             }
-            lastTime = 0; 
+            lastTime = Time.time; 
         }
 
         noisecam.gameObject.transform.position = Cams.cam.gameObject.transform.position;
@@ -83,7 +80,6 @@ public class StartDroneHouse : StartDrone
             objectGenerated = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, cubePrefab);
             objectGenerated.name = "Objet" +objectCnt;
             objectGenerated.tag = "obstacle";
-            objectGenerated.GetComponent<SoloDetectableScript>().setTimeStart(startTime);
             objectCnt++;
 
             objectGenerated.GetComponent<Render_dist>().SetCam(Cams.cam.gameObject);
