@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using UnityEngine.Recorder.Examples;
 
 public class SoloDetectableScript : MonoBehaviour
 {
@@ -20,21 +21,26 @@ public class SoloDetectableScript : MonoBehaviour
     }
     public void setTimeStart(float timestart)
     {
-        this.currentTime = timestart;
     }
 
     private void Start() {
         camtrouvé = cam;
+        Seen();
     }
 
-    private void Update() {
-        currentTime += Time.deltaTime;
-
+    private void Update()
+    {
         //partie cam
+        Seen();
+
+    }
+
+    private void Seen()
+    {
         Vector3 screenPos = cam.WorldToViewportPoint(this.transform.position);
         Vector3 viewportPos = screenPos;
 
-        if(viewportPos.x > 0 && viewportPos.x <= 1 &&
+        if (viewportPos.x > 0 && viewportPos.x <= 1 &&
             viewportPos.y > 0 && viewportPos.y <= 1 && viewportPos.z > 0)
         {
             Ray ray = new Ray(cam.transform.position, this.transform.position - cam.transform.position);
@@ -44,110 +50,54 @@ public class SoloDetectableScript : MonoBehaviour
             //Vector3 hitPos = hit.point;
             // print(hit.collider.gameObject.name);
             if (hit.collider.CompareTag("obstacle"))
-            {   if(!almostVisible){ //Cas objet visible non caché
-                    Debug.Log("Objet "+ this.gameObject.name +" visible");
-                    string objectName =this.gameObject.name;
-    
-                    string filePath = Application.dataPath + "/../Positions/"+ camtrouvé.name + ".txt";
+            {
+                if (!almostVisible)
+                { //Cas objet visible non caché
+                    Debug.Log("Objet " + this.gameObject.name + " visible");
+                    string objectName = this.gameObject.name;
+
+                    string filePath = Application.dataPath + "/../Positions/" + camtrouvé.name + ".txt";
+                    float temps = Time.time-cam.GetComponent<MovieRecordManual>().startTime;
                     using (StreamWriter writer = new StreamWriter(filePath, true))
                     {
-                        writer.WriteLine("Objet : " + objectName + " vu après : " + ( currentTime ).ToString() + "s");
+                        writer.WriteLine("Objet : " + objectName + " vu après : " + (temps).ToString() + "s");
                     }
                 }
-                almostVisible=true;
+                almostVisible = true;
             }
-            else{
-                if(almostVisible){ //Cas objet visible qui passe caché
-                    Debug.Log(gameObject.name +" invisible");
-                    string objectName =this.gameObject.name;
-    
-                    string filePath = Application.dataPath + "/../Positions/"+ camtrouvé.name + ".txt";
+            else
+            {
+                if (almostVisible)
+                { //Cas objet visible qui passe caché
+                    Debug.Log(gameObject.name + " invisible");
+                    string objectName = this.gameObject.name;
+
+                    string filePath = Application.dataPath + "/../Positions/" + camtrouvé.name + ".txt";
+                    float temps = Time.time-cam.GetComponent<MovieRecordManual>().startTime;
                     using (StreamWriter writer = new StreamWriter(filePath, true))
                     {
-                        writer.WriteLine("Objet : " + objectName + " plus vu après : " + ( currentTime ).ToString()+ "s");
+                        writer.WriteLine("Objet : " + objectName + " plus vu après : " + (temps).ToString() + "s");
                     }
                 }
-                almostVisible=false;
+                almostVisible = false;
             }
         }
         else
         {
-            if(almostVisible){ //Cas objet visible qui passe invisible
-                Debug.Log(gameObject.name +" invisible");
-                string objectName =this.gameObject.name;
+            if (almostVisible)
+            { //Cas objet visible qui passe invisible
+                Debug.Log(gameObject.name + " invisible");
+                string objectName = this.gameObject.name;
 
-                string filePath = Application.dataPath + "/../Positions/"+ camtrouvé.name + ".txt";
+                string filePath = Application.dataPath + "/../Positions/" + camtrouvé.name + ".txt";
+                float temps = Time.time-cam.GetComponent<MovieRecordManual>().startTime;
                 using (StreamWriter writer = new StreamWriter(filePath, true))
                 {
-                    writer.WriteLine("Objet : " + objectName + " plus vu après : " + ( currentTime ).ToString()+ "s");
+                    writer.WriteLine("Objet : " + objectName + " plus vu après : " + (temps).ToString() + "s");
                 }
             }
-            almostVisible=false;
+            almostVisible = false;
         }
-
-        // if(almostVisible && camtrouvé==null){   
-        //     // Check if viewport position is within the camera's viewport
-        //     if (viewportPos.x > 0 && viewportPos.x <= 1 &&
-        //         viewportPos.y > 0 && viewportPos.y <= 1 && viewportPos.z > 0)
-        //     {
-        //         // Return the camera that is seeing the object
-        //         camtrouvé = cam;
-        //         string objectName =this.gameObject.name;
-
-        //         string filePath = Application.dataPath + "/../Positions/"+ camtrouvé.name + ".txt";
-        //         using (StreamWriter writer = new StreamWriter(filePath, true))
-        //         {
-        //             writer.WriteLine("Objet : " + objectName + " vu après : " + ( currentTime ).ToString() + "s");
-        //         }
-        //     }
-        // }
     }
 
-    // private void OnBecameVisible() 
-    // {
-    // Debug.Log("Objet "+ this.gameObject.name +" visible");
-    // {
-    //     almostVisible=true;
-    //     // Convert object position to screen space
-    //     //Vector3 screenPos = cam.WorldToScreenPoint(this.transform.position);
-    //     Vector3 screenPos = cam.WorldToViewportPoint(this.transform.position);
-
-    //     // Convert screen space to viewport space
-    //     //Vector3 viewportPos = cam.ScreenToViewportPoint(screenPos);
-    //     Vector3 viewportPos = screenPos;
-    //     // print(viewportPos);
-
-    //     // Check if viewport position is within the camera's viewport
-    //     if (viewportPos.x > 0 && viewportPos.x <= 1 &&
-    //         viewportPos.y > 0 && viewportPos.y <= 1 && viewportPos.z > 0)
-    //     {
-    //         // Return the camera that is seeing the object
-    //         camtrouvé = cam;
-    //         string objectName =this.gameObject.name;
-
-    //         string filePath = Application.dataPath + "/../Positions/"+ camtrouvé.name + ".txt";
-    //         using (StreamWriter writer = new StreamWriter(filePath, true))
-    //         {
-    //             writer.WriteLine("Objet : " + objectName + " vu après : " + ( currentTime ).ToString()+ "s");
-    //         }
-    //     }
-    // }   
-    // }
-
-    // private void OnBecameInvisible() 
-    // {
-        
-    //     if(camtrouvé){
-    //         Debug.Log(gameObject.name +" invisible");
-    //         string objectName =this.gameObject.name;
-
-    //         string filePath = Application.dataPath + "/../Positions/"+ camtrouvé.name + ".txt";
-    //         using (StreamWriter writer = new StreamWriter(filePath, true))
-    //         {
-    //             writer.WriteLine("Objet : " + objectName + " plus vu après : " + ( currentTime ).ToString()+ "s");
-    //         }
-    //     }
-    //     camtrouvé=null;
-    //     almostVisible=false;
-    // }
 }

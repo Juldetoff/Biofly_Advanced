@@ -20,7 +20,7 @@ namespace UnityEngine.Recorder.Examples
         private string format = "mp4";
         private string quality = "high";
         private float fps = 60;
-        private float currentTime=0;
+        public float startTime=0;
         public HDRP_RollingShutter rollingShutterEffect;
         private RenderTextureInputSettings renderTextureInputSettings;
         public bool startvideo = false;
@@ -49,9 +49,10 @@ namespace UnityEngine.Recorder.Examples
             string filePath = Application.dataPath + "/../Positions/"+ gameObject.name + ".txt";
             using (StreamWriter writer = new StreamWriter(filePath))
             {
-                writer.WriteLine("Détection des objets de la caméra à " + ( currentTime ).ToString() + "s");
+                writer.WriteLine("Détection des objets de la caméra à " + ( startTime ).ToString() + "s");
             }
-            startDronescript.start = currentTime;
+            //startDronescript.start = currentTime;
+            startDronescript.lastTime = startTime;
         }
 
         internal void Initialize()
@@ -136,7 +137,8 @@ namespace UnityEngine.Recorder.Examples
                 m_RecorderController.PrepareRecording();
                 
                 m_RecorderController.StartRecording();
-                currentTime=0;
+                startTime=0;
+                startDronescript.start = startTime-Time.deltaTime;
 
                 //Debug.Log($"Started recording for file {OutputFile.FullName}");
                 startvideo = false; //pour que start gère le lancement de la vidéo (donc + ou - synchro)
@@ -161,7 +163,7 @@ namespace UnityEngine.Recorder.Examples
                 renderTextureInputSettings.RenderTexture = inputTexture;
             }
 
-            currentTime += Time.deltaTime;
+            //currentTime += Time.deltaTime;
         }
 
         private IEnumerator WaitForTextureGeneration()
