@@ -165,7 +165,7 @@ public class StartDrone : MonoBehaviour
         {
             randomPoint.y = y - offset; //on met le point au dessus du sol
             generatedObject = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, cubePrefab);
-            generatedObject.name = "Objet" + objectCount;
+            generatedObject.name = "cube" + objectCount;
             generatedObject.tag = "obstacle";
             objectCount++;
 

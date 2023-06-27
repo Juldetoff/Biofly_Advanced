@@ -27,6 +27,9 @@ namespace UnityEngine.Recorder.Examples
 
         private string format = "mp4";
         private string quality = "high";
+        private float fps = 60;
+        public float startTime=0;
+        public bool startVideo = false;
 
         public FileInfo OutputFile
         {
@@ -40,6 +43,12 @@ namespace UnityEngine.Recorder.Examples
         void OnEnable()
         {
             Initialize();
+            //on crée un txt de détection vide
+            string filePath = Application.dataPath + "/../Positions/"+ gameObject.name + ".txt";
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                writer.WriteLine("Détection des objets de la caméra à " + ( startTime ).ToString() + "s");
+            }
         }
 
         internal void Initialize()
@@ -49,6 +58,7 @@ namespace UnityEngine.Recorder.Examples
             startScript.camCount++;
             format = startScript.formatSettings[startScript.videoType];
             quality = startScript.qualitySettings[startScript.videoQuality];
+            fps = startScript.videoFps;
 
             SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
             SerializedProperty tagsProp = tagManager.FindProperty("tags");
@@ -89,6 +99,7 @@ namespace UnityEngine.Recorder.Examples
             else if(quality=="high"){
                 m_Settings.VideoBitRateMode = VideoBitrateMode.High;
             }
+            m_Settings.FrameRate = fps;
             
             //m_Settings.ImageInputSettings = new GameViewInputSettings
             m_Settings.ImageInputSettings = new CameraInputSettings
@@ -113,12 +124,14 @@ namespace UnityEngine.Recorder.Examples
             controllerSettings.SetRecordModeToManual();
             // choose the camera to use for the rendering
             
-            controllerSettings.FrameRate = (float)startScript.videoFps;
             // setup the camera to use for the rendering
+            controllerSettings.FrameRate = fps;
     
             RecorderOptions.VerboseMode = false;
             m_RecorderController.PrepareRecording();
             m_RecorderController.StartRecording();
+            startTime = 0;
+            startVideo = false;
 
             Debug.Log($"Started recording for file {OutputFile.FullName}");
         }

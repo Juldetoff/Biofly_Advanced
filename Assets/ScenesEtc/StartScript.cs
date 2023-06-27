@@ -8,6 +8,7 @@ using Cinemachine;
 using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using UnityEngine.Animations;
+using UnityEngine.Recorder.Examples;
 public class StartScript : MonoBehaviour
 {
     ////////////////////////////////////////
@@ -36,6 +37,7 @@ public class StartScript : MonoBehaviour
     public GameObject tigrePrefab = null;
     public GameObject taureauPrefab = null;
     public GameObject aiglePrefab = null; //prefab des obstacles à instancier
+    public bool onlyCube = true; //si on veut que des cubes
 
     public TimelineAsset timeline; //la timeline qui gèrera les déplacements (un peu comme un film) (est un fichier)
     public PlayableDirector director; //relie la timeline au jeu
@@ -53,12 +55,17 @@ public class StartScript : MonoBehaviour
     public NoiseSettings[] noiseSettings = new NoiseSettings[9]; //liste des types de bruits afin de pouvoir les associer à la caméra
     public string[] qualitySettings = new string[3]{"Low", "Medium", "High"}; //liste des qualités de vidéo
     public string[] formatSettings = new string[3]{"mp3", "mov", "webm"}; //liste des formats de vidéo
+    public float offsetcam = 35f; //offset de la caméra par rapport au sol
+    private MovieRecorderExample[] cams = null;
+    private GameObject generatedObject = null;
+    private int count = 0;
     
 
 
     // Start is called before the first frame update
     void Start()
     {
+        cams = new MovieRecorderExample[nBCamera*2];
         ////////////////////////////////////////
         // PARTIE EXTRACTION DU FICHIER CONFIG
         string path = "config.txt";
@@ -136,7 +143,7 @@ public class StartScript : MonoBehaviour
                 UnityEngine.Random.Range(terrainPos.z+100,terrainPos.z + 900)
             ); //on génère un point de départ aléatoire
             float y = terrain.SampleHeight(point); //on récupère la hauteur du terrain à ce point
-            point.y = y-35; //on met le point plus ou moins au dessus du sol
+            point.y = y-offsetcam; //on met le point plus ou moins au dessus du sol
 
             //
             //GENERATION PATH A PARTIR DU POINT DE DEPART
@@ -145,33 +152,55 @@ public class StartScript : MonoBehaviour
             Cpath.m_Waypoints[0].position = point;
             for(int j=1; j<11; j++){ //on génère 10 points aléatoires de chemin
                 point = GeneratePoint(point,radius);
+                CheckTerrain(point); //au cas où on déborde sur un autre terrain
                 y = terrain.SampleHeight(point); //on récupère la hauteur du terrain à ce point
                 point.y = y-35; //on met le point au dessus du sol
                 Cpath.m_Waypoints[j].position = point; //on lui associe la position
                 //
                 //Instanciation d'un objet aux environs du point généré
-                //TODO pour chaque point générer aleatoirement un obstacle parmi tigre, taureau, aigle et cube
 
                 Vector3 cubPoint = GeneratePoint(point, 10); //comme ça quand le cube apparait, il est autour du point ciblé
+                CheckTerrain(cubPoint);
                 y = terrain.SampleHeight(cubPoint); //on récupère la hauteur du terrain à ce point
                 cubPoint.y = y; //on met le point au dessus du sol
                 //cubeManager.CreateCube(point.x, point.y-4.5f, point.z);
                 int prefabRand = UnityEngine.Random.Range(0, 4);
-                if(prefabRand == 0){
+                if(prefabRand == 0 || onlyCube){
                     cubPoint.y = y-39.5f; //on met le point au dessus du sol
-                    cubeManager.CreateCube(cubPoint.x, cubPoint.y, cubPoint.z, cubePrefab);
+                    generatedObject=cubeManager.CreateCube(cubPoint.x, cubPoint.y, cubPoint.z, cubePrefab);
+                    generatedObject.name = "cube" + count;
+                    count++;
                 }
-                else if(prefabRand == 1){
+                else if(prefabRand == 1 && !onlyCube){
                     cubPoint.y = y-40f; //on met le point au dessus du sol
-                    cubeManager.CreateCube(cubPoint.x, cubPoint.y, cubPoint.z, tigrePrefab);
+                    generatedObject=cubeManager.CreateCube(cubPoint.x, cubPoint.y, cubPoint.z, tigrePrefab);
+                    generatedObject.name = "tigre" + count;
+                    count++;
                 }
-                else if(prefabRand == 2){
+                else if(prefabRand == 2 && !onlyCube){
                     cubPoint.y = y-39.6f; //on met le point au dessus du sol
-                    cubeManager.CreateCube(cubPoint.x, cubPoint.y, cubPoint.z, taureauPrefab);
+                    generatedObject=cubeManager.CreateCube(cubPoint.x, cubPoint.y, cubPoint.z, taureauPrefab);
+                    generatedObject.name = "taureau" + count;
+                    count++;
                 }
-                else if(prefabRand == 3){
+                else if(prefabRand == 3 && !onlyCube){
                     cubPoint.y = y-37f; //on met le point au dessus du sol
-                    cubeManager.CreateCube(cubPoint.x, cubPoint.y, cubPoint.z, aiglePrefab);
+                    generatedObject=cubeManager.CreateCube(cubPoint.x, cubPoint.y, cubPoint.z, aiglePrefab);
+                    generatedObject.name = "aigle" + count;
+                    count++;
+                }
+                else{
+                    generatedObject=null;
+                }
+                if (generatedObject)
+                {
+                    RaycastHit hit; //permet d'avoir l'objet orienté selon la surface
+                    var ray = new Ray(generatedObject.transform.position, Vector3.down); // check for slopes
+                    if (terrain.GetComponent<Collider>().Raycast(ray, out hit, 1000))
+                    {
+                        generatedObject.transform.rotation = Quaternion.FromToRotation(
+                            generatedObject.transform.up, hit.normal) * generatedObject.transform.rotation; // adjust for slopes
+                    }
                 }
             }
             /////////////////////////////////////////
@@ -179,8 +208,13 @@ public class StartScript : MonoBehaviour
             //
             //ASSOCIATION CAMERAS ET TIMELINE
             SysCam syscam = Instantiate(prefabCam, new Vector3(0, 0, 0), Quaternion.identity); //on instancie un SysCam qui contient une caméra physique et virtuelle
+            cams[camCount] = syscam.cam.GetComponent<MovieRecorderExample>();
+            cams[camCount+1] = syscam.vcam.GetComponent<MovieRecorderExample>();
             syscam.cam.name = "cam" + i*2; //on lui donne un nom
             syscam.vcam.GetCinemachineComponent<CinemachineTrackedDolly>().m_Path = Cpath; //on lui associe le chemin généré
+            syscam.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = bruitAmplitude;
+            syscam.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = bruitFrequency;
+            syscam.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = noiseSettings[noiseNumber];
             //ensuite on crée les tracks dans la timeline
 
             //TESTER DE COMMENTER CA, EST CE QUE USELESS?
@@ -217,7 +251,7 @@ public class StartScript : MonoBehaviour
                 cinemachineShot.VirtualCamera = new ExposedReference<CinemachineVirtualCameraBase>();
                 ExposedReference<CinemachineVirtualCameraBase> virtualCameraReference = new ExposedReference<CinemachineVirtualCameraBase>();
                 virtualCameraReference.defaultValue = syscam.vcam; //en gros un sorte de systeme e pointeur reliant le fichier timeline
-                //a la virtual cam instancié en run (car elle n'existe pas hors run, donc faut l'associer comme ça)
+                //a la virtual cam instancié en run (car elle n'existe pas hors runtime, donc faut l'associer comme ça)
                 cinemachineShot.VirtualCamera.exposedName = UnityEditor.GUID.Generate().ToString();
                 director.SetReferenceValue(cinemachineShot.VirtualCamera.exposedName, syscam.vcam);
             }
@@ -246,7 +280,6 @@ public class StartScript : MonoBehaviour
 
             /////////////////////////////////////////////////
             //on associe à notre camera virtuelle les options de bruitage récupérée dans config
-            //TODO trouver comment associer un noise profile de cinemachine (sinon on peut créer le notre entre autre...)
             syscambruit.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = bruitAmplitude;
             syscambruit.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = bruitFrequency;
 
@@ -298,6 +331,31 @@ public class StartScript : MonoBehaviour
         Vector3 randomDirection = UnityEngine.Random.insideUnitSphere.normalized;
         Vector3 randomPoint = previousPoint + randomDirection * radius;
         return randomPoint;
+    }
+
+    private void CheckTerrain(Vector3 randomPoint)
+    {
+        //on envoi un raycast vers le bas pour vérifier si c'est toujours le même terrain
+        //si ce n'est pas le cas, on change le terrain
+        RaycastHit hit;
+        var ray = new Ray(randomPoint, Vector3.down); 
+        if (terrain.GetComponent<Collider>().Raycast(ray, out hit, 1000))
+        {
+            if (hit.collider.gameObject != terrain)
+            {
+                terrain = hit.collider.gameObject.GetComponent<Terrain>();
+                terrainPos = terrain.transform.position;
+            }
+        }
+        ray = new Ray(randomPoint, Vector3.up);
+        if (terrain.GetComponent<Collider>().Raycast(ray, out hit, 1000))
+        {
+            if (hit.collider.gameObject != terrain)
+            {
+                terrain = hit.collider.gameObject.GetComponent<Terrain>();
+                terrainPos = terrain.transform.position;
+            }
+        }
     }
 
 

@@ -14,6 +14,8 @@ public class DroneCameraMovement : MonoBehaviour
     [SerializeField] private bool useTerrain = true;
 
     public Terrain terrain;
+    public int offsetTopHeight = 30;
+    public int offsetBotHeight = 25;
 
     public Rigidbody rb;
     private Vector2 rotation;
@@ -99,14 +101,15 @@ public class DroneCameraMovement : MonoBehaviour
     }
 
     public virtual void ClampHeight(){
-        if(terrain.SampleHeight(transform.position)+30 > transform.position.y){
+        if(terrain.SampleHeight(transform.position)+ offsetBotHeight > transform.position.y){
             transform.position = new Vector3(transform.position.x,
-            Mathf.Clamp(terrain.SampleHeight(transform.position)-37, transform.position.y, terrain.SampleHeight(transform.position)+30),
+            //terrain.SampleHeight(transform.position),
+            Mathf.Clamp(terrain.SampleHeight(transform.position)+offsetBotHeight, transform.position.y, terrain.SampleHeight(transform.position)+offsetTopHeight),
             transform.position.z);
         }
-        if(terrain.SampleHeight(transform.position)+25 < transform.position.y){
+        if(terrain.SampleHeight(transform.position)+offsetTopHeight < transform.position.y){
             transform.position = new Vector3(transform.position.x,
-            terrain.SampleHeight(transform.position)+25,
+            terrain.SampleHeight(transform.position)+offsetTopHeight,
             transform.position.z);
         }
     }

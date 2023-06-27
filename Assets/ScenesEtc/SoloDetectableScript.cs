@@ -12,6 +12,7 @@ public class SoloDetectableScript : MonoBehaviour
     DateTime current;
     public Camera cam;
     bool almostVisible=false;
+    public Transform[] smallMesh;
 
     // Start is called before the first frame update
 
@@ -24,14 +25,14 @@ public class SoloDetectableScript : MonoBehaviour
     }
 
     private void Start() {
+        this.tag = "obstacle";
         camtrouvé = cam;
-        Seen();
         //on nettoie le txt de positions puis on cherche la position au cas où on apparaisse déjà dans le champ de vision
-        string filePath = Application.dataPath + "/../Positions/" + this.name + ".txt";
-        using (StreamWriter writer = new StreamWriter(filePath, false))
-        {
-            writer.WriteLine("Positions de l'objet " + this.name + " :");
-        }
+        // string filePath = Application.dataPath + "/../Positions/" + this.name + ".txt";
+        // using (StreamWriter writer = new StreamWriter(filePath, false))
+        // {
+        //     writer.WriteLine("Positions de l'objet " + this.name + " :");
+        // }
         Where();
     }
 
@@ -108,38 +109,107 @@ public class SoloDetectableScript : MonoBehaviour
     }
     private void Where(){
         if(almostVisible){
-            Vector3 ltf = cam.WorldToViewportPoint(this.GetComponent<QrCube>().ltf.position);
-            Vector3 ltb = cam.WorldToViewportPoint(this.GetComponent<QrCube>().ltb.position);
-            Vector3 ldf = cam.WorldToViewportPoint(this.GetComponent<QrCube>().ldf.position);
-            Vector3 ldb = cam.WorldToViewportPoint(this.GetComponent<QrCube>().ldb.position);
-            Vector3 rtf = cam.WorldToViewportPoint(this.GetComponent<QrCube>().rtf.position);
-            Vector3 rtb = cam.WorldToViewportPoint(this.GetComponent<QrCube>().rtb.position);
-            Vector3 rdf = cam.WorldToViewportPoint(this.GetComponent<QrCube>().rdf.position);
-            Vector3 rdb = cam.WorldToViewportPoint(this.GetComponent<QrCube>().rdb.position);
+            Vector2 smallMeshToViewX = meshToViewPortMinX(smallMesh);
+            Vector2 smallMeshToViewY = meshToViewPortMinY(smallMesh);
+            // Vector2 lefttop = new Vector2(Minx(smallMesh),Maxy(smallMesh));
+            // Vector2 righttop = new Vector2(Maxx(smallMesh),Maxy(smallMesh));
+            // Vector2 leftbot = new Vector2(Minx(smallMesh),Miny(smallMesh));
+            // Vector2 rightbot = new Vector2(Maxx(smallMesh),Miny(smallMesh));
+
+            Vector2 lefttop = new Vector2(smallMeshToViewX.x,smallMeshToViewY.y);
+            Vector2 rightbot = new Vector2(smallMeshToViewX.y,smallMeshToViewY.x);
     
-            Vector2 lefttop =new Vector2(Minhuit(ltf.x,ltb.x,ldf.x,ldb.x,rtf.x,rtb.x,rdf.x,rdb.x),Maxhuit(ltf.y,ltb.y,ldf.y,ldb.y,rtf.y,rtb.y,rdf.y,rdb.y));
-            Vector2 righttop = new Vector2(Maxhuit(ltf.x,ltb.x,ldf.x,ldb.x,rtf.x,rtb.x,rdf.x,rdb.x),Maxhuit(ltf.y,ltb.y,ldf.y,ldb.y,rtf.y,rtb.y,rdf.y,rdb.y));
-            Vector2 leftbot = new Vector2(Minhuit(ltf.x,ltb.x,ldf.x,ldb.x,rtf.x,rtb.x,rdf.x,rdb.x),Minhuit(ltf.y,ltb.y,ldf.y,ldb.y,rtf.y,rtb.y,rdf.y,rdb.y));
-            Vector2 rightbot = new Vector2(Maxhuit(ltf.x,ltb.x,ldf.x,ldb.x,rtf.x,rtb.x,rdf.x,rdb.x),Minhuit(ltf.y,ltb.y,ldf.y,ldb.y,rtf.y,rtb.y,rdf.y,rdb.y));
-    
-            string filePath = Application.dataPath + "/../Positions/" + this.name + ".txt";
+            string filePath = Application.dataPath + "/../Positions/" + "Start"+ camtrouvé.name +".txt";
             float temps = Time.time-cam.GetComponent<MovieRecordManual>().startTime;
             using (StreamWriter writer = new StreamWriter(filePath, true))
             {
-                writer.WriteLine("Objet vu à : " + (temps).ToString() + "s");
-                writer.WriteLine("lefttop : " + lefttop.ToString());
-                writer.WriteLine("righttop : " + righttop.ToString());
-                writer.WriteLine("leftbot : " + leftbot.ToString());
-                writer.WriteLine("rightbot : " + rightbot.ToString());
+                writer.WriteLine("Objet " + this.name + " vu en :" + lefttop.ToString() + "," + rightbot.ToString());
+                // writer.WriteLine("lefttop : " + lefttop.ToString());
+                // writer.WriteLine("righttop : " + righttop.ToString());
+                // writer.WriteLine("leftbot : " + leftbot.ToString());
+                // writer.WriteLine("rightbot : " + rightbot.ToString());
             }
+        //     Vector3 scenePos = cam.WorldToViewportPoint(this.transform.position);
+        // Vector3 viewportPos = scenePos;
+
+        // if (viewportPos.x > 0 && viewportPos.x <= 1 &&
+        //     viewportPos.y > 0 && viewportPos.y <= 1 && viewportPos.z > 0)
+        // {
         }
     }
 
-    public float Minhuit(float a, float b, float c, float d, float e, float f, float g, float h){
-        return Math.Min(Math.Min(Math.Min(Math.Min(Math.Min(Math.Min(Math.Min(a,b),c),d),e),f),g),h);
+    public Vector2 meshToViewPortMinX(Transform[] mesh){
+        float minx = 1;
+        float maxx = -1;
+        Vector3[] meshToViewPort = new Vector3[mesh.Length];
+        for (int i = 0; i < mesh.Length; i++)
+        {
+            meshToViewPort[i] = cam.WorldToViewportPoint(mesh[i].position);
+            if(meshToViewPort[i].x < minx){
+                minx = meshToViewPort[i].x;
+            }
+            if(meshToViewPort[i].x > maxx){
+                maxx = meshToViewPort[i].x;
+            }
+        }
+        return new Vector2(minx,maxx);
     }
-    public float Maxhuit(float a, float b, float c, float d, float e, float f, float g, float h){
-        return Math.Max(Math.Max(Math.Max(Math.Max(Math.Max(Math.Max(Math.Max(a,b),c),d),e),f),g),h);
+    public Vector2 meshToViewPortMinY(Transform[] mesh){
+        float miny = 1;
+        float maxy = -1;
+        Vector3[] meshToViewPort = new Vector3[mesh.Length];
+        for (int i = 0; i < mesh.Length; i++)
+        {
+            meshToViewPort[i] = cam.WorldToViewportPoint(mesh[i].position);
+            if(meshToViewPort[i].y < miny){
+                miny = meshToViewPort[i].y;
+            }
+            if(meshToViewPort[i].y > maxy){
+                maxy = meshToViewPort[i].y;
+            }
+        }
+        return new Vector2(miny,maxy);
+    }
+
+    public float Minx(Transform[] mesh){
+        float minx = 1;
+        for (int i = 0; i < mesh.Length; i++)
+        {
+            if(mesh[i].position.x < minx){
+                minx = mesh[i].position.x;
+            }
+        }
+        return minx;
+    }  
+    public float Maxx(Transform[] mesh){
+        float maxx = -1;
+        for (int i = 0; i < mesh.Length; i++)
+        {
+            if(mesh[i].position.x > maxx){
+                maxx = mesh[i].position.x;
+            }
+        }
+        return maxx;
+    }
+    public float Miny(Transform[] mesh){
+        float miny = 1;
+        for (int i = 0; i < mesh.Length; i++)
+        {
+            if(mesh[i].position.y < miny){
+                miny = mesh[i].position.y;
+            }
+        }
+        return miny;
+    }
+    public float Maxy(Transform[] mesh){
+        float maxy = -1;
+        for (int i = 0; i < mesh.Length; i++)
+        {
+            if(mesh[i].position.y > maxy){
+                maxy = mesh[i].position.y;
+            }
+        }
+        return maxy;
     }
 
 }

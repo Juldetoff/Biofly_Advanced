@@ -24,6 +24,7 @@ namespace UnityEngine.Recorder.Examples
         public HDRP_RollingShutter rollingShutterEffect;
         private RenderTextureInputSettings renderTextureInputSettings;
         public bool startvideo = false;
+        public bool isRegister = false;
 
         public FileInfo OutputFile
         {
@@ -38,8 +39,9 @@ namespace UnityEngine.Recorder.Examples
             //on crée un tag pour la caméra (pour pouvoir la détecter
             SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
             SerializedProperty tagsProp = tagManager.FindProperty("tags");
-            tagsProp.InsertArrayElementAtIndex(0);
-            SerializedProperty n = tagsProp.GetArrayElementAtIndex(0);
+            int count = tagsProp.arraySize;
+            tagsProp.InsertArrayElementAtIndex(count);
+            SerializedProperty n = tagsProp.GetArrayElementAtIndex(count);
             n.stringValue = "cam" + title;
             tagManager.ApplyModifiedProperties();
             this.gameObject.tag = "cam" + title;
@@ -52,6 +54,11 @@ namespace UnityEngine.Recorder.Examples
                 writer.WriteLine("Détection des objets de la caméra à " + ( startTime ).ToString() + "s");
             }
             //startDronescript.start = currentTime;
+            string filePath2 = Application.dataPath + "/../Positions/Start"+ name + ".txt";
+            using (StreamWriter writer = new StreamWriter(filePath2))
+            {
+                writer.WriteLine("Détection des objets de la caméra à " + ( startTime ).ToString() + "s");
+            }
             startDronescript.lastTime = startTime;
         }
 
@@ -138,7 +145,6 @@ namespace UnityEngine.Recorder.Examples
                 
                 m_RecorderController.StartRecording();
                 startTime=0;
-                startDronescript.start = startTime-Time.deltaTime;
 
                 //Debug.Log($"Started recording for file {OutputFile.FullName}");
                 startvideo = false; //pour que start gère le lancement de la vidéo (donc + ou - synchro)
@@ -162,8 +168,14 @@ namespace UnityEngine.Recorder.Examples
                 rollingShutterEffect.ApplyRollingShutterEffect(inputTexture, inputTexture);
                 renderTextureInputSettings.RenderTexture = inputTexture;
             }
+            if(isRegister){
+                string filePath2 = Application.dataPath + "/../Positions/Start"+name+".txt";
+                using (StreamWriter writer = new StreamWriter(filePath2, true))
+                {
+                    writer.WriteLine("Temps :" + ( Time.time-startTime ).ToString() + "s");
+                }
+            }
 
-            //currentTime += Time.deltaTime;
         }
 
         private IEnumerator WaitForTextureGeneration()
