@@ -11,7 +11,7 @@ public class DroneCameraMovement : MonoBehaviour
     [SerializeField] private float maxBottomVerticalAngleFromHorizon;
     [SerializeField] private float maxVelocity;
     [SerializeField] private float speed = 20.0f;
-    [SerializeField] private bool useTerrain = true;
+    //[SerializeField] private bool useTerrain = true;
 
     public Terrain terrain;
     public int offsetTopHeight = 30;

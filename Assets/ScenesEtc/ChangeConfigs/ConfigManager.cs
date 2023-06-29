@@ -36,6 +36,7 @@ public class ConfigManager : MonoBehaviour
     private int qualiteVideo;
     private int fpsvideo;
     private int jello;
+    private bool repetition;
 
 
     // Start is called before the first frame update
@@ -53,6 +54,7 @@ public class ConfigManager : MonoBehaviour
         qualiteVideo = 2;
         fpsvideo = 60;
         jello = 0;
+        repetition = false;
         sliderFreq.value = 3;
         textFreq.text = "Fréquence bruit : 3";
         sliderAmpl.value = 3;
@@ -151,7 +153,7 @@ public class ConfigManager : MonoBehaviour
         //StreamWriter sr = File.CreateText(filePath);
         using (StreamWriter writer = new StreamWriter(filePath))
         {
-            writer.WriteLine("10");
+            writer.WriteLine("11");
             writer.WriteLine("scene,"+scene); //1 pour scene auto foret, 2 pour foret manuel,3,4,5... pour les préfaits (voir si on en fait)
             writer.WriteLine("nBCamera,"+nbCam); //nombre de caméra, certaines scènes fixent ça
             writer.WriteLine("bruitType,"+typeBruit); //0 pour aucun, 1 pour bruit blanc, 2 pour bruit rose, 3 pour bruit brownien...
@@ -162,6 +164,7 @@ public class ConfigManager : MonoBehaviour
             writer.WriteLine("videoQuality,"+qualiteVideo); //0 pour low, 1 pour medium, 2 pour high
             writer.WriteLine("fps,"+fpsvideo); //fps de la vidéo
             writer.WriteLine("jello,"+jello); //jello ou non (0 non, 1 oui)
+            writer.WriteLine("repeat"+repetition); //si se repète ou non en auto (0 non, 1 oui)
             writer.Close();
         }
         //en dessous on gère le changement de scène, bien que cela rend inutile la ligne "scene,..." dans config.txt

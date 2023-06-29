@@ -33,7 +33,6 @@ public class SoloDetectableScript : MonoBehaviour
         // {
         //     writer.WriteLine("Positions de l'objet " + this.name + " :");
         // }
-        Where();
     }
 
     private void Update()
@@ -43,7 +42,7 @@ public class SoloDetectableScript : MonoBehaviour
         Where();
     }
 
-    private void Seen()
+    private void Seen() //on regarde à chaque instant si l'objet est vu par une des caméras
     {
         Vector3 scenePos = cam.WorldToViewportPoint(this.transform.position);
         Vector3 viewportPos = scenePos;
@@ -107,6 +106,7 @@ public class SoloDetectableScript : MonoBehaviour
             almostVisible = false;
         }
     }
+
     private void Where(){
         if(almostVisible){
             Vector2 smallMeshToViewX = meshToViewPortMinX(smallMesh);

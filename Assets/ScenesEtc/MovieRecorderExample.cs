@@ -19,7 +19,7 @@ namespace UnityEngine.Recorder.Examples
     /// </summary>
     public class MovieRecorderExample : MonoBehaviour
     {
-        RecorderController m_RecorderController;
+        public RecorderController m_RecorderController;
         public bool m_RecordAudio = true;
         public StartScript startScript;
         public string count;
@@ -41,25 +41,10 @@ namespace UnityEngine.Recorder.Examples
         }
 
         void OnEnable()
-        {
-            Initialize();
-            //on crée un txt de détection vide
-            string filePath = Application.dataPath + "/../Positions/"+ gameObject.name + ".txt";
-            using (StreamWriter writer = new StreamWriter(filePath))
-            {
-                writer.WriteLine("Détection des objets de la caméra à " + ( startTime ).ToString() + "s");
-            }
-        }
-
-        internal void Initialize()
-        {
+        {   
             startScript = GameObject.Find("GameStartManager").GetComponent<StartScript>();
             count = startScript.camCount.ToString();
             startScript.camCount++;
-            format = startScript.formatSettings[startScript.videoType];
-            quality = startScript.qualitySettings[startScript.videoQuality];
-            fps = startScript.videoFps;
-
             SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
             SerializedProperty tagsProp = tagManager.FindProperty("tags");
             tagsProp.InsertArrayElementAtIndex(0);
@@ -68,72 +53,98 @@ namespace UnityEngine.Recorder.Examples
             tagManager.ApplyModifiedProperties();
 
             this.gameObject.tag = "cam" + count;
+            Initialize();
+        }
 
-
-            var controllerSettings = ScriptableObject.CreateInstance<RecorderControllerSettings>();
-            m_RecorderController = new RecorderController(controllerSettings);
-
-            var mediaOutputFolder = new DirectoryInfo(Path.Combine(Application.dataPath, "..", "SampleRecordings"));
-
-            // Video
-            m_Settings = ScriptableObject.CreateInstance<MovieRecorderSettings>();
-            m_Settings.name = "TEST";
-            m_Settings.Enabled = true;
-
-            // This example performs an MP4 recording
-            if(format=="mp4"){
-                m_Settings.OutputFormat = MovieRecorderSettings.VideoRecorderOutputFormat.MP4;
-            }
-            else if(format=="webm"){
-                m_Settings.OutputFormat = MovieRecorderSettings.VideoRecorderOutputFormat.WebM;
-            }
-            else if(format=="mov"){
-                m_Settings.OutputFormat = MovieRecorderSettings.VideoRecorderOutputFormat.MOV;
-            }
-            if(quality=="low"){
-                m_Settings.VideoBitRateMode = VideoBitrateMode.Low;
-            }
-            else if(quality=="medium"){
-                m_Settings.VideoBitRateMode = VideoBitrateMode.Medium;
-            }
-            else if(quality=="high"){
-                m_Settings.VideoBitRateMode = VideoBitrateMode.High;
-            }
-            m_Settings.FrameRate = fps;
-            
-            //m_Settings.ImageInputSettings = new GameViewInputSettings
-            m_Settings.ImageInputSettings = new CameraInputSettings
-            {
-                OutputWidth = 1920,
-                OutputHeight = 1080,
-                Source = ImageSource.TaggedCamera,
-                CameraTag = "cam" + count
-            };
-            
-            // choose the camera to use for the rendering
-
-            m_Settings.AudioInputSettings.PreserveAudio = m_RecordAudio;
-
-            // Simple file name (no wildcards) so that FileInfo constructor works in OutputFile getter.
-            // the name of the object is used as the file name
-            m_Settings.OutputFile = mediaOutputFolder.FullName + "/" + "cam" + count;
-            
-            
-            // Setup Recording
-            controllerSettings.AddRecorderSettings(m_Settings);
-            controllerSettings.SetRecordModeToManual();
-            // choose the camera to use for the rendering
-            
-            // setup the camera to use for the rendering
-            controllerSettings.FrameRate = fps;
+        internal void Initialize()
+        {   
+            if(startVideo){ //permet d'attendre un signal du StartScript pour savoir quand démarrer (permet l'attente des configs)
+                format = startScript.formatSettings[startScript.videoType];
+                quality = startScript.qualitySettings[startScript.videoQuality];
+                fps = startScript.videoFps;
     
-            RecorderOptions.VerboseMode = false;
-            m_RecorderController.PrepareRecording();
-            m_RecorderController.StartRecording();
-            startTime = 0;
-            startVideo = false;
+                
+    
+    
+                var controllerSettings = ScriptableObject.CreateInstance<RecorderControllerSettings>();
+                m_RecorderController = new RecorderController(controllerSettings);
+    
+                var mediaOutputFolder = new DirectoryInfo(Path.Combine(Application.dataPath, "..", "SampleRecordings"));
+    
+                // Video
+                m_Settings = ScriptableObject.CreateInstance<MovieRecorderSettings>();
+                m_Settings.name = "TEST";
+                m_Settings.Enabled = true;
+    
+                // This example performs an MP4 recording
+                if(format=="mp4"){
+                    m_Settings.OutputFormat = MovieRecorderSettings.VideoRecorderOutputFormat.MP4;
+                }
+                else if(format=="webm"){
+                    m_Settings.OutputFormat = MovieRecorderSettings.VideoRecorderOutputFormat.WebM;
+                }
+                else if(format=="mov"){
+                    m_Settings.OutputFormat = MovieRecorderSettings.VideoRecorderOutputFormat.MOV;
+                }
+                if(quality=="low"){
+                    m_Settings.VideoBitRateMode = VideoBitrateMode.Low;
+                }
+                else if(quality=="medium"){
+                    m_Settings.VideoBitRateMode = VideoBitrateMode.Medium;
+                }
+                else if(quality=="high"){
+                    m_Settings.VideoBitRateMode = VideoBitrateMode.High;
+                }
+                m_Settings.FrameRate = fps;
+                
+                //m_Settings.ImageInputSettings = new GameViewInputSettings
+                m_Settings.ImageInputSettings = new CameraInputSettings
+                {
+                    OutputWidth = 1920,
+                    OutputHeight = 1080,
+                    Source = ImageSource.TaggedCamera,
+                    CameraTag = "cam" + count
+                };
+                
+                // choose the camera to use for the rendering
+    
+                m_Settings.AudioInputSettings.PreserveAudio = m_RecordAudio;
+    
+                // Simple file name (no wildcards) so that FileInfo constructor works in OutputFile getter.
+                // the name of the object is used as the file name
+                m_Settings.OutputFile = mediaOutputFolder.FullName + "/" + "cam" + count;
+                
+                
+                // Setup Recording
+                controllerSettings.AddRecorderSettings(m_Settings);
+                controllerSettings.SetRecordModeToManual();
+                // choose the camera to use for the rendering
+                
+                // setup the camera to use for the rendering
+                controllerSettings.FrameRate = fps;
+        
+                RecorderOptions.VerboseMode = false;
+                m_RecorderController.PrepareRecording();
+                m_RecorderController.StartRecording();
+                startTime = 0;
+                startVideo = false;
+    
+                Debug.Log($"Started recording for file {OutputFile.FullName}");
+                startVideo = false;
 
-            Debug.Log($"Started recording for file {OutputFile.FullName}");
+                //on crée un txt de détection vide
+                string filePath = Application.dataPath + "/../Positions/"+ gameObject.name + ".txt";
+                using (StreamWriter writer = new StreamWriter(filePath))
+                {
+                    writer.WriteLine("Détection des objets de la caméra à " + ( startTime ).ToString() + "s");
+                }
+                //startDronescript.start = currentTime;
+                string filePath2 = Application.dataPath + "/../Positions/Start"+ name + ".txt";
+                using (StreamWriter writer = new StreamWriter(filePath2))
+                {
+                    writer.WriteLine("Détection des objets de la caméra à " + ( startTime ).ToString() + "s");
+                }
+            }
         }
         private void Start() {
             this.gameObject.tag = "cam" + count;
@@ -141,7 +152,27 @@ namespace UnityEngine.Recorder.Examples
 
         void OnDisable()
         {
-            m_RecorderController.StopRecording();
+            DisableVideo();
+        }
+        public void DisableVideo(){
+            if(m_RecorderController!=null){
+                m_RecorderController.StopRecording();
+                Debug.Log($"Stopped recording for file {OutputFile.FullName}");
+            }
+            else{
+                Debug.Log("No recorder to stop");
+                //dans ce cas par sécurité pour le moment on va delete la vidéo (parce que sinon le programme ne tourne plus)
+                File.Delete(OutputFile.FullName);
+            }
+        }
+
+        private void Update() {
+            Initialize();
+            string filePath2 = Application.dataPath + "/../Positions/Start"+name+".txt";
+            using (StreamWriter writer = new StreamWriter(filePath2, true))
+            {
+                writer.WriteLine("Temps : " + ( Time.time-startTime ).ToString() + "s");
+            }
         }
     }
 }

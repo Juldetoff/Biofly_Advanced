@@ -7,6 +7,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -1738993700829562161, guid: 9e268de98558ca94b87be5846140de2e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -164873673388931865, guid: 9e268de98558ca94b87be5846140de2e,
         type: 3}
       propertyPath: smallMesh
@@ -117,7 +122,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: CubeRougeRender
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -1738993700829562161, guid: 9e268de98558ca94b87be5846140de2e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9e268de98558ca94b87be5846140de2e, type: 3}
 --- !u!4 &743903765057700146 stripped
 Transform:
@@ -175,6 +181,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   distance: 100
+--- !u!114 &6462667913929079298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756724713386117074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a3911cfaa0d1e54d87b75691cee626e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  smallMesh: []
 --- !u!4 &7813110295734138497 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4768772696023269878, guid: 9e268de98558ca94b87be5846140de2e,

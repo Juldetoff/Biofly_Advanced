@@ -867,7 +867,7 @@ GameObject:
   - component: {fileID: 280052994933989446}
   - component: {fileID: 2588688454206377748}
   - component: {fileID: 7519094722023555078}
-  - component: {fileID: -164873673388931865}
+  - component: {fileID: -1738993700829562161}
   m_Layer: 0
   m_Name: CubeRouge
   m_TagString: Untagged
@@ -1001,7 +1001,7 @@ MonoBehaviour:
   rtb: {fileID: 2367677989024233822}
   rdf: {fileID: 4768772696023269878}
   rdb: {fileID: 20268912395881842}
---- !u!114 &-164873673388931865
+--- !u!114 &-1738993700829562161
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1010,10 +1010,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 5036933053729812645}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a3911cfaa0d1e54d87b75691cee626e, type: 3}
+  m_Script: {fileID: 11500000, guid: ef96cfa45c4a4eb438690ea631ef4504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 0}
+  camSeen: 
+  smallMesh:
+  - {fileID: 2598941349457016389}
+  - {fileID: 8008740069747815727}
+  - {fileID: 7083135978582590420}
+  - {fileID: 4811335762521199470}
+  - {fileID: 7840760181793595383}
+  - {fileID: 2367677989024233822}
+  - {fileID: 4768772696023269878}
+  - {fileID: 20268912395881842}
 --- !u!1 &5228078752999354375
 GameObject:
   m_ObjectHideFlags: 0

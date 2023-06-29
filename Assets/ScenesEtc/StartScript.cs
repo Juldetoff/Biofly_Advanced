@@ -9,6 +9,7 @@ using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using UnityEngine.Animations;
 using UnityEngine.Recorder.Examples;
+using UnityEngine.SceneManagement;
 public class StartScript : MonoBehaviour
 {
     ////////////////////////////////////////
@@ -57,15 +58,17 @@ public class StartScript : MonoBehaviour
     public string[] formatSettings = new string[3]{"mp3", "mov", "webm"}; //liste des formats de vidéo
     public float offsetcam = 35f; //offset de la caméra par rapport au sol
     private MovieRecorderExample[] cams = null;
+    private CinemachineVirtualCamera[] vcams = null;
     private GameObject generatedObject = null;
     private int count = 0;
+    private bool repeat = false;
+    private bool finished = false; //update lorsqu'une vcam envoie qu'elle a finit
     
 
 
     // Start is called before the first frame update
     void Start()
     {
-        cams = new MovieRecorderExample[nBCamera*2];
         ////////////////////////////////////////
         // PARTIE EXTRACTION DU FICHIER CONFIG
         string path = "config.txt";
@@ -107,6 +110,9 @@ public class StartScript : MonoBehaviour
                 //this.jello = Convert.ToInt32(line[1]);
                 //commenté car pas intéressant pour le moment
             }
+            else if (line[0]=="repeat"){
+                this.repeat = Convert.ToInt32(line[1])==1;
+            }
         }
         // Debug.Log("nBCamera = " + this.nBCamera); //nbr de paire de cam
         // Debug.Log("bruitAmplitude = " + this.bruitAmplitude); //la 2e cam est bruitée
@@ -116,6 +122,8 @@ public class StartScript : MonoBehaviour
 
         //stockage et récupération de certaines infos
         //notamment car on a une track cam virtuelle et une track cam physique template à utiliser
+        cams = new MovieRecorderExample[nBCamera*2];
+        vcams = new CinemachineVirtualCamera[nBCamera*2];
         terrainPos = terrain.transform.position; //on récupère la position du terrain
         originalVirtualTrack = timeline.GetOutputTrack(0); // assuming the original virtual camera is the first track
         originalPhysicalTrack = timeline.GetOutputTrack(1); // assuming the original physical camera is the second track
@@ -133,7 +141,7 @@ public class StartScript : MonoBehaviour
         
 
         //////////////////////////////////////////
-        //PARTIE INSTANCIATION DES PAIRES DE CAMERAS
+        //PARTIE INSTANCIATION DES PAIRES DE CAMERAS 
         for(int i=0; i<nBCamera; i++){ 
             //
             //GENERATION POINT DE DEPART
@@ -208,17 +216,16 @@ public class StartScript : MonoBehaviour
             //
             //ASSOCIATION CAMERAS ET TIMELINE
             SysCam syscam = Instantiate(prefabCam, new Vector3(0, 0, 0), Quaternion.identity); //on instancie un SysCam qui contient une caméra physique et virtuelle
-            cams[camCount] = syscam.cam.GetComponent<MovieRecorderExample>();
-            cams[camCount+1] = syscam.vcam.GetComponent<MovieRecorderExample>();
+            cams[camCount/2] = syscam.cam.GetComponent<MovieRecorderExample>();
+            vcams[camCount/2] = syscam.vcam;
             syscam.cam.name = "cam" + i*2; //on lui donne un nom
             syscam.vcam.GetCinemachineComponent<CinemachineTrackedDolly>().m_Path = Cpath; //on lui associe le chemin généré
+            syscam.cam.transform.position = Cpath.m_Waypoints[0].position; //on place la caméra au début du chemin
             syscam.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = bruitAmplitude;
             syscam.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = bruitFrequency;
             syscam.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = noiseSettings[noiseNumber];
             //ensuite on crée les tracks dans la timeline
 
-            //TESTER DE COMMENTER CA, EST CE QUE USELESS?
-            //TrackAsset virtualCameraTrack = timeline.CreateTrack(typeof(AnimationTrack), null, "Virtual Camera Track");
             AnimationTrack newTrack = timeline.CreateTrack<AnimationTrack>("newVirtualTrack");
             TrackAsset physicalCameraTrack = timeline.CreateTrack(typeof(CinemachineTrack), null, "Physical Camera Track");
             //on récupère les tracks dans les positions suivantes dans la timeline
@@ -255,6 +262,7 @@ public class StartScript : MonoBehaviour
                 cinemachineShot.VirtualCamera.exposedName = UnityEditor.GUID.Generate().ToString();
                 director.SetReferenceValue(cinemachineShot.VirtualCamera.exposedName, syscam.vcam);
             }
+            syscam.cam.GetComponent<MovieRecorderExample>().startVideo = true;
             ///////////////////////////////////////// 
 
 
@@ -262,7 +270,10 @@ public class StartScript : MonoBehaviour
             //CREATION DE LA CAMERA BRUITEE
             SysCam syscambruit = Instantiate(prefabCam, new Vector3(0, 0, 0), Quaternion.identity); 
             syscambruit.cam.name = "cambruit" + (i*2+1); //on lui donne un nom
+            cams[camCount/2] = syscambruit.cam.GetComponent<MovieRecorderExample>();
+            vcams[camCount/2] = syscambruit.vcam;
             syscambruit.vcam.GetCinemachineComponent<CinemachineTrackedDolly>().m_Path = Cpath; //on lui associe le chemin généré
+            syscambruit.cam.transform.position = Cpath.m_Waypoints[0].position; //on place la caméra au début du chemin
 
             
             TrackAsset virtualCameraTrackbruit = timeline.CreateTrack<AnimationTrack>("newNoiseVirtualTrack");
@@ -312,7 +323,7 @@ public class StartScript : MonoBehaviour
                 cinemachineShot.VirtualCamera.exposedName = UnityEditor.GUID.Generate().ToString();
                 director.SetReferenceValue(cinemachineShot.VirtualCamera.exposedName, syscambruit.vcam);
             }
-
+            syscambruit.cam.GetComponent<MovieRecorderExample>().startVideo = true;
         }
 
         //Bidouillage car lorsque toute les caméras sont instanciées, le temps n'est plus à 0 et elles ne veulent pas bouger
@@ -324,7 +335,47 @@ public class StartScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            // director.Stop();
+            // director.time = 0;
+            // director.Play(); //cool mais ça remet juste au point 0 en "remontant la timeline"
+            //sinon test de parcourir chaque caméra et de disable
+            Restart();
+        }
+        CheckFinished();
+        if(finished && repeat){
+            Restart();
+        }
+    }
+
+    private void CheckFinished(){
+        foreach(CinemachineVirtualCamera vcam in vcams){
+            if(vcam.GetCinemachineComponent<CinemachineTrackedDolly>().m_PathPosition == 10){
+                finished = true;
+            }
+        }
+    }
+
+    private void Restart()
+    {
+        foreach (MovieRecorderExample mov in cams)
+        {
+            mov.DisableVideo();
+        }
+        WaitForSeconds waitForSeconds = new WaitForSeconds(1f);
+        StartCoroutine(WaitAndRestartScene(waitForSeconds));
+    }
+
+    private IEnumerator WaitAndRestartScene(WaitForSeconds waitForSeconds)
+    {
+        yield return waitForSeconds;
+        // Libérer les ressources associées à l'enregistreur de vidéo
+        foreach(MovieRecorderExample mov in cams){
+            Destroy(mov);
+        }
+        // Relancer la scène
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 
     private Vector3 GeneratePoint(Vector3 previousPoint, float radius){
