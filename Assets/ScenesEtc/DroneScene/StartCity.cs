@@ -12,6 +12,9 @@ public class StartCity : StartDrone
     public GameObject[] prefabs;
     public int maxSpawnAttemps = 10;
     private int tryCnt = 0;
+    public int GenerateCount = 2;
+    public bool spawnCars = false; //prefabs de 0 à 30 (exclus, normalement si tout est bien configuré)
+    public bool spawnPeople = false; //prefabs de 30 à 36
 
     void Start()
     {
@@ -25,9 +28,10 @@ public class StartCity : StartDrone
     {
         if(Time.time - lastTime > maxTime && Vector3.Distance(lastPos,Cams.cam.gameObject.transform.position) > distance){
             lastPos = Cams.cam.gameObject.transform.position; 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < GenerateCount; i++)
             {
                 CreateObject();
+                Debug.Log("object generated :" + i);
             }
             lastTime = Time.time; 
         }
@@ -59,24 +63,33 @@ public class StartCity : StartDrone
             //randomPoint = Vector3.zero; //le temps de tester des draws
         }
 
-        int prefabRand = UnityEngine.Random.Range(0, prefabs.Length+1); //ici on va s'occuper de la voiture qu'on génère
+        int prefabRand = UnityEngine.Random.Range(0, prefabs.Length+1); //ici on va s'occuper de la voiture qu'on génère (max+1 pour une chance de ne pas avoir d'objet qui apparaisse)
+        if(spawnCars && !spawnPeople){
+            prefabRand = UnityEngine.Random.Range(0, 30);
+        }
+        else if(spawnPeople && !spawnCars){
+            prefabRand = UnityEngine.Random.Range(30, 36);
+        }
+        else if(!spawnCars && !spawnPeople){ //pas super opti comme méthode mais on fait avec ce qu'on a
+            prefabRand = prefabs.Length+1; //cas pas d'objet du coup
+        }
 
         if(prefabRand!=prefabs.Length && randomPoint != Vector3.zero){ 
+
             objectGenerated = cubeManager.CreateCube(randomPoint.x, randomPoint.y, randomPoint.z, prefabs[prefabRand]);
-            objectGenerated.name = "voiture" +objectCnt;
+            if(prefabRand < 30){
+                objectGenerated.name = "voiture" +objectCnt;
+            }
+            else{
+                objectGenerated.name = "personne" +objectCnt;
+            }
             objectGenerated.tag = "obstacle";
             objectCnt++;
 
             objectGenerated.GetComponent<Render_dist>().SetCam(Cams.cam.gameObject);
             objectGenerated.GetComponent<Render_dist>().SetDistance(render_dist);
 
-            // float size = UnityEngine.Random.Range(0.10f, 0.5f);
-            // objectGenerated.transform.localScale = new Vector3(size, size, size); //voiture a taille fixe
-            // objectGenerated.transform.position = new Vector3(
-            //     objectGenerated.transform.position.x,
-            //      objectGenerated.transform.position.y + (size - 1f) * 0.5f,
-            //       objectGenerated.transform.position.z);
-            objectGenerated.transform.position = new Vector3( //ici on positionne la voiture en fonction de sa hauteur
+            objectGenerated.transform.position = new Vector3( //ici on positionne l'objet en fonction de sa hauteur
                 objectGenerated.transform.position.x,
                  objectGenerated.transform.position.y + 0.5f,
                   objectGenerated.transform.position.z);
@@ -105,11 +118,18 @@ public class StartCity : StartDrone
         {
             objectGenerated.GetComponent<Render_dist>().SetCam(Cams.cam.gameObject);
             objectGenerated.GetComponent<SoloDetectableScript>().setCam(Cams.cam.gameObject.GetComponent<Camera>());
+            if(prefabRand >= 30){ //on repositionne parce que la foule a du mal à se placer
+                objectGenerated.transform.position = new Vector3(
+                    objectGenerated.transform.position.x,
+                    objectGenerated.transform.position.y - 1.15f,
+                    objectGenerated.transform.position.z);
+            }
         }
     }
 
     public Vector3 RouteRandomPos(Vector3 departPos){ //on cherche un point aléatoire sur la route autour du point de départ 
         if(tryCnt >= maxSpawnAttemps){ //on a essayé de trouver un point sur la route mais on a pas réussi
+            Debug.Log("pas de point trouvé");
             return Vector3.zero;
         }
 

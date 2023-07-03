@@ -22,7 +22,6 @@ public class Crowd : MonoBehaviour
         timer += Time.deltaTime;
         if(timer > 5){
             rand = Random.Range(0,10);
-            Debug.Log(rand);
             if(rand==0 || rand==1){
                 crouched = !crouched;
                 anim.SetBool("crouch", crouched);
