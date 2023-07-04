@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2688.373, g: 2573.584, b: 2781.3242, a: 1}
+  m_IndirectSpecularColor: {r: 2689.916, g: 2575.463, b: 2784.4219, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6929,7 +6929,6 @@ MonoBehaviour:
   maxBottomVerticalAngleFromHorizon: 40
   maxVelocity: 70
   speed: 15
-  useTerrain: 1
   terrain: {fileID: 1783289004}
   offsetTopHeight: -25
   offsetBotHeight: -35

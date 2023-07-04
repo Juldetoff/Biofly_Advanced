@@ -13,6 +13,8 @@ public class SoloDetectableScript : MonoBehaviour
     public Camera cam;
     bool almostVisible=false;
     public Transform[] smallMesh;
+    
+    private GameObject lineRenderer = null;
 
     // Start is called before the first frame update
 
@@ -109,6 +111,9 @@ public class SoloDetectableScript : MonoBehaviour
 
     private void Where(){
         if(almostVisible){
+            Destroy(lineRenderer);
+            lineRenderer = null;
+
             Vector2 smallMeshToViewX = meshToViewPortMinX(smallMesh);
             Vector2 smallMeshToViewY = meshToViewPortMinY(smallMesh);
             // Vector2 lefttop = new Vector2(Minx(smallMesh),Maxy(smallMesh));
@@ -118,23 +123,33 @@ public class SoloDetectableScript : MonoBehaviour
 
             Vector2 lefttop = new Vector2(smallMeshToViewX.x,smallMeshToViewY.y);
             Vector2 rightbot = new Vector2(smallMeshToViewX.y,smallMeshToViewY.x);
+
+            //pour tester, on va instancier un lineRenderer aux positions pour afficher un rectangle
+            // lineRenderer = new GameObject();
+            // lineRenderer.AddComponent<LineRenderer>();
+            // LineRenderer lr = lineRenderer.GetComponent<LineRenderer>();
+            // lr.material = new Material(Shader.Find("Sprites/Default"));
+            // lr.startColor = Color.red;
+            // lr.endColor = Color.red;
+            // lr.startWidth = 0.1f;
+            // lr.endWidth = 0.1f;
+            // lr.positionCount = 5;
+            // Debug.Log("lefttop : " + lefttop.ToString());
+            // Debug.Log("rightbot : " + rightbot.ToString());
+            // float z = Vector3.Distance(cam.transform.position, this.transform.position);
+            // lr.SetPosition(0, cam.ViewportToWorldPoint(new Vector3(lefttop.x,lefttop.y,z)));
+            // lr.SetPosition(1, cam.ViewportToWorldPoint(new Vector3(rightbot.x,lefttop.y,z)));
+            // lr.SetPosition(2, cam.ViewportToWorldPoint(new Vector3(rightbot.x,rightbot.y,z)));
+            // lr.SetPosition(3, cam.ViewportToWorldPoint(new Vector3(lefttop.x,rightbot.y,z)));
+            // lr.SetPosition(4, cam.ViewportToWorldPoint(new Vector3(lefttop.x,lefttop.y,z)));
+
     
             string filePath = Application.dataPath + "/../Positions/" + "Start"+ camtrouvé.name +".txt";
-            float temps = Time.time-cam.GetComponent<MovieRecordManual>().startTime;
+            float temps = Time.time-cam.GetComponent<MovieRecordManual>().startTime; 
             using (StreamWriter writer = new StreamWriter(filePath, true))
             {
                 writer.WriteLine("Objet " + this.name + " vu en :" + lefttop.ToString() + "," + rightbot.ToString());
-                // writer.WriteLine("lefttop : " + lefttop.ToString());
-                // writer.WriteLine("righttop : " + righttop.ToString());
-                // writer.WriteLine("leftbot : " + leftbot.ToString());
-                // writer.WriteLine("rightbot : " + rightbot.ToString());
             }
-        //     Vector3 scenePos = cam.WorldToViewportPoint(this.transform.position);
-        // Vector3 viewportPos = scenePos;
-
-        // if (viewportPos.x > 0 && viewportPos.x <= 1 &&
-        //     viewportPos.y > 0 && viewportPos.y <= 1 && viewportPos.z > 0)
-        // {
         }
     }
 
@@ -170,46 +185,4 @@ public class SoloDetectableScript : MonoBehaviour
         }
         return new Vector2(miny,maxy);
     }
-
-    public float Minx(Transform[] mesh){
-        float minx = 1;
-        for (int i = 0; i < mesh.Length; i++)
-        {
-            if(mesh[i].position.x < minx){
-                minx = mesh[i].position.x;
-            }
-        }
-        return minx;
-    }  
-    public float Maxx(Transform[] mesh){
-        float maxx = -1;
-        for (int i = 0; i < mesh.Length; i++)
-        {
-            if(mesh[i].position.x > maxx){
-                maxx = mesh[i].position.x;
-            }
-        }
-        return maxx;
-    }
-    public float Miny(Transform[] mesh){
-        float miny = 1;
-        for (int i = 0; i < mesh.Length; i++)
-        {
-            if(mesh[i].position.y < miny){
-                miny = mesh[i].position.y;
-            }
-        }
-        return miny;
-    }
-    public float Maxy(Transform[] mesh){
-        float maxy = -1;
-        for (int i = 0; i < mesh.Length; i++)
-        {
-            if(mesh[i].position.y > maxy){
-                maxy = mesh[i].position.y;
-            }
-        }
-        return maxy;
-    }
-
 }

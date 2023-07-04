@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 
 using System.ComponentModel;
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Recorder;
@@ -157,6 +158,20 @@ namespace UnityEngine.Recorder.Examples
         void OnDisable()
         {
             m_RecorderController.StopRecording();
+
+            string filePath = Application.dataPath + "/../Positions/Start"+name+".txt";
+            int numberOfLinesToRemove = 2;
+            RemoveFirstLines(filePath, numberOfLinesToRemove); //afin de retirer les lignes excessives au début du fichier
+        }
+
+        static void RemoveFirstLines(string filePath, int numberOfLinesToRemove)
+        {
+            string[] lines = File.ReadAllLines(filePath);
+            string[] remainingLines = new string[lines.Length - numberOfLinesToRemove];
+
+            Array.Copy(lines, numberOfLinesToRemove, remainingLines, 0, remainingLines.Length);
+
+            File.WriteAllLines(filePath, remainingLines);
         }
 
         void Update()
@@ -172,7 +187,7 @@ namespace UnityEngine.Recorder.Examples
                 string filePath2 = Application.dataPath + "/../Positions/Start"+name+".txt";
                 using (StreamWriter writer = new StreamWriter(filePath2, true))
                 {
-                    writer.WriteLine("Temps :" + ( Time.time-startTime ).ToString() + "s");
+                    writer.WriteLine("Temps :" + ( Time.time-startTime  - 1/30f ).ToString() + "s"); 
                 }
             }
 

@@ -194,7 +194,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
-  smallMesh: []
+  smallMesh:
+  - {fileID: 743903765057700146}
+  - {fileID: 4712851267572187736}
+  - {fileID: 5480864595857306787}
+  - {fileID: 7820192379462689817}
+  - {fileID: 4795298123141818496}
+  - {fileID: 1051596549557997097}
+  - {fileID: 7813110295734138497}
+  - {fileID: 3317932040962554373}
 --- !u!4 &7813110295734138497 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4768772696023269878, guid: 9e268de98558ca94b87be5846140de2e,
