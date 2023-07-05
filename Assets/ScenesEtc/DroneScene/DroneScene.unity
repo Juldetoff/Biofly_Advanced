@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 4
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2872.1875, g: 2876.0254, b: 2841.3555, a: 1}
+  m_IndirectSpecularColor: {r: 2691.4238, g: 2577.4844, b: 2787.9688, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4215,9 +4215,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed6f82ebc81aff943894a0cd958417dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RecordAudio: 1
+  m_RecordAudio: 0
   startDronescript: {fileID: 1608388212}
-  recordEffect: 0
+  recordEffect: 1
   title: noise
   startTime: 0
   rollingShutterEffect: {fileID: 1414099825}
@@ -5236,6 +5236,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3120238807773159447, guid: 02aa516bcf5d0b14f8ca6ed6993c4c39,
         type: 3}
+      propertyPath: m_Name
+      value: CamBruit
+      objectReference: {fileID: 0}
+    - target: {fileID: 3120238807773159447, guid: 02aa516bcf5d0b14f8ca6ed6993c4c39,
+        type: 3}
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
@@ -5383,7 +5388,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1069787294}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf584e4b81e86374c813c95f156fc1a8, type: 3}
   m_Name: 
@@ -5391,7 +5396,7 @@ MonoBehaviour:
   sceneCamera: {fileID: 1414099820}
   compositorCamera: {fileID: 1383899120}
   maskMaterial: {fileID: 2100000, guid: cae16cf3f030da64e877f55db92365e0, type: 2}
-  temporalResolution: 50
+  temporalResolution: 10
   textureFormat: 4
   renderTextures: []
 --- !u!1001 &1434029545
@@ -5710,7 +5715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RecordAudio: 0
   startDronescript: {fileID: 1608388212}
-  recordEffect: 0
+  recordEffect: 1
   title: real
   startTime: 0
   rollingShutterEffect: {fileID: 1491086983}
@@ -5735,7 +5740,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1491086962}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf584e4b81e86374c813c95f156fc1a8, type: 3}
   m_Name: 
@@ -5743,7 +5748,7 @@ MonoBehaviour:
   sceneCamera: {fileID: 1491086981}
   compositorCamera: {fileID: 1383899120}
   maskMaterial: {fileID: 2100000, guid: cae16cf3f030da64e877f55db92365e0, type: 2}
-  temporalResolution: 100
+  temporalResolution: 10
   textureFormat: 4
   renderTextures: []
 --- !u!1001 &1498541645

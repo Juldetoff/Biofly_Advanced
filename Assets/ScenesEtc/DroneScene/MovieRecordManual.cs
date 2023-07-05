@@ -136,9 +136,10 @@ namespace UnityEngine.Recorder.Examples
 
                 if (rollingShutterEffect != null && rollingShutterEffect.enabled && recordEffect)
                 {
-                    RenderTexture inputTexture = rollingShutterEffect.GetRenderTexture();
-                    rollingShutterEffect.ApplyRollingShutterEffect(inputTexture, inputTexture);
-                    renderTextureInputSettings.RenderTexture = inputTexture;
+                    // RenderTexture inputTexture = rollingShutterEffect.GetRenderTexture();
+                    // rollingShutterEffect.ApplyRollingShutterEffect(inputTexture, inputTexture);
+                    // renderTextureInputSettings.RenderTexture = inputTexture;
+                    StartCoroutine(WaitForTextureGeneration());
                 }
                 
                 m_RecorderController = new RecorderController(controllerSettings);
@@ -188,9 +189,10 @@ namespace UnityEngine.Recorder.Examples
             Initialize();
             if (rollingShutterEffect != null && rollingShutterEffect.enabled && recordEffect)
             {
-                RenderTexture inputTexture = rollingShutterEffect.GetRenderTexture();
-                rollingShutterEffect.ApplyRollingShutterEffect(inputTexture, inputTexture);
-                renderTextureInputSettings.RenderTexture = inputTexture;
+                // RenderTexture inputTexture = rollingShutterEffect.GetRenderTexture();
+                // rollingShutterEffect.ApplyRollingShutterEffect(inputTexture, inputTexture);
+                // renderTextureInputSettings.RenderTexture = inputTexture;
+                StartCoroutine(WaitForTextureGeneration());
             }
             if(isRegister){
                 string filePath2 = Application.dataPath + "/../Positions/Start"+name+".txt";

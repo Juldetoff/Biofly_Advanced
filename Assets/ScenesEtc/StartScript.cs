@@ -223,7 +223,7 @@ public class StartScript : MonoBehaviour
             syscam.cam.transform.position = Cpath.m_Waypoints[0].position; //on place la caméra au début du chemin
             syscam.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = bruitAmplitude;
             syscam.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = bruitFrequency;
-            syscam.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = noiseSettings[noiseNumber];
+            syscam.vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = null; //on veut pas de bruit sur la cam normale
             //ensuite on crée les tracks dans la timeline
 
             AnimationTrack newTrack = timeline.CreateTrack<AnimationTrack>("newVirtualTrack");
@@ -263,6 +263,7 @@ public class StartScript : MonoBehaviour
                 director.SetReferenceValue(cinemachineShot.VirtualCamera.exposedName, syscam.vcam);
             }
             syscam.cam.GetComponent<MovieRecorderExample>().startVideo = true;
+            syscam.cam.GetComponent<Camera>().depth = 2; //on met 2 pour les caméras normales afin qu'elles soient prioritaires pour le rendu
             ///////////////////////////////////////// 
 
 
@@ -324,6 +325,7 @@ public class StartScript : MonoBehaviour
                 director.SetReferenceValue(cinemachineShot.VirtualCamera.exposedName, syscambruit.vcam);
             }
             syscambruit.cam.GetComponent<MovieRecorderExample>().startVideo = true;
+            syscambruit.cam.GetComponent<Camera>().depth = 1; //1 ici car on ne veut pas que l'affichage du runtime soit bruité (dérangeant)
         }
 
         //Bidouillage car lorsque toute les caméras sont instanciées, le temps n'est plus à 0 et elles ne veulent pas bouger
