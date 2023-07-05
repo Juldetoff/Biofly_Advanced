@@ -31,7 +31,7 @@ public class StartCity : StartDrone
             for (int i = 0; i < GenerateCount; i++)
             {
                 CreateObject();
-                Debug.Log("object generated :" + i);
+                //Debug.Log("object generated :" + i);
             }
             lastTime = Time.time; 
         }
@@ -82,18 +82,17 @@ public class StartCity : StartDrone
             }
             else{
                 objectGenerated.name = "personne" +objectCnt;
+                objectGenerated.transform.GetChild(1).gameObject.name = "personne" +objectCnt;
+                // objectGenerated = objectGenerated.transform.GetChild(1).gameObject;
             }
             objectGenerated.tag = "obstacle";
             objectCnt++;
-
-            objectGenerated.GetComponent<Render_dist>().SetCam(Cams.cam.gameObject);
-            objectGenerated.GetComponent<Render_dist>().SetDistance(render_dist);
 
             objectGenerated.transform.position = new Vector3( //ici on positionne l'objet en fonction de sa hauteur
                 objectGenerated.transform.position.x,
                  objectGenerated.transform.position.y + 0.5f,
                   objectGenerated.transform.position.z);
-
+                  
             RaycastHit hit; //le sol n'est pas exactement plat on oriente l'objet en fonction de la pente
             var ray = new Ray(objectGenerated.transform.position, Vector3.down); // check for slopes
             Debug.DrawRay(objectGenerated.transform.position, Vector3.down, Color.blue, 1000);
@@ -117,13 +116,15 @@ public class StartCity : StartDrone
         if (objectGenerated)
         {
             objectGenerated.GetComponent<Render_dist>().SetCam(Cams.cam.gameObject);
-            objectGenerated.GetComponent<SoloDetectableScript>().setCam(Cams.cam.gameObject.GetComponent<Camera>());
             if(prefabRand >= 30){ //on repositionne parce que la foule a du mal à se placer
                 objectGenerated.transform.position = new Vector3(
                     objectGenerated.transform.position.x,
                     objectGenerated.transform.position.y - 1.15f,
                     objectGenerated.transform.position.z);
+                objectGenerated = objectGenerated.transform.GetChild(1).gameObject;
             }
+            objectGenerated.transform.rotation = Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0);
+            objectGenerated.GetComponent<SoloDetectableScript>().setCam(Cams.cam.gameObject.GetComponent<Camera>());
         }
     }
 
@@ -179,37 +180,7 @@ public class StartCity : StartDrone
             }
         }
 
-        // float r = UnityEngine.Random.Range(5,radius);
-        // Vector3 randomDirection = UnityEngine.Random.insideUnitSphere.normalized;
-        // randomPoint = lastPos + randomDirection * r;
-        // Debug.DrawLine(departPos, randomPoint, Color.green, 2000);
-        // CheckRoute(randomPoint);
         
-
-        // if(!meshRoute.bounds.Contains(randomPoint)){ //pn essaye de forcer le point à être sur la route
-        //     Debug.Log("out of bounds");
-        //     Debug.DrawLine(randomPoint, meshRoute.bounds.ClosestPoint(randomPoint), Color.blue, 2000);
-        //     randomPoint = meshRoute.bounds.ClosestPoint(randomPoint);
-        // }
-        // else{
-        //     RaycastHit hit;
-        //     if (Physics.Raycast(randomPoint, Vector3.down, out hit))
-        //     {
-        //         Debug.DrawLine(randomPoint, hit.point, Color.red, 2000);
-        //         randomPoint.y = hit.point.y;
-        //     }
-        //     else if (Physics.Raycast(randomPoint, Vector3.up, out hit))
-        //     {
-        //         Debug.DrawLine(randomPoint, hit.point, Color.red, 2000);
-        //         randomPoint.y = hit.point.y;
-        //     }
-        //     else{
-        //         randomPoint = RouteRandomPos(departPos);
-        //     }
-        // }
-        // randomPoint.x = Random.Range(meshRoute.bounds.min.x, meshRoute.bounds.max.x);
-        // randomPoint.z = Random.Range(meshRoute.bounds.min.z, meshRoute.bounds.max.z);
-
         return randomPoint;        
     }
 }

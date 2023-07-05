@@ -9,6 +9,7 @@ public class Crowd : MonoBehaviour
     bool crouched = false;
     bool fight = false;
     bool applause = false;
+    bool lie = false;
     Animator anim = null;
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,10 @@ public class Crowd : MonoBehaviour
             else if(rand==4||rand==5){
                 applause = !applause;
                 anim.SetBool("applause", applause);
+            }
+            else if(rand==6||rand==7){
+                lie = !lie;
+                anim.SetBool("lie", lie);
             }
             timer = 0;
         }

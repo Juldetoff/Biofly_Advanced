@@ -125,6 +125,7 @@ namespace UnityEngine.Recorder.Examples
                 // the name of the object is used as the file name
                 m_Settings.OutputFile = mediaOutputFolder.FullName + "/" + "cam" + title;
                 
+                
                 controllerSettings.SetRecordModeToManual();
                 
                 // choose the camera to use for the rendering
@@ -157,11 +158,22 @@ namespace UnityEngine.Recorder.Examples
 
         void OnDisable()
         {
-            m_RecorderController.StopRecording();
+            DisableVideo();
+        }
 
-            string filePath = Application.dataPath + "/../Positions/Start"+name+".txt";
-            int numberOfLinesToRemove = 2;
-            RemoveFirstLines(filePath, numberOfLinesToRemove); //afin de retirer les lignes excessives au début du fichier
+        public void DisableVideo(){
+            if(m_RecorderController!=null){
+                m_RecorderController.StopRecording();
+                Debug.Log($"Stopped recording for file {OutputFile.FullName}");
+                string filePath = Application.dataPath + "/../Positions/Start"+name+".txt";
+                int numberOfLinesToRemove = 2; 
+                RemoveFirstLines(filePath, numberOfLinesToRemove); //afin de retirer les lignes excessives au début du fichier
+            }
+            else{
+                Debug.Log("No recorder to stop");
+                //dans ce cas par sécurité pour le moment on va delete la vidéo (parce que sinon le programme ne tourne plus)
+                File.Delete(OutputFile.FullName);
+            }
         }
 
         static void RemoveFirstLines(string filePath, int numberOfLinesToRemove)

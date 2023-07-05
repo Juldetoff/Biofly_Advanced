@@ -29,12 +29,6 @@ public class SoloDetectableScript : MonoBehaviour
     private void Start() {
         this.tag = "obstacle";
         camtrouvé = cam;
-        //on nettoie le txt de positions puis on cherche la position au cas où on apparaisse déjà dans le champ de vision
-        // string filePath = Application.dataPath + "/../Positions/" + this.name + ".txt";
-        // using (StreamWriter writer = new StreamWriter(filePath, false))
-        // {
-        //     writer.WriteLine("Positions de l'objet " + this.name + " :");
-        // }
     }
 
     private void Update()
