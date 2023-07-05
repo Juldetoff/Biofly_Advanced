@@ -27,16 +27,17 @@ namespace UnityEngine.Recorder.Examples
         public bool startvideo = false;
         public bool isRegister = false;
 
-        public FileInfo OutputFile
-        {
-            get
-            {
-                var fileName = "DroneView" + title + "." + format;
-                return new FileInfo(fileName);
-            }
-        }
+        // public FileInfo OutputFile
+        // {
+        //     get
+        //     {
+        //         var fileName = "DroneView" + title + "." + format;
+        //         return new FileInfo(fileName);
+        //     }
+        // }
         void Awake()
         {
+            startvideo = false;
             //on crée un tag pour la caméra (pour pouvoir la détecter
             SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
             SerializedProperty tagsProp = tagManager.FindProperty("tags");
@@ -66,6 +67,7 @@ namespace UnityEngine.Recorder.Examples
         internal void Initialize()
         {
             if(startvideo){
+                startvideo = false; //pour que start gère le lancement de la vidéo (donc + ou - synchro)
                 format = startDronescript.formatSettings[startDronescript.videoType];
                 quality = startDronescript.qualitySettings[startDronescript.videoQuality];
                 fps = startDronescript.videoFps;
@@ -124,8 +126,7 @@ namespace UnityEngine.Recorder.Examples
                 // Simple file name (no wildcards) so that FileInfo constructor works in OutputFile getter.
                 // the name of the object is used as the file name
                 m_Settings.OutputFile = mediaOutputFolder.FullName + "/" + "cam" + title;
-                
-                
+                 
                 controllerSettings.SetRecordModeToManual();
                 
                 // choose the camera to use for the rendering
@@ -147,9 +148,6 @@ namespace UnityEngine.Recorder.Examples
                 
                 m_RecorderController.StartRecording();
                 startTime=0;
-
-                //Debug.Log($"Started recording for file {OutputFile.FullName}");
-                startvideo = false; //pour que start gère le lancement de la vidéo (donc + ou - synchro)
             }
         }
         private void Start() {
@@ -164,15 +162,14 @@ namespace UnityEngine.Recorder.Examples
         public void DisableVideo(){
             if(m_RecorderController!=null){
                 m_RecorderController.StopRecording();
-                Debug.Log($"Stopped recording for file {OutputFile.FullName}");
                 string filePath = Application.dataPath + "/../Positions/Start"+name+".txt";
                 int numberOfLinesToRemove = 2; 
                 RemoveFirstLines(filePath, numberOfLinesToRemove); //afin de retirer les lignes excessives au début du fichier
             }
             else{
                 Debug.Log("No recorder to stop");
-                //dans ce cas par sécurité pour le moment on va delete la vidéo (parce que sinon le programme ne tourne plus)
-                File.Delete(OutputFile.FullName);
+                //dans ce cas par sécurité pour le moment on va delete la vidéo
+                File.Delete(Application.dataPath + "/../SampleRecordings/cam" + title + ".mp4"); 
             }
         }
 
