@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.Recorder.Examples;
 
 public class HDRP_RollingShutter : MonoBehaviour
 {
     public Camera sceneCamera;
     public Camera compositorCamera;
     public Material maskMaterial;
-    public int temporalResolution = 100;
+    public int temporalResolution = 10;
     public RenderTextureFormat textureFormat = RenderTextureFormat.RGB565;
 
     private CommandBuffer commandBuffer;
@@ -18,7 +19,7 @@ public class HDRP_RollingShutter : MonoBehaviour
     private void Start()
     {
         QualitySettings.vSyncCount = 2;
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = (int)sceneCamera.GetComponent<MovieRecordManual>().fps; //corrigera ptet la vitesse de la vidéo
 
         int w = Screen.width;
         int h = Screen.height;

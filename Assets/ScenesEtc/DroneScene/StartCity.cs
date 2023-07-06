@@ -21,6 +21,11 @@ public class StartCity : StartDrone
         ExtractConfig();
         route = CheckRoute(this.transform.position);
         meshRoute = route.GetComponent<MeshCollider>();
+
+        if(jello){
+            Cams.cam.gameObject.GetComponent<HDRP_RollingShutter>().enabled = true;
+            VCams.cam.gameObject.GetComponent<HDRP_RollingShutter>().enabled = true; 
+        }
     }
 
     // Update is called once per frame

@@ -20,21 +20,13 @@ namespace UnityEngine.Recorder.Examples
         public string title = "TEST";
         private string format = "mp4";
         private string quality = "high";
-        private float fps = 60;
+        public float fps = 60;
         public float startTime=0;
         public HDRP_RollingShutter rollingShutterEffect;
         private RenderTextureInputSettings renderTextureInputSettings;
         public bool startvideo = false;
         public bool isRegister = false;
 
-        // public FileInfo OutputFile
-        // {
-        //     get
-        //     {
-        //         var fileName = "DroneView" + title + "." + format;
-        //         return new FileInfo(fileName);
-        //     }
-        // }
         void Awake()
         {
             startvideo = false;
@@ -218,8 +210,8 @@ namespace UnityEngine.Recorder.Examples
                 OutputWidth = rollingShutterEffect.sceneCamera.pixelWidth,
                 OutputHeight = rollingShutterEffect.sceneCamera.pixelHeight,
                 RenderTexture = rollingShutterEffect.GetRenderTexture()
+                
             };
-
             // Assignez renderTextureInputSettings à m_Settings.ImageInputSettings
             m_Settings.ImageInputSettings = renderTextureInputSettings;
         }

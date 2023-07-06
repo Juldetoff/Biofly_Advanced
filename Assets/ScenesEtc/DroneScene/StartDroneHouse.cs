@@ -29,6 +29,11 @@ public class StartDroneHouse : StartDrone
     {
         ExtractConfig();
 
+        if(jello){
+            Cams.cam.gameObject.GetComponent<HDRP_RollingShutter>().enabled = true;
+            VCams.cam.gameObject.GetComponent<HDRP_RollingShutter>().enabled = true; 
+        }
+
         solPos = sol.transform.position; //on récupère la position du sol
     }
 

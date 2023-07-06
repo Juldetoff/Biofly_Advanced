@@ -21,6 +21,7 @@ public class StartDrone : MonoBehaviour
     public int videoType = 0;
     public int videoQuality = 0;
     public int videoFps = 60;
+    public bool jello = false;
     private Vector3 point = new Vector3(0, 0, 0); //point de départ du chemin modifié à chaque fois
 
     ////////////////////////////////////////
@@ -39,6 +40,7 @@ public class StartDrone : MonoBehaviour
     private int objectCount = 0;
 
     public SysCam Cams;
+    public SysCam VCams;
     public GameObject flouPane;
 
     public NoiseSettings[] noiseSettings = new NoiseSettings[9]; //liste des types de bruits afin de pouvoir les associer à la caméra
@@ -64,6 +66,11 @@ public class StartDrone : MonoBehaviour
         lastTime = Time.time;
 
         terrainPos = terrain.transform.position; //on récupère la position du terrain
+
+        if(jello){
+            Cams.cam.gameObject.GetComponent<HDRP_RollingShutter>().enabled = true;
+            VCams.cam.gameObject.GetComponent<HDRP_RollingShutter>().enabled = true; 
+        }
     }
 
     private void Awake() {
@@ -120,15 +127,26 @@ public class StartDrone : MonoBehaviour
             }
             else if (line[0] == "jello")
             {
-                //this.jello = Convert.ToInt32(line[1]);
+                this.jello = Convert.ToInt32(line[1]) == 1;
             }
         }
         lastPos = Cams.cam.gameObject.transform.position - new Vector3(0, 500, 0);
         lastTime = Time.time;
 
-        noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = bruitAmplitude;
-        noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = bruitFrequency;
-        noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = noiseSettings[noiseNumber];
+        if(jello){ //dans ce cas, pas de bruits et on échange les depths
+            Cams.cam.gameObject.GetComponent<HDRP_RollingShutter>().enabled = true;
+            noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0f;
+            noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = 0f;
+            noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = null;
+            VCams.cam.gameObject.GetComponent<Camera>().depth = 2;
+            Cams.cam.gameObject.GetComponent<Camera>().depth = 1;
+        }
+        else{
+            Cams.cam.gameObject.GetComponent<HDRP_RollingShutter>().enabled = false;
+            noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = bruitAmplitude;
+            noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = bruitFrequency;
+            noisecam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = noiseSettings[noiseNumber];
+        }
         foreach (MovieRecordManual mov in movieRecordManuals)
         {
             mov.startvideo = true;
