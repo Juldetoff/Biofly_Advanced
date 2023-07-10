@@ -29,6 +29,14 @@ public class DetectableScript : MonoBehaviour
         Where();
     }
 
+    public void SetSmallMesh(Transform[] transfo){
+        this.smallMesh = transfo;
+    }
+
+    public Transform[] GetSmallMesh(){
+        return smallMesh;
+    }
+
     private void Seen() //on vérifie si l'objet est vu par une caméra. Il s'occupe également de remplir le tableau des bools
     {
         for (int i = 0; i < camSeen.Length; i++)

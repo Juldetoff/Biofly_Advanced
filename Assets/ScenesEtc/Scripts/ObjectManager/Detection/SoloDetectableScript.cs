@@ -22,8 +22,12 @@ public class SoloDetectableScript : MonoBehaviour
     {
         this.cam = cam;
     }
-    public void setTimeStart(float timestart)
-    {
+    public void SetSmallMesh(Transform[] transfo){
+        this.smallMesh = transfo;
+    }
+
+    public Transform[] GetSmallMesh(){
+        return smallMesh;
     }
 
     private void Start() {

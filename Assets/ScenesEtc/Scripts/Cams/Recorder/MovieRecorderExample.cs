@@ -42,7 +42,8 @@ namespace UnityEngine.Recorder.Examples
 
         void OnEnable()
         {   
-            startScript = GameObject.Find("GameStartManager").GetComponent<StartScript>();
+            //startScript = GameObject.Find("GameStartManager").GetComponent<StartScript>();
+            startScript = GameObject.FindObjectOfType<StartScript>();
             count = startScript.camCount.ToString();
             startScript.camCount++;
             SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
@@ -160,9 +161,9 @@ namespace UnityEngine.Recorder.Examples
                 Debug.Log($"Stopped recording for file {OutputFile.FullName}");
             }
             else{
-                Debug.Log("No recorder to stop");
+                Debug.Log("No recorder to stop for"+gameObject.tag +".mp4");
                 //dans ce cas par sécurité pour le moment on va delete la vidéo (parce que sinon le programme ne tourne plus)
-                File.Delete(OutputFile.FullName);
+                File.Delete(Application.dataPath + "/../SampleRecordings/cam" + count + ".mp4"); 
             }
         }
 

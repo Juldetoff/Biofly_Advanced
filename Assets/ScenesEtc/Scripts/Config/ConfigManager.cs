@@ -164,7 +164,7 @@ public class ConfigManager : MonoBehaviour
             writer.WriteLine("videoQuality,"+qualiteVideo); //0 pour low, 1 pour medium, 2 pour high
             writer.WriteLine("fps,"+fpsvideo); //fps de la vidéo
             writer.WriteLine("jello,"+jello); //jello ou non (0 non, 1 oui)
-            writer.WriteLine("repeat"+repetition); //si se repète ou non en auto (0 non, 1 oui)
+            writer.WriteLine("repeat,"+repetition); //si se repète ou non en auto (0 non, 1 oui)
             writer.Close();
         }
         //en dessous on gère le changement de scène, bien que cela rend inutile la ligne "scene,..." dans config.txt
