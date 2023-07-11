@@ -22,6 +22,7 @@ public class AutoCityStart : StartScript
     public GameObject[] prefabs;
     public int maxSpawnAttemps = 100; 
     private int tryCnt = 0;
+    private int tryCnt2 = 0;
     public bool spawnCars = false; //prefabs de 0 à 30 (exclus, normalement si tout est bien configuré)
     public bool spawnPeople = false; //prefabs de 30 à 36
     private Vector3 pointTemp = new Vector3(0,0,0);
@@ -60,6 +61,12 @@ public class AutoCityStart : StartScript
             Restart();
         }
         CheckFinished();
+        if(finished){
+            foreach (MovieRecorderExample item in cams)
+            {
+                item.DisableVideo();
+            }
+        }
         if(finished && repeat){
             Restart();
         }
@@ -84,7 +91,7 @@ public class AutoCityStart : StartScript
             Cpath.m_Waypoints[i].position = point;
 
             Vector3 objPoint = GeneratePoint(point, radius);
-            objPoint.y = y + offsetcam; //encore une fois, route assure la route sinon rip
+            objPoint.y = getRoute(objPoint) + offsetcam; //encore une fois, route assure la route sinon rip
             int prefabRand = UnityEngine.Random.Range(0, prefabs.Length+1); //ici on va s'occuper de la voiture qu'on génère (max+1 pour une chance de ne pas avoir d'objet qui apparaisse)
             if(spawnCars && !spawnPeople){
                 prefabRand = UnityEngine.Random.Range(0, 30);
@@ -138,7 +145,7 @@ public class AutoCityStart : StartScript
                 }
                 ray = new Ray(objectGenerated.transform.position, Vector3.up); // check for ground
                 Debug.DrawRay(objectGenerated.transform.position, Vector3.up, Color.yellow, 1000);
-                if (meshRoute.Raycast(ray, out hit, 1000))
+                if (meshRoute.Raycast(ray, out hit, 2000))
                 {
                     objectGenerated.transform.position = hit.point+Vector3.up*1.5f;
                 }
@@ -167,15 +174,16 @@ public class AutoCityStart : StartScript
         Vector3 randomDirection = UnityEngine.Random.insideUnitSphere.normalized * radius;
         Vector3 randomPoint = point + randomDirection * radius;
         if(CheckRoute(randomPoint)){
+            tryCnt2 = 0;
             return randomPoint;
         }
         else{
-            tryCnt++;
-            if(tryCnt < maxSpawnAttemps){
+            tryCnt2++;
+            if(tryCnt2 < maxSpawnAttemps){
                 return GeneratePoint(point, radius);
             }
             else{
-                tryCnt = 0;
+                tryCnt2 = 0;
                 return Vector3.zero;
             }
         }
@@ -184,7 +192,7 @@ public class AutoCityStart : StartScript
     private bool CheckRoute(Vector3 point)
     {
         RaycastHit[] hits;
-        hits = Physics.RaycastAll(point, Vector3.down, 1000.0F);
+        hits = Physics.RaycastAll(point, Vector3.down, 100.0F);
         foreach (RaycastHit hit in hits)
         {
             if (hit.collider.gameObject.tag == "route")
@@ -217,10 +225,17 @@ public class AutoCityStart : StartScript
             {
                 route = hit.collider.gameObject;
                 meshRoute = route.GetComponent<MeshCollider>();
+                tryCnt = 0;
                 return hit.point.y;
             }
         }
-        this.pointTemp = GeneratePoint(this.point, radius);
-        return getRoute(this.pointTemp); //prions pour pas de boucle infinie parce qu'il faut une route
+        if(tryCnt < maxSpawnAttemps){ //on a pas trouvé de route, on réessaye
+            tryCnt++;
+            this.pointTemp = GeneratePoint(this.point, radius);
+            return getRoute(this.pointTemp); //prions pour pas de boucle infinie parce qu'il faut une route
+        }
+        else{
+            return 0;
+        }
     }
 }

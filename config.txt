@@ -1,4 +1,4 @@
-10
+11
 scene,2
 nBCamera,1
 bruitType,1
@@ -9,3 +9,4 @@ videoType,0
 videoQuality,1
 fps,30
 jello,0
+repeat,1

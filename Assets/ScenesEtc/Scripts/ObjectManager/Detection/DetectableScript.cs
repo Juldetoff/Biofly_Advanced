@@ -46,7 +46,7 @@ public class DetectableScript : MonoBehaviour
             if (viewportPos.x > 0 && viewportPos.x <= 1 &&
                 viewportPos.y > 0 && viewportPos.y <= 1 && viewportPos.z > 0)
             {
-                Debug.DrawLine(Camera.allCameras[i].transform.position, this.transform.position, Color.red, 1000f);
+                //Debug.DrawLine(Camera.allCameras[i].transform.position, this.transform.position, Color.red, 1000f);
                 Ray ray = new Ray(Camera.allCameras[i].transform.position, this.transform.position - Camera.allCameras[i].transform.position);
                 RaycastHit hit;
                 Physics.Raycast(ray, out hit);

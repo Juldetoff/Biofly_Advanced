@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Crowd : MonoBehaviour
 {
     float timer = 0;
@@ -11,10 +12,12 @@ public class Crowd : MonoBehaviour
     bool applause = false;
     bool lie = false;
     Animator anim = null;
+    private string count = "0";
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        count = this.name[this.name.Length-1]+"";
     }
 
     // Update is called once per frame
@@ -40,6 +43,15 @@ public class Crowd : MonoBehaviour
                 anim.SetBool("lie", lie);
             }
             timer = 0;
+
+            this.name = GetState() + count;
         }
+    }
+
+    public string GetState(){
+        AnimatorStateInfo animState = anim.GetCurrentAnimatorStateInfo(0);
+        //Access the Animation clip name
+        string m_ClipName = animState.IsName("Idle") ? "idle" : animState.IsName("Crouch") ? "crouch" : animState.IsName("Fight") ? "fight" : animState.IsName("Applause") ? "applause" : animState.IsName("lie-down_anim") ? "lie" : "idle";
+        return m_ClipName;
     }
 }

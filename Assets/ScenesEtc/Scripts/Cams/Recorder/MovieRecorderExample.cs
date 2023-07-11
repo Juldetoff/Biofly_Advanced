@@ -22,7 +22,7 @@ namespace UnityEngine.Recorder.Examples
         public RecorderController m_RecorderController;
         public bool m_RecordAudio = true;
         public StartScript startScript;
-        public string count;
+        public int count;
         internal MovieRecorderSettings m_Settings = null;
 
         private string format = "mp4";
@@ -44,7 +44,7 @@ namespace UnityEngine.Recorder.Examples
         {   
             //startScript = GameObject.Find("GameStartManager").GetComponent<StartScript>();
             startScript = GameObject.FindObjectOfType<StartScript>();
-            count = startScript.camCount.ToString();
+            count = startScript.camCount;
             startScript.camCount++;
             SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
             SerializedProperty tagsProp = tagManager.FindProperty("tags");
@@ -163,7 +163,7 @@ namespace UnityEngine.Recorder.Examples
             else{
                 Debug.Log("No recorder to stop for"+gameObject.tag +".mp4");
                 //dans ce cas par sécurité pour le moment on va delete la vidéo (parce que sinon le programme ne tourne plus)
-                File.Delete(Application.dataPath + "/../SampleRecordings/cam" + count + ".mp4"); 
+                File.Delete(Application.dataPath + "/../SampleRecordings/cam" + (count-2) + ".mp4"); 
             }
         }
 

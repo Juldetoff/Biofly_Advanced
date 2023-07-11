@@ -57,7 +57,7 @@ public class StartScript : MonoBehaviour
     public string[] qualitySettings = new string[3]{"Low", "Medium", "High"}; //liste des qualités de vidéo
     public string[] formatSettings = new string[3]{"mp3", "mov", "webm"}; //liste des formats de vidéo
     public float offsetcam = 35f; //offset de la caméra par rapport au sol
-    private MovieRecorderExample[] cams = null;
+    public MovieRecorderExample[] cams = null;
     private CinemachineVirtualCamera[] vcams = null;
     private GameObject generatedObject = null;
     public int count = 0;
@@ -390,8 +390,10 @@ public class StartScript : MonoBehaviour
 
     public void CheckFinished(){
         foreach(CinemachineVirtualCamera vcam in vcams){
-            if(vcam.GetCinemachineComponent<CinemachineTrackedDolly>().m_PathPosition == 10){
+            if(vcam.GetCinemachineComponent<CinemachineTrackedDolly>().m_PathPosition > 9.9){
                 finished = true;
+                Restart();
+                break;
             }
         }
     }
