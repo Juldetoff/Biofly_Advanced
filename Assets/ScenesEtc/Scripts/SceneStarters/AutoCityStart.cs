@@ -70,11 +70,17 @@ public class AutoCityStart : StartScript
         if(finished && repeat){
             Restart();
         }
+        if(Input.GetKeyDown(KeyCode.R)){
+            repeat = !repeat;
+            Debug.Log("repeat: " + repeat);
+        }
     }
 
     private CinemachineSmoothPath GeneratePath()
     {
         point = GetRandomPoint();
+        point = GeneratePoint(point, radius);
+        point.y = point.y + 30;
         float y = getRoute(point);
         point.y = y + offsetcam;
 
@@ -119,7 +125,7 @@ public class AutoCityStart : StartScript
                 else{
                     objectGenerated.name = "personne" +count;
                     Destroy(objectGenerated.GetComponent<Render_dist>());
-                    objectGenerated.transform.GetChild(1).gameObject.name = "personne" +count; //TODO: mettre état à la place du nom
+                    objectGenerated.transform.GetChild(1).gameObject.name = "personne" +count; 
                     objectGenerated.transform.GetChild(1).gameObject.AddComponent<DetectableScript>();
                     Transform[] transfoList = objectGenerated.transform.GetChild(1).gameObject.GetComponent<SoloDetectableScript>().GetSmallMesh();
                     objectGenerated.transform.GetChild(1).gameObject.GetComponent<DetectableScript>().SetSmallMesh(transfoList);
@@ -134,20 +140,26 @@ public class AutoCityStart : StartScript
                     objectGenerated.transform.position.y + 0.5f,
                     objectGenerated.transform.position.z);
                     
-                RaycastHit hit; //le sol n'est pas exactement plat on oriente l'objet en fonction de la pente
-                var ray = new Ray(objectGenerated.transform.position, Vector3.down); // check for slopes
-                Debug.DrawRay(objectGenerated.transform.position, Vector3.down, Color.blue, 1000);
-                if (meshRoute.Raycast(ray, out hit, 2000))
-                {
-                    objectGenerated.transform.rotation = Quaternion.FromToRotation(
-                    objectGenerated.transform.up, hit.normal) * objectGenerated.transform.rotation; // adjust for slopes
-                    objectGenerated.transform.position = hit.point+Vector3.up*1.15f;
+                if(meshRoute){
+                    RaycastHit hit; //le sol n'est pas exactement plat on oriente l'objet en fonction de la pente
+                    var ray = new Ray(objectGenerated.transform.position, Vector3.down); // check for slopes
+                    Debug.DrawRay(objectGenerated.transform.position, Vector3.down, Color.blue, 1000);
+                    if (meshRoute.Raycast(ray, out hit, 2000))
+                    {
+                        objectGenerated.transform.rotation = Quaternion.FromToRotation(
+                        objectGenerated.transform.up, hit.normal) * objectGenerated.transform.rotation; // adjust for slopes
+                        objectGenerated.transform.position = hit.point+Vector3.up*1.15f;
+                    }
+                    ray = new Ray(objectGenerated.transform.position, Vector3.up); // check for ground
+                    Debug.DrawRay(objectGenerated.transform.position, Vector3.up, Color.yellow, 1000);
+                    if (meshRoute.Raycast(ray, out hit, 2000))
+                    {
+                        objectGenerated.transform.position = hit.point+Vector3.up*1.5f;
+                    }
                 }
-                ray = new Ray(objectGenerated.transform.position, Vector3.up); // check for ground
-                Debug.DrawRay(objectGenerated.transform.position, Vector3.up, Color.yellow, 1000);
-                if (meshRoute.Raycast(ray, out hit, 2000))
-                {
-                    objectGenerated.transform.position = hit.point+Vector3.up*1.5f;
+                else{
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name); 
+                    //cas rare où on n'a pas de route et l'algo n'arrive pas à en trouver, du coup il fait avec mais ça snowball sur le reste. On skip le problème en relançant
                 }
             }
             else
@@ -184,7 +196,8 @@ public class AutoCityStart : StartScript
             }
             else{
                 tryCnt2 = 0;
-                return Vector3.zero;
+                //return Vector3.zero;
+                return randomPoint;
             }
         }
     }

@@ -386,14 +386,16 @@ public class StartScript : MonoBehaviour
         if(finished && repeat){
             Restart();
         }
+        if(Input.GetKeyDown(KeyCode.R)){
+            repeat = !repeat;
+            Debug.Log("repeat: " + repeat);
+        }
     }
 
     public void CheckFinished(){
         foreach(CinemachineVirtualCamera vcam in vcams){
             if(vcam.GetCinemachineComponent<CinemachineTrackedDolly>().m_PathPosition > 9.9){
                 finished = true;
-                Restart();
-                break;
             }
         }
     }

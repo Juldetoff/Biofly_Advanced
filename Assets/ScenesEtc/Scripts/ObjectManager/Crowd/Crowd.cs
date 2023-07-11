@@ -17,7 +17,8 @@ public class Crowd : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        count = this.name[this.name.Length-1]+"";
+        count = this.name.Substring(8);
+        //count = this.name[this.name.Length-1]+"";
     }
 
     // Update is called once per frame
@@ -44,8 +45,13 @@ public class Crowd : MonoBehaviour
             }
             timer = 0;
 
-            this.name = GetState() + count;
+            //this.name = GetState() + count;
         }
+    }
+
+    private void LateUpdate() {
+        this.name = GetState() + count;
+        this.transform.GetChild(1).gameObject.name = GetState() + count;
     }
 
     public string GetState(){
