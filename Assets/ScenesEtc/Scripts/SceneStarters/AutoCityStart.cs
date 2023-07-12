@@ -159,7 +159,7 @@ public class AutoCityStart : StartScript
                 }
                 else{
                     UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name); 
-                    //cas rare où on n'a pas de route et l'algo n'arrive pas à en trouver, du coup il fait avec mais ça snowball sur le reste. On skip le problème en relançant
+                    //cas rare où on n'a pas de route et l'algo n'arrive pas à en trouver, du coup il fait avec mais ça snowball sur le reste. On skip le problème en relançant la scène
                 }
             }
             else
