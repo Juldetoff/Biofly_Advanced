@@ -9,27 +9,29 @@ using UnityEditor.Recorder.Input;
 namespace UnityEngine.Recorder.Examples
 {
     /// <summary>
-    /// This example shows how to set up a recording session via script, for an MP4 file.
-    /// To use this example, add the MovieRecorderExample component to a GameObject.
+    ///Cette classe permet de mettre en place une session d'enregistrement via un script, pour un fichier MP4, MOV ou WEBM.
+    ///Pour l'utiliser, il suffit d'ajouter le composant MovieRecorderExample à un GameObject.
+    /// 
+    ///Lancer le mode lecture pour démarrer l'enregistrement.
+    ///L'enregistrement s'arrête automatiquement lorsque vous quittez le mode lecture ou lorsque vous désactivez le composant.
+    /// 
+    ///Ce script enregistre les sorties d'enregistrement dans [Project Folder]/SampleRecordings.
     ///
-    /// Enter the Play Mode to start the recording.
-    /// The recording automatically stops when you exit the Play Mode or when you disable the component.
-    ///
-    /// This script saves the recording outputs in [Project Folder]/SampleRecordings.
     /// </summary>
     public class MovieRecorderExample : MonoBehaviour
     {
         public RecorderController m_RecorderController;
-        public bool m_RecordAudio = true;
-        public StartScript startScript;
-        public int count;
         internal MovieRecorderSettings m_Settings = null;
-
+        [HideInInspector]public bool startVideo = false;
+        [Tooltip("Script de lancement associé")]public StartScript startScript;
+        [Header("Paramètres d'enregistrement")]
+        public bool m_RecordAudio = true;
+        //[Header("Paramètres de la caméra")]
         private string format = "mp4";
         private string quality = "high";
         private float fps = 60;
-        public float startTime=0;
-        public bool startVideo = false;
+        [HideInInspector]public float startTime=0;
+        private int count;
 
         public FileInfo OutputFile
         {
@@ -40,9 +42,9 @@ namespace UnityEngine.Recorder.Examples
             }
         }
 
+        //OnEnable est appelé lorsque le script s'active
         void OnEnable()
-        {   
-            //startScript = GameObject.Find("GameStartManager").GetComponent<StartScript>();
+        {   //on initialise le tag et on associe les variables nécessaires
             startScript = GameObject.FindObjectOfType<StartScript>();
             count = startScript.camCount;
             startScript.camCount++;
@@ -57,6 +59,9 @@ namespace UnityEngine.Recorder.Examples
             Initialize();
         }
 
+        /// <summary>
+        /// Initialise l'enregistrement et le lance.
+        /// </summary>
         internal void Initialize()
         {   
             if(startVideo){ //permet d'attendre un signal du StartScript pour savoir quand démarrer (permet l'attente des configs)
@@ -147,14 +152,21 @@ namespace UnityEngine.Recorder.Examples
                 }
             }
         }
+
+        //Start se lance avant la première frame
         private void Start() {
             this.gameObject.tag = "cam" + count;
         }
 
+        //OnDisable est appelé lorsque le script se désactive
         void OnDisable()
         {
             DisableVideo();
         }
+
+        /// <summary>
+        /// Arrête l'enregistrement.
+        /// </summary>
         public void DisableVideo(){
             if(m_RecorderController!=null){
                 m_RecorderController.StopRecording();
@@ -167,6 +179,7 @@ namespace UnityEngine.Recorder.Examples
             }
         }
 
+        //Update se lance à chaque frame
         private void Update() {
             Initialize();
             string filePath2 = Application.dataPath + "/../Positions/Start"+name+".txt";

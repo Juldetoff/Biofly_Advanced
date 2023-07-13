@@ -67,6 +67,8 @@ public class StartDrone : MonoBehaviour
 
         terrainPos = terrain.transform.position; //on récupère la position du terrain
 
+        Cams.vcam.gameObject.GetComponent<DroneCameraMovement>().SetTerrain(terrain); //on associe le terrain à la caméra pour la fonction "ClampHeight"
+
         if(jello){
             Cams.cam.gameObject.GetComponent<HDRP_RollingShutter>().enabled = true;
             VCams.cam.gameObject.GetComponent<HDRP_RollingShutter>().enabled = true; 

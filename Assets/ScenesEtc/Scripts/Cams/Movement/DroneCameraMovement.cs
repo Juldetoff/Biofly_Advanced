@@ -2,31 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+///<summary>
+///Cette classe permet de gérer les mouvements manuels de la caméra. Elle peut être étendu afin de gérer de manière spécifique le déplacement,
+///et des fonctions peuvent être ajoutés à l'extension afin de mieux gérer les contraintes de déplacements de la caméra (murs, sols, obstacles...)
+///</summary>
 public class DroneCameraMovement : MonoBehaviour
 {
-    [SerializeField] private Vector2 sensibility;
-    [SerializeField] private Vector2 acceleration;
-    [SerializeField] private float inputLagPeriod;
-    [SerializeField] private float maxTopVerticalAngleFromHorizon;
-    [SerializeField] private float maxBottomVerticalAngleFromHorizon;
-    [SerializeField] private float maxVelocity;
+    [Header("Variables de déplacement de la caméra")]
+    [SerializeField] private Vector2 acceleration = new Vector2(100, 100);
     [SerializeField] private float speed = 20.0f;
-    //[SerializeField] private bool useTerrain = true;
+    [Header("Contraintes de déplacement")]
+    [SerializeField]private float offsetTopHeight = 30;
+    [SerializeField]private float offsetBotHeight = 25;
+    private Terrain terrain = null;
 
-    public Terrain terrain;
-    public int offsetTopHeight = 30;
-    public int offsetBotHeight = 25;
+    [HideInInspector]public Rigidbody rb;
 
-    public Rigidbody rb;
-    private Vector2 rotation;
-
-    // Start is called before the first frame update
+    // Start est appelé avant la première frame
     void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
+    // Update est appelé à chaque frame
     void Update()
     {
         //déplacement
@@ -34,6 +32,18 @@ public class DroneCameraMovement : MonoBehaviour
         ClampHeight();
     }
 
+///<summary>
+///Cette fonction permet de vérifier si l'utilisateur utilise les touches de mouvements de la caméra.
+///<exemple> 
+///Par exemple dans Update :
+///<code> 
+///void Update() {
+///     Move();
+///}
+///</code>
+///Cela permet à chaque frame de vérifier si l'utilisateur déplace la caméra à chaque frame.
+///</exemple>
+///</summary>
     public void Move()
     {
         //Déplacement
@@ -100,6 +110,11 @@ public class DroneCameraMovement : MonoBehaviour
         }
     }
 
+    ///<summary>
+    ///Cette fonction permet de gérer la hauteur de la caméra en limitant la hauteur max et min par rapport au sol du terrain associé.
+    ///Lorsque la classe est étendu afin de gérer un cas spécifique,
+    ///cette fonction peut être override afin de gérer le cas souhaité.
+    ///</summary>
     public virtual void ClampHeight(){
         if(terrain.SampleHeight(transform.position)+ offsetBotHeight > transform.position.y){
             transform.position = new Vector3(transform.position.x,
@@ -112,5 +127,28 @@ public class DroneCameraMovement : MonoBehaviour
             terrain.SampleHeight(transform.position)+offsetTopHeight,
             transform.position.z);
         }
+    }
+
+    ///<summary>
+    ///Cette fonction permet d'associer un terrain à l'objet.
+    ///</summary>
+    public void SetTerrain(Terrain terrain){
+        this.terrain = terrain;
+    }
+
+    public void SetOffsetTopHeight(float offsetTopHeight){
+        this.offsetTopHeight = offsetTopHeight;
+    }
+
+    public void SetOffsetBotHeight(float offsetBotHeight){
+        this.offsetBotHeight = offsetBotHeight;
+    }
+
+    public float GetOffsetTopHeight(){
+        return offsetTopHeight;
+    }
+
+    public float GetOffsetBotHeight(){
+        return offsetBotHeight;
     }
 }

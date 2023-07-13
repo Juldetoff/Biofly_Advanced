@@ -10,26 +10,46 @@ using System.Collections;
 
 namespace UnityEngine.Recorder.Examples
 {
+    /// <summary>
+    ///Cette classe permet de mettre en place une session d'enregistrement via un script, pour un fichier MP4, MOV ou WEBM.
+    ///Pour l'utiliser, il suffit d'ajouter le composant MovieRecorderManuale à un GameObject.
+    /// 
+    ///Lancer le mode lecture pour démarrer l'enregistrement.
+    ///L'enregistrement s'arrête automatiquement lorsque vous quittez le mode lecture ou lorsque vous désactivez le composant.
+    /// 
+    ///Ce script enregistre les sorties d'enregistrement dans [Project Folder]/SampleRecordings.
+    ///
+    ///Cette classe est une modification de MovieRecorderExample.cs,
+    ///elle permet de lancer l'enregistrement manuel et de se lier au Jello Effect dans le cas où il est activé.
+    /// </summary>
     public class MovieRecordManual : MonoBehaviour
     {
         RecorderController m_RecorderController;
-        public bool m_RecordAudio = true;
-        public StartDrone startDronescript;
-        public bool recordEffect = false;
         internal MovieRecorderSettings m_Settings = null;
-        public string title = "TEST";
+        [HideInInspector]public bool startvideo = false;
+
+        [Tooltip("Script de lancement associé")]public StartDrone startDronescript;
+        [Header("Paramètres d'enregistrement")]
+        public bool m_RecordAudio = true;
+        public bool recordEffect = false;
+        [Tooltip("Permet ou non d'activer l'enregistrement pour une caméra")]public bool isRegister = false;
+
+        [Header("Paramètres de la caméra")]
+        [Tooltip("Nom donné à l'enregistrement")]public string title = "TEST";
         private string format = "mp4";
         private string quality = "high";
         public float fps = 60;
-        public float startTime=0;
-        public HDRP_RollingShutter rollingShutterEffect;
-        private RenderTextureInputSettings renderTextureInputSettings;
-        public bool startvideo = false;
-        public bool isRegister = false;
+        [HideInInspector]public float startTime=0;
 
+        [Header("Paramètres du Jello Effect")]
+        [Tooltip("Jello effect à associer à la caméra afin de le prendre en compte")]public HDRP_RollingShutter rollingShutterEffect;
+        private RenderTextureInputSettings renderTextureInputSettings;
+
+
+        //awake se lance avant start
         void Awake()
         {
-            startvideo = false;
+            startvideo = false; //on fixe startvideo à false afin que le script start puisse décider quand lancer l'enregistrement
             //on crée un tag pour la caméra (pour pouvoir la détecter
             SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
             SerializedProperty tagsProp = tagManager.FindProperty("tags");
@@ -53,9 +73,12 @@ namespace UnityEngine.Recorder.Examples
             {
                 writer.WriteLine("Détection des objets de la caméra à " + ( startTime ).ToString() + "s");
             }
-            startDronescript.lastTime = startTime;
+            startDronescript.lastTime = startTime; //afin de bien synchroniser les temps de chacun
         }
 
+        /// <summary>
+        /// Permet de lancer l'enregistrement en récupérant tout les paramètres nécessaires.
+        /// </summary>
         internal void Initialize()
         {
             if(startvideo){
@@ -143,29 +166,40 @@ namespace UnityEngine.Recorder.Examples
                 startTime=0;
             }
         }
+        //Start se lance après awake et avant la première frame
         private void Start() {
-            this.gameObject.tag = "cam" + title;
+            this.gameObject.tag = "cam" + title; //on associe le tag à la caméra
         }
 
+        //OnDisable se lance lorsque le composant est désactivé
         void OnDisable()
         {
             DisableVideo();
         }
 
+        /// <summary>
+        /// Permet de stopper l'enregistrement.
+        /// </summary>
         public void DisableVideo(){
             if(m_RecorderController!=null){
                 m_RecorderController.StopRecording();
                 string filePath = Application.dataPath + "/../Positions/Start"+name+".txt";
                 int numberOfLinesToRemove = 2; 
-                RemoveFirstLines(filePath, numberOfLinesToRemove); //afin de retirer les lignes excessives au début du fichier
+                RemoveFirstLines(filePath, numberOfLinesToRemove); //afin de retirer les lignes excessives au début du fichier pour qu'il soit
+                //plus facilement lisible par le script d'entraînement de l'IA (projet lié)
             }
-            else{
+            else{ //cas possible quand le script est modifié lors de l'enregistrement et enregistré, 
+                //unity va reload les scripts et cela va entraîner une corruption des vidéos
+                //que les scripts ne peuvent pas gérer
                 Debug.Log("No recorder to stop");
-                //dans ce cas par sécurité pour le moment on va delete la vidéo
+                //dans ce cas par sécurité on va delete la vidéo
                 File.Delete(Application.dataPath + "/../SampleRecordings/cam" + title + ".mp4"); 
             }
         }
 
+        /// <summary>
+        /// Permet de retirer les premières lignes d'un fichier. 
+        /// </summary>
         static void RemoveFirstLines(string filePath, int numberOfLinesToRemove)
         {
             string[] lines = File.ReadAllLines(filePath);
@@ -176,9 +210,10 @@ namespace UnityEngine.Recorder.Examples
             File.WriteAllLines(filePath, remainingLines);
         }
 
+        //Update se lance à chaque frame
         void Update()
         {
-            Initialize();
+            Initialize(); //initialize ne s'active correctement que si startvideo est à true, donc on le relance à chaque frame
             if (rollingShutterEffect != null && rollingShutterEffect.enabled && recordEffect)
             {
                 // RenderTexture inputTexture = rollingShutterEffect.GetRenderTexture();
@@ -196,6 +231,9 @@ namespace UnityEngine.Recorder.Examples
 
         }
 
+        /// <summary>
+        /// Permet d'attendre la récupération de la texture générée par le Jello Effect.
+        /// </summary>
         private IEnumerator WaitForTextureGeneration()
         {
             // Attendez que la texture soit générée
@@ -216,18 +254,18 @@ namespace UnityEngine.Recorder.Examples
             m_Settings.ImageInputSettings = renderTextureInputSettings;
         }
 
-        private MovieRecorderSettings CloneMovieRecorderSettings(MovieRecorderSettings originalSettings)
-        {
-            var clonedSettings = ScriptableObject.CreateInstance<MovieRecorderSettings>();
-            clonedSettings.name = originalSettings.name;
-            clonedSettings.Enabled = originalSettings.Enabled;
-            clonedSettings.OutputFormat = originalSettings.OutputFormat;
-            clonedSettings.VideoBitRateMode = originalSettings.VideoBitRateMode;
-            clonedSettings.FrameRate = originalSettings.FrameRate;
-            clonedSettings.OutputFile = originalSettings.OutputFile;
+        // private MovieRecorderSettings CloneMovieRecorderSettings(MovieRecorderSettings originalSettings)
+        // {
+        //     var clonedSettings = ScriptableObject.CreateInstance<MovieRecorderSettings>();
+        //     clonedSettings.name = originalSettings.name;
+        //     clonedSettings.Enabled = originalSettings.Enabled;
+        //     clonedSettings.OutputFormat = originalSettings.OutputFormat;
+        //     clonedSettings.VideoBitRateMode = originalSettings.VideoBitRateMode;
+        //     clonedSettings.FrameRate = originalSettings.FrameRate;
+        //     clonedSettings.OutputFile = originalSettings.OutputFile;
 
-            return clonedSettings;
-        }
+        //     return clonedSettings;
+        // }
 
     }
 }
