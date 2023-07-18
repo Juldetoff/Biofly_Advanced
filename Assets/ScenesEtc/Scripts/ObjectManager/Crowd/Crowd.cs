@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// Cette classe gère l'animation des personnages de la foule. Elle est attachée à l'objet "Crowd" dans les prefabs du dossier "Addons/crowd/prefabs".
+/// </summary>
 public class Crowd : MonoBehaviour
 {
+    //variables privées qui serviront à gérer de manière interne l'animation du personnage
     float timer = 0;
     int rand = 0;
     bool crouched = false;
@@ -13,7 +16,8 @@ public class Crowd : MonoBehaviour
     bool lie = false;
     Animator anim = null;
     private string count = "0";
-    // Start is called before the first frame update
+
+    // Start est appelé avant la première frame 
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -21,7 +25,7 @@ public class Crowd : MonoBehaviour
         //count = this.name[this.name.Length-1]+"";
     }
 
-    // Update is called once per frame
+    // Update est appelé à chaque frame
     void Update()
     {
         timer += Time.deltaTime;
@@ -44,16 +48,18 @@ public class Crowd : MonoBehaviour
                 anim.SetBool("lie", lie);
             }
             timer = 0;
-
-            //this.name = GetState() + count;
         }
     }
 
+    //LateUpdate est appelé après Update, ce qui évite le décalage entre l'animation et le nom de l'objet.
     private void LateUpdate() {
         this.name = GetState() + count;
-        this.transform.GetChild(1).gameObject.name = GetState() + count;
+        this.transform.GetChild(1).gameObject.name = GetState() + count; //on renomme également le child car c'est lui qui contient les colliders pour les raycasts (pour plus de facilité).
     }
 
+    //<summary>
+    //Renvoie l'état de l'animation du personnage. Utilisé afin de renommer l'objet.
+    //</summary>
     public string GetState(){
         AnimatorStateInfo animState = anim.GetCurrentAnimatorStateInfo(0);
         //Access the Animation clip name

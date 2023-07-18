@@ -7,24 +7,35 @@ using UnityEngine.SceneManagement;
 using System;
 using TMPro;
 
+/// <summary>
+/// Cette classe gère les menus de configuration. Il est attaché à l'objet "ConfigManager" dans la scène "Menu".
+/// </summary>
 public class ConfigManager : MonoBehaviour
 {
+    //les variables suivantes servent dans Unity à associer les différents éléments de l'interface au script
+    [Header("Menu Scene")]
+    public GameObject menuScene;
+
+    [Header("Menu Bruit")]
+    public GameObject menuBruit; //contient également le nbcamera et probablement flou
     public Slider sliderFreq;
     public TextMeshProUGUI textFreq;
     public Slider sliderAmpl;
     public TextMeshProUGUI textAmpl;
     public Slider sliderCam;
     public TextMeshProUGUI textCam;
+
+    [Header("Menu Video")]
+    public GameObject menuVideo;
     public Button buttonSubmit;
     public TextMeshProUGUI textQuality;
     public Slider sliderQuality;
     public TextMeshProUGUI textFPS;
     public Slider sliderFPS;
 
-    public GameObject menuScene;
-    public GameObject menuBruit; //contient également le nbcamera et probablement flou
-    public GameObject menuVideo;
+    
 
+    //les variables suivantes servent à stocker les valeurs des menus avant d'être enregistrées dans un txt de config
     private int scene;
     private int config;
     private int nbCam;
@@ -39,7 +50,7 @@ public class ConfigManager : MonoBehaviour
     private bool repetition;
 
 
-    // Start is called before the first frame update
+    // Start est appelé avant la première frame
     void Start()
     {
         //on initialise les valeurs
@@ -68,7 +79,10 @@ public class ConfigManager : MonoBehaviour
         menuVideo.SetActive(false);
     }
 
-    public void Next(){
+    /// <summary>
+    /// Cette fonction est appelée quand on clique sur le bouton "Next" d'un menu. Gère simplement les transitions entre les menus.
+    /// </summary>
+    public void Next(){ 
         if(config == 0){
             menuScene.SetActive(false);
             menuBruit.SetActive(true);
@@ -93,37 +107,61 @@ public class ConfigManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Cette fonction est appelée quand on clique sur une scène dans le choix des scènes. Cela associe la scène à la variable scene.
+    /// </summary>
     public void ChangeScene(int scene){
         this.scene = scene;
     }
 
+    /// <summary>
+    /// Cette fonction est appelée quand on utilise le slider de fréquence du bruit. Elle change la valeur de la variable freqBruit et met à jour le texte.
+    /// </summary>
     public void ChangeFreq(){
         freqBruit = (int)sliderFreq.value;
         textFreq.text = "Fréquence bruit : "+freqBruit;
     }
 
+    /// <summary>
+    /// Cette fonction est appelée quand on utilise le slider d'amplitude du bruit. Elle change la valeur de la variable amplBruit et met à jour le texte.
+    /// </summary>
     public void ChangeAmpl(){
         amplBruit = (int)sliderAmpl.value;
         textAmpl.text = "Amplitude bruit : "+amplBruit;
     }
 
+    /// <summary>
+    /// Cette fonction est appelée quand on utilise le slider du nombre de caméras. Elle change la valeur de la variable nbCam et met à jour le texte.
+    /// </summary>
     public void ChangeCam(){
         nbCam = (int)sliderCam.value;
         textCam.text = "Nombre caméras : "+nbCam;
     }
 
+    /// <summary>
+    /// Cette fonction est appelée quand on sur le bouton à cocher pour le flou. Active ou non le flou pour la scène (si supporté).
+    /// </summary>
     public void ChangeFlou(){
         flou = -flou+1;
     }
 
+    /// <summary>
+    /// Cette fonction est appelée quand on sur le bouton à cocher pour le jello. Active ou non le jello pour la scène (si supporté).
+    /// </summary>
     public void ChangeJello(){
         jello = -jello+1;
     }
 
+    /// <summary>
+    /// Cette fonction est appelée quand on change le type de vidéo. Elle change la valeur de la variable typeVideo.
+    /// </summary>
     public void ChangeTypeVideo(int type){ //0 pour mp4, 1 pour mov, 2 pour webm
         typeVideo = type;
     }
 
+    /// <summary>
+    /// Cette fonction est appelée quand on change le slider de la qualité de la vidéo. Elle change la valeur de la variable qualiteVideo et met à jour le texte.
+    /// </summary>
     public void ChangeQualiteVideo(){ //0 pour low, 1 pour medium, 2 pour high
         qualiteVideo = (int)sliderQuality.value;
         if(qualiteVideo == 0){
@@ -137,17 +175,33 @@ public class ConfigManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Cette fonction est appelée quand on change le type de bruit. Elle change la valeur de la variable typeBruit.
+    /// </summary>
     public void ChangeBruit(int type){ //0 pour Shake6D, 1 pour Wobble6D, 2 pour Handheld_normal_extreme, 3 pour Handheld_normal_mild, 
     //4 pour Handheld_normal_strong, 5 pour Handheld_tele_mild, 6 pour Handheld_tele_strong, 7 pour Handheld_wideangle_mild, 
     //8 pour Handheld_wideangle_strong
         typeBruit = type; 
     }
 
+    /// <summary>
+    /// Cette fonction est appelée quand on change le slider du fps de la vidéo. Elle change la valeur de la variable fpsvideo et met à jour le texte.
+    /// </summary>
     public void ChangeFPSVideo(){
         fpsvideo = (int)sliderFPS.value;
         textFPS.text = "FPS : "+fpsvideo;
     }
 
+    /// <summary>
+    /// Cette fonction est appelée quand on clique sur le bouton à cocher pour la répétition. Active ou non la répétition pour la scène.
+    /// </summary>
+    public void ChangeRepeat(){
+        repetition = !repetition;
+    }
+
+    /// <summary>
+    /// Cette fonction est appelée quand on clique sur le bouton "Submit" du menu vidéo. Elle écrit les valeurs dans un fichier config.txt et lance la scène.
+    /// </summary>
     public void OnSubmit(){
         string filePath = Application.dataPath + "./../config.txt";
         //StreamWriter sr = File.CreateText(filePath);

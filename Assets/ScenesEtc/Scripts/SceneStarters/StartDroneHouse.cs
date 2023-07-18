@@ -8,6 +8,10 @@ using Cinemachine;
 using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using UnityEngine.Animations;
+
+/// <summary>
+/// Classe de démarrage du drone en intérieur. Fonctionne avec la scène "M_Interior".
+/// </summary>
 public class StartDroneHouse : StartDrone
 {   ////////////////////////////////////////
     //cette classe sert pour le start en intérieur en manuel (car il faut gérer les murs etc lors de génération d'obstacles)
@@ -15,7 +19,7 @@ public class StartDroneHouse : StartDrone
     ////////////////////////////////////////
     private Vector3 pointdepart = new Vector3(0, 0, 0); //pointdepart de départ du chemin modifié à chaque fois
 
-    public GameObject sol = null; //le sol dans lequel on va se balader
+    [Tooltip("Sol plat de la maison.")]public GameObject sol = null; //le sol dans lequel on va se balader
 
     private Vector3 solPos = new Vector3(0, 0, 0);
     // //la position du sol
@@ -24,7 +28,7 @@ public class StartDroneHouse : StartDrone
     private GameObject objectGenerated = null;
 
 
-    // Start is called before the first frame update
+    // Start est appelé avant la première frame 
     void Start()
     {
         ExtractConfig();
@@ -37,6 +41,9 @@ public class StartDroneHouse : StartDrone
         solPos = sol.transform.position; //on récupère la position du sol
     }
 
+    /// <summary>
+    /// Fonction qui renvoie un booléen indiquant si la position donnée est dans la maison.
+    /// </summary>
     bool isInHouse(Vector3 pos){
         return( //fonction alambiquée pour vérifier si on est dans la maison
             (pos.x < 1.39f && pos.x > -2.75f &&
@@ -50,7 +57,7 @@ public class StartDroneHouse : StartDrone
         );
     }
 
-    // Update is called once per frame
+    // Update est appelé à chaque frame
     void Update()
     {
 
@@ -67,6 +74,9 @@ public class StartDroneHouse : StartDrone
         noisecam.gameObject.transform.rotation = Cams.cam.gameObject.transform.rotation;
     }
 
+    /// <summary>
+    /// Fonction qui crée un obstacle à une position aléatoire dans la maison, proche de la caméra.
+    /// </summary>
     private void CreateObject()
     {
         float r = radius;

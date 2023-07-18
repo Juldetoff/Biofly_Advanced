@@ -2,19 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Classe de démarrage du drone en ville. Fonctionne avec la scène "M_City".
+/// </summary>
 public class StartCity : StartDrone
 {
-    public GameObject route = null;
+    private GameObject route = null;
     private MeshCollider meshRoute = null;
     private int objectCnt = 0;
     private GameObject objectGenerated = null;
     // Start is called before the first frame update
-    public GameObject[] prefabs;
-    public int maxSpawnAttemps = 10;
+    [Tooltip("Liste des prefabs pouvant apparaître dans la scène.")]public GameObject[] prefabs; //fixé ) 36 dans ce cas car 0-30 voitures et 30-36 personnes
+    [Tooltip("Nombre maximum d'essais de génération")]public int maxSpawnAttemps = 10;
     private int tryCnt = 0;
-    public int GenerateCount = 2;
-    public bool spawnCars = false; //prefabs de 0 à 30 (exclus, normalement si tout est bien configuré)
-    public bool spawnPeople = false; //prefabs de 30 à 36
+    [Tooltip("Nombre d'objets à générer à chaque génération.")]public int GenerateCount = 2;
+    [Tooltip("Apparition ou non de voitures.")]public bool spawnCars = false; //prefabs de 0 à 30 (exclus, normalement si tout est bien configuré)
+    [Tooltip("Apparition ou non de personnes.")]public bool spawnPeople = false; //prefabs de 30 à 36
 
     void Start()
     {
@@ -28,7 +31,6 @@ public class StartCity : StartDrone
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(Time.time - lastTime > maxTime && Vector3.Distance(lastPos,Cams.cam.gameObject.transform.position) > distance){
@@ -43,8 +45,26 @@ public class StartCity : StartDrone
 
         noisecam.gameObject.transform.position = Cams.cam.gameObject.transform.position;
         noisecam.gameObject.transform.rotation = Cams.cam.gameObject.transform.rotation;
+
+        //on met à jour le sol pour le mouvement :
+        RaycastHit[] hits;
+        hits = Physics.RaycastAll(Cams.cam.gameObject.transform.position, Vector3.down, 1000.0F);
+        foreach (RaycastHit hit in hits)
+        {
+            if(hit.collider.gameObject.tag == "route"){
+                route = hit.collider.gameObject;
+                meshRoute = route.GetComponent<MeshCollider>();
+            }
+            if(hit.collider.GetComponent<Terrain>() != null){
+                terrain = hit.collider.GetComponent<Terrain>();
+                Cams.vcam.gameObject.GetComponent<DroneCameraMovement>().SetTerrain(terrain);
+            }
+        }
     }
 
+    /// <summary>
+    /// Fonction qui renvoie un booléen indiquant si la position donnée est au dessus de la route.
+    /// </summary>
     public GameObject CheckRoute(Vector3 pos){ //on lance un raycast vers le bas pour trouver le box collider de la route
         RaycastHit[] hits;
         hits = Physics.RaycastAll(pos, Vector3.down, 1000.0F);
@@ -59,6 +79,9 @@ public class StartCity : StartDrone
         return null;
     }
 
+    /// <summary>
+    /// Fonction qui génère un objet aléatoire sur la route.
+    /// </summary>
     public void CreateObject(){
         Vector3 randomPoint = Vector3.zero;
         tryCnt = 0;
@@ -133,6 +156,9 @@ public class StartCity : StartDrone
         }
     }
 
+    /// <summary>
+    /// Fonction qui renvoie un point aléatoire sur la route autour du point de départ.
+    /// </summary>
     public Vector3 RouteRandomPos(Vector3 departPos){ //on cherche un point aléatoire sur la route autour du point de départ 
         if(tryCnt >= maxSpawnAttemps){ //on a essayé de trouver un point sur la route mais on a pas réussi
             Debug.Log("pas de point trouvé");
@@ -184,8 +210,6 @@ public class StartCity : StartDrone
                 break;
             }
         }
-
-        
         return randomPoint;        
     }
 }

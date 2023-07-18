@@ -1,12 +1,12 @@
 11
-scene,2
+scene,4
 nBCamera,1
-bruitType,1
+bruitType,0
 bruitAmplitude,3
 bruitFrequency,3
 flou,0
 videoType,0
-videoQuality,1
+videoQuality,2
 fps,30
 jello,0
-repeat,1
+repeat,False

@@ -5,20 +5,20 @@ using System.IO;
 using System;
 using UnityEngine.Recorder.Examples;
 
+/// <summary>
+/// Classe qui permet de savoir si un objet est vu par une caméra ou non et de savoir où il est dans le champ de vision de la caméra dans le cas où la scène est automatique.
+/// </summary>
 public class DetectableScript : MonoBehaviour
 {
-    float currentTime;
-    DateTime current;
-    // bool almostVisible=false;
-    public bool[] camSeen;
-    public Transform[] smallMesh;
+    private bool[] camSeen;
+    [Tooltip("Liste des points permettant de produire un carré les englobant dont les coordonnées seront enregistrés dans un txt.")]public Transform[] smallMesh;
 
     
     private void Start() {
         this.gameObject.tag = "obstacle";
         camSeen = new bool[Camera.allCamerasCount];
         for(int i = 0; i<Camera.allCamerasCount; i++){
-            camSeen[i] = false;
+            camSeen[i] = false; //initialise le tableau à faux
         }
     }
 
@@ -29,14 +29,24 @@ public class DetectableScript : MonoBehaviour
         Where();
     }
 
+    /// <summary>
+    /// Permet de changer le tableau des positions des points. Utilisés afin d'adapter les points utilisé dans SoloDetectableScript ici.
+    /// </summary>
     public void SetSmallMesh(Transform[] transfo){
         this.smallMesh = transfo;
     }
 
+    /// <summary>
+    /// Permet de récupérer le tableau des positions des points. 
+    /// </summary>
     public Transform[] GetSmallMesh(){
         return smallMesh;
     }
 
+    /// <summary>
+    /// Permet de vérifier si l'objet est vu par une caméra. Si c'est le cas, on vérifie si l'objet est caché par un autre objet. Si c'est le cas, on ne fait rien. Sinon, on enregistre le temps de début de visibilité de l'objet.
+    /// Si l'objet passe invisible par une caméra, on enregistre le temps de fin de visibilité de l'objet.
+    /// </summary>
     private void Seen() //on vérifie si l'objet est vu par une caméra. Il s'occupe également de remplir le tableau des bools
     {
         for (int i = 0; i < camSeen.Length; i++)
@@ -101,6 +111,10 @@ public class DetectableScript : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// Permet d'enregistrer la position de l'objet dans le champ de vision des caméras qui l'ont vu.
+    /// </summary>
     private void Where(){ //on cherche la position de l'objet dans le champ de vision des caméras qui l'ont vu
         for (int i = 0; i < camSeen.Length; i++)
         {
@@ -121,6 +135,9 @@ public class DetectableScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Permet de récupérer les coordonnées du carré englobant l'objet dans le champ de vision de la caméra.
+    /// </summary>
     public Vector2 meshToViewPortMinX(Transform[] mesh, Camera cam){
         float minx = 1;
         float maxx = -1;
@@ -137,6 +154,10 @@ public class DetectableScript : MonoBehaviour
         }
         return new Vector2(minx,maxx);
     }
+
+    /// <summary>
+    /// Permet de récupérer les coordonnées du carré englobant l'objet dans le champ de vision de la caméra.
+    /// </summary>
     public Vector2 meshToViewPortMinY(Transform[] mesh, Camera cam){
         float miny = 1;
         float maxy = -1;

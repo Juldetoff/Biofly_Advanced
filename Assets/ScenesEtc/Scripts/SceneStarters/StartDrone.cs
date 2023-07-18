@@ -10,56 +10,55 @@ using UnityEngine.Playables;
 using UnityEngine.Animations;
 using UnityEngine.Recorder.Examples;
 using UnityEngine.SceneManagement;
+
+/// <summary>
+/// Classe permettant de gérer la scène 'M_Forest'. Sert à gérer manuellement la caméra et crée des obstacles autour d'elle. 
+/// Peut être étendue pour générer différemment des objets ou gérer autrement la position de la caméra.
+/// </summary>
 public class StartDrone : MonoBehaviour
 {
-    ////////////////////////////////////////
-    //Variable de config
-    public int nBCamera =1;
-    public float bruitAmplitude=0;
-    public float bruitFrequency=0;
-    public int noiseNumber = 0;
-    public int videoType = 0;
-    public int videoQuality = 0;
-    public int videoFps = 60;
-    public bool jello = false;
-    private Vector3 point = new Vector3(0, 0, 0); //point de départ du chemin modifié à chaque fois
-
-    ////////////////////////////////////////
-    //Objets et paramètres de génération
-
-    public Terrain terrain = null; //le terrain dans lequel on va se balader (afin d'obtenir son y de surface)
+    [Header("Paramètres globaux")]
+    [Tooltip("Terrain que vont parcourir les caméras.")]public Terrain terrain = null; //le terrain dans lequel on va se balader (afin d'obtenir son y de surface)
     private Vector3 terrainPos = new Vector3(0, 0, 0);//la position du terrain
+    [Tooltip("Dernière position de la caméra où des objets ont été généré.")]public Vector3 lastPos = new Vector3(0, 0, 0);
+    [HideInInspector]public float lastTime = 0;
+    [Tooltip("Temps à attendre avant de pouvoir regénérer des objets si la caméra est suffisamment loin de lastPos.")]public float maxTime = 5;
 
-    public float radius = 40; //rayon du cercle dans lequel on va générer les points
-    
-    public GameObject cubePrefab = null;
-    public CubeManager cubeManager = null;
-    public GameObject tigrePrefab = null;
-    public GameObject taureauPrefab = null;
-    public GameObject aiglePrefab = null;
-    private int objectCount = 0;
+    [Header("Paramètres de la caméra")]
+    [Tooltip("SysCam normal.")]public SysCam Cams;
+    [Tooltip("SysCam bruité.")]public SysCam VCams;
+    [HideInInspector]public float bruitAmplitude=0;
+    [HideInInspector]public float bruitFrequency=0;
+    [HideInInspector]public int noiseNumber = 0;
+    [Tooltip("Liste des NoiseSettings (bruits possibles parmi ceux de Cinemachine).")]public NoiseSettings[] noiseSettings = new NoiseSettings[9]; //liste des types de bruits afin de pouvoir les associer à la caméra
+    [Tooltip("Caméra virtuelle du SysCam bruité.")]public CinemachineVirtualCamera noisecam;
+    [Tooltip("Liste des Caméras d'enregistrement.")]public MovieRecordManual[] movieRecordManuals;
+    private int nBCamera =1;
 
-    public SysCam Cams;
-    public SysCam VCams;
-    public GameObject flouPane;
-
-    public NoiseSettings[] noiseSettings = new NoiseSettings[9]; //liste des types de bruits afin de pouvoir les associer à la caméra
-    public string[] qualitySettings = new string[3]{"Low", "Medium", "High"}; //liste des qualités de vidéo
-    public string[] formatSettings = new string[3]{"mp3", "mov", "webm"}; //liste des formats de vidéo
-    
-    public Vector3 lastPos = new Vector3(0, 0, 0);
-    public float lastTime = 0;
-    public float maxTime = 5;
-    public float distance = 100;
-    public float render_dist = 100;
-    public float offset = 39.3f;
-
+    [Header("Prefabs")]
+    [Tooltip("Objet CubeManager dans la scène gérant l'apparition des prefabs.")]public CubeManager cubeManager = null;
+    [Tooltip("Rayon du cercle de génération d'objets autour de la caméra.")]public float radius = 40; //rayon du cercle dans lequel on va générer les objets    
+    [SerializeField][Tooltip("Prefab de cube rouge pour manuel.")]public GameObject cubePrefab = null;
+    [HideInInspector]private int objectCount = 0;
+    [Tooltip("Offset de positionnement de l'objet")]public float offset = 39.3f;
+    [Tooltip("Distance minimum entre chaque instanciation d'objets.")]public float distance = 100;
+    [Tooltip("Distance maximum avant suppression de l'objet éloigné.")]public float render_dist = 100;
     private GameObject generatedObject = null;
 
-    public CinemachineVirtualCamera noisecam;
-    public MovieRecordManual[] movieRecordManuals;
 
-    // Start is called before the first frame update
+    //[Header("Paramètres de la vidéo")]
+    [HideInInspector]public int videoType = 0;
+    [HideInInspector]public int videoQuality = 0;
+    [HideInInspector]public int videoFps = 60;
+    [HideInInspector]public string[] qualitySettings = new string[3]{"Low", "Medium", "High"}; //liste des qualités de vidéo
+    [HideInInspector]public string[] formatSettings = new string[3]{"mp3", "mov", "webm"}; //liste des formats de vidéo
+
+    [Header("Autres")]
+    [Tooltip("Objet venant du prefab 'Floupane' à mettre devant la caméra.")]public GameObject flouPane;
+    [HideInInspector]public bool jello = false;
+
+
+    // Start est appelé avant la première frame
     void Start()
     {
         //ExtractConfig(); //on déplace dans Awake afin de pouvoir affecter les caméras ?
@@ -75,14 +74,16 @@ public class StartDrone : MonoBehaviour
         }
     }
 
+    // Awake est appelé avant Start
     private void Awake() {
         ExtractConfig();
     }
 
+    /// <summary>
+    /// Fonction permettant d'extraire les paramètres de la scène depuis le fichier de configuration. Elle met également en place le jello effect si activé.
+    /// </summary>
     public void ExtractConfig()
     {
-        ////////////////////////////////////////
-        // PARTIE EXTRACTION DU FICHIER CONFIG
         string path = "./config.txt";
         StreamReader reader = new StreamReader(path);
         // n the number of lines in the file
@@ -155,7 +156,7 @@ public class StartDrone : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    // Update est appelé à chaque frame
     void Update()
     {
         
@@ -168,10 +169,14 @@ public class StartDrone : MonoBehaviour
             lastTime = Time.time; 
         }
 
+        //on positionne la caméra bruitée au même endroit que la caméra normale à chaque frame
         noisecam.gameObject.transform.position = Cams.cam.gameObject.transform.position;
         noisecam.gameObject.transform.rotation = Cams.cam.gameObject.transform.rotation;
     }
 
+    /// <summary>
+    /// Fonction permettant de créer un objet à une position aléatoire autour de la caméra.
+    /// </summary>
     private void CreateObject()
     {
         Vector3 randomDirection = UnityEngine.Random.insideUnitSphere.normalized;
@@ -232,6 +237,9 @@ public class StartDrone : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Fonction permettant de vérifier si le terrain est toujours le même que celui de la dernière fois.
+    /// </summary>
     private void CheckTerrain(Vector3 randomPoint)
     {
         //on envoi un raycast vers le bas pour vérifier si c'est toujours le même terrain
