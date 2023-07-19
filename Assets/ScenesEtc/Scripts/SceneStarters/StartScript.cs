@@ -40,7 +40,7 @@ public class StartScript : MonoBehaviour
     [Tooltip("Prefab de chemin qui sera instancié.")]public CinemachineSmoothPath Prefabpath; //prefab chemin qu'on va instancier puis lui donner 11 points
     [Tooltip("Rayon autour des points générés permettant de générer d'autres points.")]public float radius = 40; //rayon du cercle dans lequel on va générer les points pour le chemin ou les obstacles
     [Tooltip("Nombre de points à générer sur le chemin.")]public int pointCnt = 11; //nombre de points du chemin
-    [Tooltip("Nombre d'objets à générer.")]public int numObject = 1; //nombre d'objets à générer
+    [Tooltip("Nombre d'objets à générer par points du chemin.")]public int numObject = 1; //nombre d'objets à générer
     [HideInInspector]public Vector3 point = new Vector3(0, 0, 0); //point de départ du chemin modifié à chaque fois
 
 
@@ -129,7 +129,7 @@ public class StartScript : MonoBehaviour
             TimelineClip newClip = newVirtualTrackbruit.CreateClip(animClip);
             newClip.start = clip.start;
             newClip.duration = clip.duration;
-            newClip.displayName = clip.displayName;
+            newClip.displayName = clip.displayName+"-copy";
         }
 
         //on copie les clips de la track physique template dans la nouvelle
@@ -189,7 +189,7 @@ public class StartScript : MonoBehaviour
             TimelineClip newClip = newVirtualTrack.CreateClip(animClip);
             newClip.start = clip.start;
             newClip.duration = clip.duration;
-            newClip.displayName = clip.displayName;
+            newClip.displayName = clip.displayName + "-copy";
         }
         //on copie les clips de la track physique template dans la nouvelle
         foreach (TimelineClip clip in originalPhysicalTrack.GetClips())

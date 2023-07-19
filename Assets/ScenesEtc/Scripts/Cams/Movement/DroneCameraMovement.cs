@@ -116,17 +116,20 @@ public class DroneCameraMovement : MonoBehaviour
     ///cette fonction peut être override afin de gérer le cas souhaité.
     ///</summary>
     public virtual void ClampHeight(){
-        if(terrain.SampleHeight(transform.position)+ offsetBotHeight > transform.position.y){
-            transform.position = new Vector3(transform.position.x,
-            //terrain.SampleHeight(transform.position),
-            Mathf.Clamp(terrain.SampleHeight(transform.position)+offsetBotHeight, transform.position.y, terrain.SampleHeight(transform.position)+offsetTopHeight),
-            transform.position.z);
+        if(terrain){
+            if(terrain.SampleHeight(transform.position)+ offsetBotHeight > transform.position.y){
+                transform.position = new Vector3(transform.position.x,
+                //terrain.SampleHeight(transform.position),
+                Mathf.Clamp(terrain.SampleHeight(transform.position)+offsetBotHeight, transform.position.y, terrain.SampleHeight(transform.position)+offsetTopHeight),
+                transform.position.z);
+            }
+            if(terrain.SampleHeight(transform.position)+offsetTopHeight < transform.position.y){
+                transform.position = new Vector3(transform.position.x,
+                terrain.SampleHeight(transform.position)+offsetTopHeight,
+                transform.position.z);
+            }
         }
-        if(terrain.SampleHeight(transform.position)+offsetTopHeight < transform.position.y){
-            transform.position = new Vector3(transform.position.x,
-            terrain.SampleHeight(transform.position)+offsetTopHeight,
-            transform.position.z);
-        }
+        //else { ... } //on peut vouloir gérer différemment si on ne trouve pas de terrain/sol
     }
 
     ///<summary>

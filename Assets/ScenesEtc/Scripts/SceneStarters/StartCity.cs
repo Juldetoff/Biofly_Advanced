@@ -162,6 +162,7 @@ public class StartCity : StartDrone
     public Vector3 RouteRandomPos(Vector3 departPos){ //on cherche un point aléatoire sur la route autour du point de départ 
         if(tryCnt >= maxSpawnAttemps){ //on a essayé de trouver un point sur la route mais on a pas réussi
             Debug.Log("pas de point trouvé");
+            tryCnt = 0;
             return Vector3.zero;
         }
 
@@ -202,8 +203,8 @@ public class StartCity : StartDrone
                     randomPoint = hit.point;
                 }
             }
-            else{ //sinon rince and repeat  
-                tryCnt++;
+            else{ //sinon rinse and repeat  
+                tryCnt++; //en gros ça nous fait une récursion sur une variable global, on peut créer une variable paramètre de la fonction sinon
                 randomPoint = RouteRandomPos(departPos);
             }
             if(randomPoint != Vector3.zero){

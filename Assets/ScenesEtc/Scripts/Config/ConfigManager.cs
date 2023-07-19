@@ -47,7 +47,7 @@ public class ConfigManager : MonoBehaviour
     private int qualiteVideo;
     private int fpsvideo;
     private int jello;
-    private bool repetition;
+    private int repetition;
 
 
     // Start est appelé avant la première frame
@@ -65,7 +65,7 @@ public class ConfigManager : MonoBehaviour
         qualiteVideo = 2;
         fpsvideo = 60;
         jello = 0;
-        repetition = false;
+        repetition = 0;
         sliderFreq.value = 3;
         textFreq.text = "Fréquence bruit : 3";
         sliderAmpl.value = 3;
@@ -196,7 +196,7 @@ public class ConfigManager : MonoBehaviour
     /// Cette fonction est appelée quand on clique sur le bouton à cocher pour la répétition. Active ou non la répétition pour la scène.
     /// </summary>
     public void ChangeRepeat(){
-        repetition = !repetition;
+        repetition = -repetition+1;
     }
 
     /// <summary>
