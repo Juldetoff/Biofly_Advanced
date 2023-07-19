@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   templateScene: {fileID: 102900000, guid: de2d0629f0e54be4d8cf96a0a4de9e0f, type: 3}
   templateName: Template Scene Manuelle
-  description: 
+  description: "Contient les objets n\xE9cessaires afin de cr\xE9er une sc\xE8ne
+    manuelle personnalisable (script template \xE0 duppliquer et modifier)"
   preview: {fileID: 0}
   dependencies:
   - dependency: {fileID: 2100000, guid: 04300a4605a000941aa1f41402a90993, type: 2}

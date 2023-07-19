@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: A_Template
   m_EditorClassIdentifier: 
   templateScene: {fileID: 102900000, guid: 7b11d77fbb2fae4449cb02c016c0d2cf, type: 3}
-  templateName: 
-  description: 
+  templateName: Template Scene Automatique
+  description: "Contient les objets n\xE9cessaires afin de cr\xE9er une sc\xE8ne
+    aumatique personnalisable (script template \xE0 duppliquer et modifier)"
   preview: {fileID: 0}
   dependencies:
   - dependency: {fileID: 2100000, guid: 04300a4605a000941aa1f41402a90993, type: 2}
