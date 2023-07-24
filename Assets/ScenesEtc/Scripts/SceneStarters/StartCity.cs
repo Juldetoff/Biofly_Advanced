@@ -181,7 +181,7 @@ public class StartCity : StartDrone
         Debug.DrawLine(spherePos, randomA, Color.blue, 2000);
 
 	    //raycast avec pour vecteur point->cam + parcourt en cherchant route
-        RaycastHit[] hits;
+        RaycastHit[] hits; 
         Debug.DrawLine(randomA, Cams.cam.gameObject.transform.position + Cams.cam.gameObject.transform.position - randomA, Color.yellow, 2000);
         hits = Physics.RaycastAll(randomA, Cams.cam.gameObject.transform.position - randomA, 1000.0F);
         foreach (RaycastHit hit in hits)
