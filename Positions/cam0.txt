@@ -1,0 +1,7 @@
+Détection des objets de la caméra à 0s
+cube0 vu après : 39,79602s
+cube1 plus vu après : 39,79602s
+cube2 plus vu après : 39,79602s
+cube3 vu après : 39,79602s
+cube4 vu après : 39,79602s
+cube5 vu après : 39,79602s
