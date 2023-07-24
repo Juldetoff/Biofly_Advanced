@@ -45,19 +45,19 @@ Une fois l'Unity Hub lancé, il suffit d'ouvrir le projet avec le bouton "Open" 
 
 Une fois Unity lancé avec le projet, il suffit d'aller dans le dossier "Assets/ScenesEtc/Scenes" et d'ouvrir la scène "ConfigScene" (double clic dessus). Ensuite, il est possible de lancer la scène avec le bouton "Play" en haut au milieu de l'interface de l'éditeur Unity.
 
-![alt text](Assets/ScenesEtc/Images/Git/Select_Config.png)
+![Scene de config](Assets/ScenesEtc/Images/Git/Select_Config.png)
 
-![alt text](Assets/ScenesEtc/Images/Git/PlayButton.png)
+![Bouton Play](Assets/ScenesEtc/Images/Git/PlayButton.png)
 
 Cette scène permet de pouvoir tester les configurations possibles, en choisissant la scène, le nombre de caméras, le format et la qualité vidéo, le bruit... Il est aussi possible lors du choix de scène de choisir une scène en manuel afin de pouvoir guide manuellement la caméra et décider des angles de vue.
 
-![alt text](Assets/ScenesEtc/Images/Git/SceneConfig1.png)
-![alt text](Assets/ScenesEtc/Images/Git/SceneConfig2.png)
-![alt text](Assets/ScenesEtc/Images/Git/SceneConfig3.png)
+![SceneConfig1](Assets/ScenesEtc/Images/Git/SceneConfig1.png)
+![SceneConfig2](Assets/ScenesEtc/Images/Git/SceneConfig2.png)
+![SceneConfig3](Assets/ScenesEtc/Images/Git/SceneConfig3.png)
 
 Une fois la scène terminée ou que l'on souhaite arrêter l'enregistrement, il suffit de rappuyer sur le bouton "Play" en haut au milieu de l'interface de l'éditeur Unity. Il est également possible d'appuyer sur le bouton pause afin de mettre en pause l'enregistrement et regarder la scène en détail.
 
-![alt text](Assets/ScenesEtc/Images/Git/PlayOrPause.png)
+![Pause et Play](Assets/ScenesEtc/Images/Git/PlayOrPause.png)
 
 Les vidéos enregistrées se trouveront dans le dossier "Biofly_Advanced/SampleRecordings" tandis que les fichiers txt contenant les détections et positions d'objets se trouveront dans le dossier "Biofly_Advanced/Positions".
 
@@ -71,15 +71,15 @@ Il est possible d'ajouter des scènes ou des assets au projet.
 
 Pour ajouter une scène, il suffit de la créer à partir d'Unity :
 
-![alt text](Assets/ScenesEtc/Images/Git/NewScene.png)
-![alt text](Assets/ScenesEtc/Images/Git/Choix_Template_Scene.png)
+![Nouvelle scene](Assets/ScenesEtc/Images/Git/NewScene.png)
+![Choix template](Assets/ScenesEtc/Images/Git/Choix_Template_Scene.png)
 
 Une fois la nouvelle scène générée, il suffit de copier le script "TemplateManual" ou "TemplateAuto" selon la scène choisie, et de modifier le script duppliqué.
 Une fois les modifications faites, il suffit de l'ajouter dans la scène à l'objet "DroneManager" et de copier les données du script template déjà présent sur l'objet afin d'être sûr de récupérer toute les données nécessaires.
 Ensuite pour une copie du Template Manuel, il faut aller sur les deux objets "SYSCAM1" dans leur objet "CamPhysique", et dans le composant MovieRecordManual ou MovieRecordAuto, il faut lier le nouveau script créé du DroneManager. Ceci n'est pas nécessaire en Auto, mais il faut quand même recopier tout les paramètres du script template dans le nouveau script.
 
-![alt text](Assets/ScenesEtc/Images/Git/TemplateAuto.png)
-![alt text](Assets/ScenesEtc/Images/Git/TemplateManuel.png)
+<img src="Assets/ScenesEtc/Images/Git/TemplateAuto.png" alt= “Template_Auto” width="50%" height="50%">
+<img src="Assets/ScenesEtc/Images/Git/TemplateManuel.png" alt= “Template_Auto” width="50%" height="50%">
 
 N'hésitez pas à garder la souris sur certains paramètres dans l'éditeur afin d'avoir plus d'informations sur ceux-ci.
 
