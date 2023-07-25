@@ -83,6 +83,18 @@ Ensuite pour une copie du Template Manuel, il faut aller sur les deux objets "SY
 
 N'hésitez pas à garder la souris sur certains paramètres dans l'éditeur afin d'avoir plus d'informations sur ceux-ci.
 
+Pour ajouter la scène à la scène de configuration, il suffit d'ajouter la scène active au build :
+
+![Build](Assets/ScenesEtc/Images/Git/AddScene.png)
+
+Ce qui donnera un ID à la scène dans la liste des scènes, et d'ensuite dans la scène Config de rajouter un bouton en duppliquant le bouton "À rajouter" puis en les replaçant, avant de renommer le bouton et de modifier sa valeur de scène :
+
+![Dupplication](Assets/ScenesEtc/Images/Git/DuppButton.png)
+
+Dans le bouton ensuite il faut ajouetrun événement OnClick(), y associer l'objet "ConfigManager" présent dans la scène, puis sélectionner la fonction ConfigManager.ChangeScene(int) et lui mettre l'ID obtenu précédemment de la scène rajoutée.
+
+![ChangeScene](Assets/ScenesEtc/Images/Git/ChangeScene.png)
+
 #### - Ajout d'assets
 
 Pour les objets, il suffit de les ajouter dans les assets, et de les modifier en leur ajoutant les scripts nécessaire :
