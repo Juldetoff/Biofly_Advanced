@@ -95,3 +95,8 @@ Pour les objets, il suffit de les ajouter dans les assets, et de les modifier en
 Dans le dossier "Autres" sont rangés les scripts Python qui ont diverses utilités :
 
 - "squaredraw.py" : permet en ayant dans le même dossier un fichier vidéo nommé "camreal.mp4" et un fichier nommé "positions.txt" de dessiner les carrés de détection sur la vidéo à des fins de tests. Il suffit de lancer le script et de suivre les instructions.  
+Pour lancer le script, il faut avoir installé Python et lancer la commande suivante dans le dossier "Autres" :
+
+```bash
+python3 squaredraw.py
+```
