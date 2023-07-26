@@ -2940,7 +2940,7 @@ GameObject:
   - component: {fileID: 738058281}
   - component: {fileID: 738058280}
   m_Layer: 5
-  m_Name: New scene (1)
+  m_Name: Ville - Auto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5757,7 +5757,7 @@ GameObject:
   - component: {fileID: 1187444325}
   - component: {fileID: 1187444324}
   m_Layer: 5
-  m_Name: New scene
+  m_Name: Ville - manuel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6359,7 +6359,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1327619394}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1510658558}
+        m_TargetAssemblyTypeName: ConfigManager, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 6
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1327619394
 MonoBehaviour:
   m_ObjectHideFlags: 0

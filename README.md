@@ -24,6 +24,10 @@ Ce travail a été fait lors de mon stage d'assistant ingénieur de 2e année à
       - [- Ajout de scènes](#--ajout-de-scènes)
       - [- Ajout d'assets](#--ajout-dassets)
     - [Utilisation des autres scripts](#utilisation-des-autres-scripts)
+  - [Crédits](#crédits)
+    - [Scènes](#scènes)
+    - [Objets](#objets)
+    - [Autres](#autres)
 
 ## Installation
 
@@ -112,3 +116,26 @@ Pour lancer le script, il faut avoir installé Python et lancer la commande suiv
 ```bash
 python3 squaredraw.py
 ```
+
+## Crédits
+
+- Projet Environnement Biofly (PIDR) : Julien De Toffoli et Baptiste Gheysens
+
+### Scènes
+
+- [Scène HDRP en Forêt](https://assetstore.unity.com/packages/3d/environments/unity-terrain-hdrp-demo-scene-213198)
+- [Scène en Intérieur](https://assetstore.unity.com/packages/3d/environments/hdrp-interior-lighting-template-vol-2-88464)
+- [Scène en ville](https://assetstore.unity.com/packages/3d/environments/urban/real-new-york-city-vol-1-208247)
+
+### Objets
+
+- [Aigle](https://assetstore.unity.com/packages/3d/characters/animals/birds/egypt-pack-eagle-140079)
+- [Taureau](https://assetstore.unity.com/packages/3d/characters/animals/mammals/black-bull-182476)
+- [Tigre](https://assetstore.unity.com/packages/3d/characters/animals/mammals/golden-tiger-55797)
+- [Véhicules](https://assetstore.unity.com/packages/3d/vehicles/land/low-poly-cars-101798)
+- [Foule](https://assetstore.unity.com/packages/3d/characters/humanoids/humans/audience-crowd-8563)
+
+### Autres
+
+- [Effet Rolling Shutter](https://github.com/cmacmillan/RollingShutter)
+- [MeshToTerrain](https://www.lmhpoly.com/tutorials/convert-mesh-to-unity-terrain)
